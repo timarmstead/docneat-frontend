@@ -102,5 +102,12 @@ export default function Home() {
         )}
       </div>
     </div>
+     <div className="text-center mt-12">
+          <a href="/pricing" className="text-mint-600 hover:underline font-medium text-lg">
+            View Pricing →
+          </a>
+        </div>
+      </div>
+    </div>
   );
 }

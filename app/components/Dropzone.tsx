@@ -24,7 +24,7 @@ export default function Dropzone() {
       setPreview(data.preview || []);
 
       if (data.excel_url) {
-        const excel = await fetch(`https://fastapi-production-f068.up.railway.app${data.excel_url}`);
+        const excel = await fetch(`https://docneat-backend-production.up.railway.app${data.excel_url}`);
         const blob = await excel.blob();
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');

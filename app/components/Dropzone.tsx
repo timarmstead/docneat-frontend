@@ -16,7 +16,7 @@ export default function Dropzone() {
     formData.append('file', file);
 
     try {
-      const res = await fetch('https://fastapi-production-f068.up.railway.app/upload', {
+      const res = await fetch('https://docneat-backend-production.up.railway.app/upload', {
         method: 'POST',
         body: formData,
       });

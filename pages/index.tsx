@@ -107,7 +107,7 @@ export default function Home() {
                 </tbody>
               </table>
             </div>
-            <p className="text-center mt-4 text-green-600 font-medium">Excel downloaded automatically!</p>
+            <p class Name="text-center mt-4 text-green-600 font-medium">Excel downloaded automatically!</p>
           </div>
         )}
       </div>

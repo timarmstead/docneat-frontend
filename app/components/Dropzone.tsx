@@ -16,7 +16,7 @@ export default function Dropzone() {
     formData.append('file', file);
 
     try {
-      const res = await fetch('https://docneat-backend-production.up.railway.app/upload', {
+      const res = await fetch('https://web-production-28b67.up.railway.app/upload', {
         method: 'POST',
         body: formData,
       });
@@ -24,7 +24,7 @@ export default function Dropzone() {
       setPreview(data.preview || []);
 
       if (data.excel_url) {
-        const excel = await fetch(`https://docneat-backend-production.up.railway.app${data.excel_url}`);
+        const excel = await fetch(`https://web-production-28b67.up.railway.app${data.excel_url}`);
         const blob = await excel.blob();
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');

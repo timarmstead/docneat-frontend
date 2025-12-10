@@ -2,14 +2,17 @@ import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 
 export default function Home() {
-  const [preview, setPreview] = useState([]);
+  const [preview, setPreview] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-  const [backendUrl] = useState('https://fastapi-production-f068.up.railway.app'); // Your backend URL!
+  const backendUrl = 'https://fastapi-production-f068.up.railway.app'; // Your backend
 
-  const onDrop = useCallback(async (acceptedFiles) => {
+  const onDrop = useCallback(async (acceptedFiles: File[]) => {
     setLoading(true);
     const file = acceptedFiles[0];
-    if (!file) return;
+    if (!file) {
+      setLoading(false);
+      return;
+    }
 
     const formData = new FormData();
     formData.append('file', file);
@@ -24,12 +27,12 @@ export default function Home() {
 
       const result = await response.json();
       setPreview(result.preview || []);
-      
+
       // Auto-download Excel
       if (result.excel_url) {
         const excelResp = await fetch(`${backendUrl}${result.excel_url}`);
-        const excelBlob = await excelResp.blob();
-        const url = window.URL.createObjectURL(excelBlob);
+        const blob = await excelResp.blob();
+        const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
         a.download = 'docneat-converted.xlsx';
@@ -37,18 +40,20 @@ export default function Home() {
         window.URL.revokeObjectURL(url);
       }
     } catch (error) {
-      alert('Oops! Try again or email support@docneat.com');
+      alert('Upload failed — try a smaller PDF or email support@docneat.com');
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }, [backendUrl]);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ 
-    onDrop, 
-    accept: { 
-      'application/pdf': ['.pdf'], 
-      'text/csv': ['.csv'], 
-      'image/*': ['.jpg', '.png'] 
-    } 
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      'application/pdf': ['.pdf'],
+      'text/csv': ['.csv'],
+      'image/jpeg': ['.jpg', '.jpeg'],
+      'image/png': ['.png'],
+    },
   });
 
   return (
@@ -60,25 +65,34 @@ export default function Home() {
           <p className="text-lg text-gray-500">Messy PDFs → Perfect Excel/CSV in seconds. No signup. Nothing stored.</p>
         </div>
 
-        <div {...getRootProps()} className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${isDragActive ? 'border-mint-500 bg-mint-100' : 'border-gray-300 hover:border-mint-500'}`}>
+        <div
+          {...getRootProps()}
+          className={`border-4 border-dashed rounded-xl p-16 text-center cursor-pointer transition-all ${
+            isDragActive ? 'border-mint-500 bg-mint-50' : 'border-gray-300 hover:border-mint-500'
+          }`}
+        >
           <input {...getInputProps()} />
-          <p className="text-xl font-medium text-gray-700 mb-2">
-            {isDragActive ? 'Drop it here...' : 'Drag & drop your bank statement, invoice, or receipt'}
+          <p className="text-2xl font-medium text-gray-700 mb-4">
+            {isDragActive ? 'Drop your file here...' : 'Drag & drop your bank statement, invoice, or receipt'}
           </p>
-          <p className="text-gray-500">Supports PDF, CSV, JPG, PNG. Works on scanned docs too.</p>
+          <p className="text-gray-500">PDF • CSV • JPG • PNG • Works on scanned docs</p>
         </div>
 
-        {loading && <p className="text-center mt-4 text-mint-600 font-medium">Extracting your neat data... (this may take 10–30 seconds)</p>}
+        {loading && (
+          <p className="text-center mt-8 text-xl font-medium text-mint-600">
+            Extracting your neat data... (10–30 seconds)
+          </p>
+        )}
 
         {preview.length > 0 && (
-          <div className="mt-8 p-4 bg-white rounded-lg shadow">
-            <h3 className="text-xl font-bold mb-4 text-mint-900">Preview (first 3 rows extracted):</h3>
+          <div className="mt-12 p-6 bg-white rounded-xl shadow-lg">
+            <h3 className="text-2xl font-bold mb-4 text-mint-900">Preview (first 3 rows):</h3>
             <div className="overflow-x-auto">
-              <table className="min-w-full border border-gray-200">
+              <table className="min-w-full border border-gray-300">
                 <thead>
                   <tr className="bg-mint-100">
                     {Object.keys(preview[0] || {}).map((key) => (
-                      <th key={key} className="px-4 py-2 border-b text-left font-medium">{key}</th>
+                      <th key={key} className="px-6 py-3 text-left font-medium">{key}</th>
                     ))}
                   </tr>
                 </thead>
@@ -86,14 +100,14 @@ export default function Home() {
                   {preview.map((row, i) => (
                     <tr key={i} className={i % 2 === 0 ? 'bg-gray-50' : ''}>
                       {Object.values(row).map((val, j) => (
-                        <td key={j} className="px-4 py-2 border-b">{val}</td>
+                        <td key={j} className="px-6 py-3 border-t">{val}</td>
                       ))}
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-            <p className="text-sm text-gray-500 mt-2">Full Excel downloaded automatically! CSV available too.</p>
+            <p className="text-center mt-4 text-green-600 font-medium">Excel downloaded automatically!</p>
           </div>
         )}
       </div>

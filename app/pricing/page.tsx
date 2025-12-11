@@ -1,6 +1,32 @@
-import Link from 'next/link';
+import Link from 'next/link'
+import { useState } from 'react';  // NEW: For loading state if wanted
 
 export default function Pricing() {
+  const [loading, setLoading] = useState(false);  // Optional: For button loading
+
+  const handleCheckout = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ priceId: 'price_1XXXXXXXXXXXXXXX' }),  // <-- Update with your real Stripe Price ID
+      });
+
+      if (!res.ok) throw new Error('Checkout failed');
+
+      const { url } = await res.json();
+      window.location.href = url;
+    } catch (error) {
+      alert('Error starting checkout. Please try again.');
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 py-20">
       <div className="max-w-6xl mx-auto px-6 text-center">
@@ -34,10 +60,13 @@ export default function Pricing() {
               <li>✓ Priority support</li>
               <li>✓ Remove "Powered by DocNeat" badge</li>
             </ul>
-            <form action="/api/checkout" method="POST">
-              <input type="hidden" name="priceId" value="prod_TaSi7JrpWhTfql" />
-              <button className="w-full bg-mint-500 hover:bg-mint-600 text-white font-bold py-4 rounded-lg transition">
-                Start Pro Plan
+            <form onSubmit={handleCheckout}>  {/* CHANGED: Add onSubmit handler */}
+              <button 
+                type="submit" 
+                disabled={loading}
+                className="w-full bg-mint-500 hover:bg-mint-600 text-white font-bold py-4 rounded-lg transition disabled:opacity-50"
+              >
+                {loading ? 'Processing...' : 'Start Pro Plan'}
               </button>
             </form>
           </div>
@@ -59,5 +88,5 @@ export default function Pricing() {
         </div>
       </div>
     </div>
-  );
+  )
 }

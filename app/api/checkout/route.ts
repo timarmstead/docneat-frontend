@@ -4,7 +4,12 @@ import Stripe from 'stripe';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-06-20' });
 
 export async function POST(req: Request) {
-  const { priceId } = await req.json();
+  const formData = await req.formData();
+  const priceId = formData.get('priceId') as string;  // Get the priceId from form data
+
+  if (!priceId) {
+    return NextResponse.json({ error: 'Missing priceId' }, { status: 400 });
+  }
 
   const session = await stripe.checkout.sessions.create({
     mode: 'subscription',

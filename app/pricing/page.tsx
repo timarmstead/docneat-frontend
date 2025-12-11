@@ -12,7 +12,7 @@ export default function Pricing() {
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ priceId: 'price_1XXXXXXXXXXXXXXX' }),  // <-- Update with your real Stripe Price ID
+        body: JSON.stringify({ priceId: 'price_1SdHnXGWw5FE61zBNcv5v8eZ' }),  // <-- Update with your real Stripe Price ID
       });
 
       if (!res.ok) throw new Error('Checkout failed');

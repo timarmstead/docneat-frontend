@@ -16,10 +16,11 @@ export default function Dropzone() {
     formData.append('file', file);
 
     try {
-      const res = await fetch('https://docneat-backend.onrender.com/upload', {
-        method: 'POST',
-        body: formData,
-      });
+    const res = await fetch('https://docneat-backend.onrender.com/upload', {
+  method: 'POST',
+  body: formData,
+  timeout: 60000,  // 60 seconds timeout
+});
       const data = await res.json();
       setPreview(data.preview || []);
 

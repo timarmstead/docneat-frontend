@@ -1,3 +1,5 @@
+'use client';  // NEW: Add this at the very top to make it a Client Component
+
 import Link from 'next/link'
 import { useState } from 'react';  // NEW: For loading state if wanted
 

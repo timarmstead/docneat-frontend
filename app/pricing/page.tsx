@@ -35,7 +35,7 @@ export default function Pricing() {
               <li>✓ Remove "Powered by DocNeat" badge</li>
             </ul>
             <form action="/api/checkout" method="POST">
-              <input type="hidden" name="priceId" value="price_1SckWXXXXXX" />
+              <input type="hidden" name="priceId" value="prod_TaSi7JrpWhTfql" />
               <button className="w-full bg-mint-500 hover:bg-mint-600 text-white font-bold py-4 rounded-lg transition">
                 Start Pro Plan
               </button>

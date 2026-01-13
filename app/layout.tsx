@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import Navbar from '@/components/Navbar'   // ← adjust path if your components folder is elsewhere
+import Navbar from '@/components/Navbar.tsx';   // ← adjust path if your components folder is elsewhere
 
 export const metadata: Metadata = {
   title: 'DocNeat.com — Easy. Fast. Accurate.',

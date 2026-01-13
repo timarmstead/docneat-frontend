@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import dynamic from 'next/dynamic';
+import dynamic from 'next/dynamic'
 
+// Dynamically import Navbar to prevent Hydration errors
 const Navbar = dynamic(() => import('@/components/Navbar'), { ssr: false });
 
 export const metadata: Metadata = {

@@ -1,4 +1,3 @@
-// components/Navbar.tsx
 'use client'
 
 import Link from 'next/link'
@@ -20,16 +19,10 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           
-          {/* Logo - left */}
           <Link href="/" className="flex-shrink-0 flex items-center gap-3">
-            <div className="relative w-10 h-10 md:w-12 md:h-12">
-              <Image
-                src="/logo.png"           // ← Put your logo.png / logo.svg in /public/ folder
-                alt="DocNeat Logo"
-                fill
-                className="object-contain"
-                priority
-              />
+            <div className="relative w-10 h-10 md:w-12 md:h-12 bg-emerald-500 rounded-lg flex items-center justify-center">
+              {/* Fallback if logo.png is missing */}
+              <span className="text-white font-bold">DN</span>
             </div>
             <div className="flex flex-col">
               <span className="text-xl md:text-2xl font-bold text-white tracking-tight">
@@ -41,7 +34,6 @@ export default function Navbar() {
             </div>
           </Link>
 
-          {/* Centered menu - desktop only */}
           <div className="hidden md:flex items-center justify-center flex-1">
             <div className="flex items-center gap-10">
               {navItems.map((item) => (
@@ -59,8 +51,6 @@ export default function Navbar() {
               ))}
             </div>
           </div>
-
-          {/* Mobile: for now just logo + menu hidden – add hamburger later if needed */}
           <div className="md:hidden" />
         </div>
       </div>

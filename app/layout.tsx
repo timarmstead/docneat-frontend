@@ -6,7 +6,7 @@ import dynamic from 'next/dynamic'
 const Navbar = dynamic(() => import('@/components/Navbar'), { ssr: false });
 
 export const metadata: Metadata = {
-  title: 'DocNeat.com — Easy. Fast. Accurate.',
+  title: 'DocNeat.com — Secure. Fast. Accurate.',
   description: 'Convert bank statements, invoices, receipts to Excel/CSV instantly',
 }
 

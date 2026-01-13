@@ -1,6 +1,14 @@
-'use client';  // ← Add this line
+import dynamic from 'next/dynamic';
 
-import Dropzone from './components/Dropzone'
+// Dynamically import Dropzone – only loads on the client (no build-time server parsing)
+const Dropzone = dynamic(() => import('./components/Dropzone'), {
+  ssr: false,  // Important: disables server-side rendering for this component
+  loading: () => (
+    <div className="min-h-[400px] flex items-center justify-center border-4 border-dashed border-gray-300 rounded-2xl bg-gray-50">
+      <p className="text-xl text-gray-500 animate-pulse">Loading upload area...</p>
+    </div>
+  ),
+});
 
 export default function Home() {
   return (
@@ -12,6 +20,7 @@ export default function Home() {
           <p className="text-lg text-gray-500">Messy PDFs → Perfect Excel/CSV in seconds. No signup. Nothing stored.</p>
         </div>
 
+        {/* The upload area – now loaded dynamically */}
         <Dropzone />
 
         <div className="text-center mt-12">

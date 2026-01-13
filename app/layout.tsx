@@ -17,11 +17,24 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="antialiased bg-gray-50">
+      <body className="antialiased bg-gray-50 flex flex-col min-h-screen">
         <Navbar />
-        <main className="pt-20 md:pt-24 min-h-screen">
+        
+        {/* The flex-grow class ensures the main content pushes the footer to the bottom */}
+        <main className="pt-20 md:pt-24 flex-grow">
           {children}
         </main>
+
+        <footer className="w-full py-10 px-6 md:px-12 border-t border-gray-200 bg-white">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex flex-col text-left text-sm text-gray-500">
+              <span className="font-bold text-gray-900">Engaging Enterprises Ltd</span>
+              <span>Monomark House, 27 Old Gloucester Street</span>
+              <span>London, England, WC1N 3AX</span>
+              <span className="mt-2 text-xs">Company No: 14111995</span>
+            </div>
+          </div>
+        </footer>
       </body>
     </html>
   )

@@ -26,7 +26,7 @@ export default function Navbar() {
             </div>
             <div className="flex flex-col">
               <span className="text-xl md:text-2xl font-bold text-white tracking-tight">
-                DOCNEAT
+                DOCNEAT.com
               </span>
               <span className="text-xs md:text-sm text-emerald-400 font-medium tracking-wider">
                 SECURE | FAST | ACCURATE

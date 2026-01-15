@@ -1,6 +1,5 @@
 import React from 'react';
 import Link from 'next/link';
-import { ShieldCheck, Zap, BarChart3, Lock, Clock, Users } from 'lucide-react';
 
 export const metadata = {
   title: 'Why Choose DocNeat — Secure AI Bank Statement Conversion',
@@ -11,22 +10,30 @@ const features = [
   {
     title: "99.9% AI Accuracy",
     description: "Our specialized OCR models are trained specifically on financial documents, handling complex tables and multi-page statements with pinpoint precision.",
-    icon: <Zap className="text-emerald-400" size={24} />
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-emerald-400"><path d="m13 2-2 10h9L7 22l2-10H1z"/></svg>
+    )
   },
   {
     title: "Zero-Storage Security",
     description: "Unlike competitors, we process your files in-memory and delete them instantly. Your financial data is never stored on our servers.",
-    icon: <Lock className="text-emerald-400" size={24} />
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-emerald-400"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    )
   },
   {
     title: "Instant Conversions",
     description: "Go from a 50-page PDF to a clean Excel spreadsheet in less than 10 seconds. Stop wasting hours on manual data entry.",
-    icon: <Clock className="text-emerald-400" size={24} />
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-emerald-400"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    )
   },
   {
     title: "Accounting Ready",
     description: "Our exports are perfectly formatted for direct import into QuickBooks, Xero, and Sage, eliminating the need for manual cleanup.",
-    icon: <BarChart3 className="text-emerald-400" size={24} />
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-emerald-400"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+    )
   }
 ];
 
@@ -61,7 +68,7 @@ export default function WhyChoosePage() {
           ))}
         </div>
 
-        {/* Persona Section - Who it's for */}
+        {/* Persona Section */}
         <div className="grid md:grid-cols-3 gap-12 py-20 border-t border-slate-800">
           <div>
             <div className="text-emerald-500 mb-4 font-bold tracking-widest text-sm uppercase">For Accountants</div>
@@ -100,7 +107,6 @@ export default function WhyChoosePage() {
               Get Started for Free
             </Link>
           </div>
-          {/* Subtle background decoration */}
           <div className="absolute -right-20 -bottom-20 w-64 h-64 bg-emerald-400 rounded-full opacity-50 blur-3xl"></div>
         </div>
 

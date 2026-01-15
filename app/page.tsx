@@ -12,7 +12,6 @@ const Dropzone = dynamic(() => import('@/components/Dropzone'), {
 
 export default function Home() {
   return (
-    // Balanced padding: pt-32 for mobile, pt-44 for desktop
     <main className="min-h-screen bg-slate-900 pt-32 md:pt-44 pb-20">
       <div className="max-w-5xl mx-auto px-6">
         
@@ -53,11 +52,16 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Pricing Link */}
-        <div className="text-center mt-12">
-          <Link href="/pricing" className="text-slate-500 hover:text-emerald-400 transition-colors font-medium text-lg inline-flex items-center gap-2">
-            View Simple Pricing <span>→</span>
+        {/* New Green Pricing Button */}
+        <div className="text-center mt-20">
+          <Link 
+            href="/pricing" 
+            className="inline-flex items-center justify-center px-10 py-4 bg-emerald-500 hover:bg-emerald-600 text-slate-900 font-bold rounded-xl transition-all shadow-lg shadow-emerald-500/20 text-lg group"
+          >
+            View Simple Pricing 
+            <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
           </Link>
+          <p className="text-slate-500 text-sm mt-4 italic">No hidden fees. Pay only for what you convert.</p>
         </div>
 
       </div>

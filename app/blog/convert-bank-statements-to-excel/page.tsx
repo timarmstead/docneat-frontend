@@ -48,7 +48,7 @@ export default function BlogPostPage() {
 
         <h2 className="text-2xl font-bold mt-10 mb-4 text-gray-900">The Solution: Automated Data Extraction</h2>
         <p>
-          At <Link href="/" className="text-emerald-600 hover:underline font-semibold">DocNeat</Link>, we believe your time is better spent analyzing your finances, not manually transcribing them. Our AI-powered platform transforms your bank statements, invoices, and receipts into ready-to-use Excel or CSV files in three simple steps:
+          At <Link href="/" className="text-emerald-600 hover:underline font-semibold">DocNeat</Link>, we believe your time is better spent analyzing your finances, not manually transcribing them. Our platform transforms your bank statements, invoices, and receipts into ready-to-use Excel or CSV files in three simple steps:
         </p>
 
         <ul className="space-y-4 py-4">
@@ -58,7 +58,7 @@ export default function BlogPostPage() {
           </li>
           <li className="flex items-start gap-4">
             <span className="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">2</span>
-            <p><strong>Extract:</strong> Our AI identifies dates, descriptions, and amounts in seconds.</p>
+            <p><strong>Extract:</strong> Our platform identifies dates, descriptions, and amounts in seconds.</p>
           </li>
           <li className="flex items-start gap-4">
             <span className="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">3</span>

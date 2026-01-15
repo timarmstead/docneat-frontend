@@ -2,13 +2,13 @@ import React from 'react';
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'Why Choose DocNeat — Secure AI Bank Statement Conversion',
+  title: 'Why Choose DocNeat — Secure Bank Statement Conversion',
   description: 'Discover why thousands of accountants and businesses trust DocNeat for fast, accurate, and secure bank statement to Excel conversion.',
 };
 
 const features = [
   {
-    title: "99.9% AI Accuracy",
+    title: "99.9% Data Accuracy",
     description: "Our specialized OCR models are trained specifically on financial documents, handling complex tables and multi-page statements with pinpoint precision.",
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-emerald-400"><path d="m13 2-2 10h9L7 22l2-10H1z"/></svg>
@@ -49,7 +49,7 @@ export default function WhyChoosePage() {
             <span className="text-emerald-400">Trusted for security.</span>
           </h1>
           <p className="text-xl text-slate-400 leading-relaxed">
-            DocNeat was built to solve the "Accounting Bottleneck." We combine enterprise-grade AI extraction with a security model that ensures your data stays your data.
+            DocNeat was built to solve the "Accounting Bottleneck." We combine enterprise-grade data extraction with a security model that ensures your data stays your data.
           </p>
         </div>
 

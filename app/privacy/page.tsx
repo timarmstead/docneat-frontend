@@ -26,34 +26,36 @@ export default function PrivacyPage() {
           <h2 className="text-xl font-semibold mb-3 text-gray-900">2. Data We Collect</h2>
           <ul className="list-disc pl-5 space-y-2">
             <li><strong>Account Information:</strong> Name, email address, and billing information required for subscription management.</li>
-            <li><strong>Uploaded Documents:</strong> Financial files (bank statements, invoices, receipts) that you upload for conversion.</li>
             <li><strong>Technical Data:</strong> IP address and browser type collected for security and system performance monitoring.</li>
           </ul>
         </div>
 
         <div className="bg-blue-50 p-6 rounded-lg border border-blue-100">
-          <h2 className="text-xl font-semibold mb-3 text-blue-900">3. Our "No Third-Party" Guarantee</h2>
-          <p className="leading-relaxed text-blue-800">
-            We do not sell, rent, or trade your personal data or uploaded documents to any third parties. Your data is used exclusively to provide the service you have requested. We do not use your financial data for training third-party AI models without your explicit, separate consent.
+          <h2 className="text-xl font-semibold mb-3 text-blue-900">3. Immediate Deletion Guarantee</h2>
+          <p className="leading-relaxed text-blue-800 font-medium">
+            Your financial privacy is our priority. Any uploaded statements (PDFs, images, or scans) are processed in volatile memory and are deleted immediately after the data extraction to CSV or Excel is complete. 
+          </p>
+          <p className="leading-relaxed text-blue-800 mt-2">
+            We do not store your financial statement data, nor do we sell, rent, or trade your personal information to third parties.
           </p>
         </div>
 
         <div>
-          <h2 className="text-xl font-semibold mb-3 text-gray-900">4. Data Security & Storage</h2>
+          <h2 className="text-xl font-semibold mb-3 text-gray-900">4. Data Security & Processing</h2>
           <p className="leading-relaxed mb-3">
-            Your security is our priority. We employ industry-standard measures including:
+            To ensure the highest level of security, we employ the following measures:
           </p>
           <ul className="list-disc pl-5 space-y-2">
-            <li>Full HTTPS/TLS encryption for all data in transit.</li>
-            <li>Encrypted storage for files awaiting processing.</li>
-            <li>Automatic deletion of processed files from our temporary servers after a set period.</li>
+            <li><strong>No Long-term Storage:</strong> As noted above, uploaded files are purged from our systems the moment the conversion is finished.</li>
+            <li><strong>Encryption:</strong> All data is transmitted via industry-standard HTTPS/TLS encryption.</li>
+            <li><strong>Automated Processing:</strong> Files are handled by automated scripts; no human staff members view your documents unless you explicitly request technical support for a specific file error.</li>
           </ul>
         </div>
 
         <div>
           <h2 className="text-xl font-semibold mb-3 text-gray-900">5. International Clients (EU, US, etc.)</h2>
           <p className="leading-relaxed">
-            As a UK-based company, we process data in compliance with the UK GDPR. For our international clients, including those in the EU and USA, we ensure that any cross-border data transfers are protected by Standard Contractual Clauses (SCCs) or other legally recognized safety frameworks to ensure your data remains protected to the highest standard.
+            As a UK-based company, we process data in compliance with the UK GDPR. For our international clients, including those in the EU and USA, we ensure that any cross-border data transfers are protected by Standard Contractual Clauses (SCCs) to ensure your data remains protected to the highest standard.
           </p>
         </div>
 
@@ -63,8 +65,8 @@ export default function PrivacyPage() {
             Under the GDPR, you have the following rights:
           </p>
           <ul className="list-disc pl-5 space-y-2">
-            <li>The right to access and download a copy of your personal data.</li>
-            <li>The right to request the deletion of your account and all associated data.</li>
+            <li>The right to access and download a copy of your personal account data.</li>
+            <li>The right to request the deletion of your account.</li>
             <li>The right to withdraw consent at any time.</li>
           </ul>
         </div>

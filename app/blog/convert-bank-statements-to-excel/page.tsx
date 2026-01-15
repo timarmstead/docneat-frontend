@@ -14,7 +14,7 @@ export default function BlogPostPage() {
       
       {/* New Timeless Heading with Emerald Highlight */}
       <h1 className="text-3xl md:text-5xl font-bold mb-6 text-white leading-tight tracking-tight">
-        How to Convert Bank Statements to Excel:
+        How to Convert Bank Statements to Excel: 
         <span className="text-emerald-400">No More Manual Data Entry</span>
       </h1>
       

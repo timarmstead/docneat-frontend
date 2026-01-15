@@ -8,7 +8,6 @@ const navItems = [
   { name: 'Why Choose', href: '/why-choose' },
   { name: 'Pricing',    href: '/pricing' },
   { name: 'FAQ',        href: '/faq' },
-  // Updated to point directly to your first article
   { name: 'Blog',       href: '/blog/convert-bank-statements-to-excel' },
 ]
 
@@ -21,14 +20,21 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16 md:h-20">
           
           <Link href="/" className="flex-shrink-0 flex items-center gap-3">
-            <div className="relative w-10 h-10 md:w-12 md:h-12 bg-emerald-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold">DN</span>
+            {/* Replaced the green div with your logo image */}
+            <div className="relative w-10 h-10 md:w-12 md:h-12 overflow-hidden rounded-lg">
+              <Image 
+                src="images/DocNeat-Logo.png" 
+                alt="DocNeat Logo" 
+                fill
+                className="object-contain"
+              />
             </div>
+
             <div className="flex flex-col">
-              <span className="text-xl md:text-2xl font-bold text-white tracking-tight">
+              <span className="text-xl md:text-2xl font-bold text-white tracking-tight leading-none">
                 DOCNEAT.com
               </span>
-              <span className="text-xs md:text-sm text-emerald-400 font-medium tracking-wider">
+              <span className="text-[10px] md:text-xs text-emerald-400 font-medium tracking-[0.15em] mt-1">
                 SECURE | FAST | ACCURATE
               </span>
             </div>

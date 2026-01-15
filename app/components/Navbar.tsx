@@ -6,9 +6,10 @@ import { usePathname } from 'next/navigation'
 
 const navItems = [
   { name: 'Why Choose', href: '/why-choose' },
-  { name: 'Pricing',     href: '/pricing' },
-  { name: 'FAQ',         href: '/faq' },
-  { name: 'Blog',        href: '/blog' },
+  { name: 'Pricing',    href: '/pricing' },
+  { name: 'FAQ',        href: '/faq' },
+  // Updated to point directly to your first article
+  { name: 'Blog',       href: '/blog/convert-bank-statements-to-excel' },
 ]
 
 export default function Navbar() {
@@ -21,7 +22,6 @@ export default function Navbar() {
           
           <Link href="/" className="flex-shrink-0 flex items-center gap-3">
             <div className="relative w-10 h-10 md:w-12 md:h-12 bg-emerald-500 rounded-lg flex items-center justify-center">
-              {/* Fallback if logo.png is missing */}
               <span className="text-white font-bold">DN</span>
             </div>
             <div className="flex flex-col">

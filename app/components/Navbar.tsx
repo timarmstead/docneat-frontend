@@ -9,12 +9,18 @@ const navItems = [
   { name: 'Why Choose', href: '/why-choose' },
   { name: 'Pricing',    href: '/pricing' },
   { name: 'FAQ',        href: '/faq' },
-  { name: 'Blog',       href: '/blog/convert-bank-statements-to-excel' },
+  { name: 'Blog',       href: '/blog' },
 ]
 
 export default function Navbar() {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
+
+  // Helper to determine if a link is "active"
+  const isActive = (href: string) => {
+    if (href === '/blog') return pathname.startsWith('/blog')
+    return pathname === href
+  }
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-900 border-b border-slate-700 shadow-lg">
@@ -33,7 +39,7 @@ export default function Navbar() {
             </div>
 
             <div className="flex flex-col">
-              <span className="text-xl md:text-2xl font-bold text-white tracking-tight leading-none">
+              <span className="text-xl md:text-2xl font-bold text-white tracking-tight leading-none uppercase">
                 DOCNEAT.com
               </span>
               <span className="text-[10px] md:text-xs text-emerald-400 font-medium tracking-[0.15em] mt-1">
@@ -50,7 +56,7 @@ export default function Navbar() {
                   key={item.name}
                   href={item.href}
                   className={`text-base font-medium transition-colors ${
-                    pathname === item.href
+                    isActive(item.href)
                       ? 'text-emerald-400'
                       : 'text-gray-300 hover:text-white'
                   }`}
@@ -61,57 +67,14 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Mobile Menu Button - Using Inline SVG instead of Lucide */}
+          {/* Mobile Menu Button - SVG Version (No imports needed) */}
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-300 hover:text-white p-2 transition-colors"
+              className="text-gray-300 hover:text-white p-2 transition-colors focus:outline-none"
               aria-label="Toggle Menu"
             >
               {isOpen ? (
-                // Close Icon (X)
+                /* Close Icon X */
                 <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-              ) : (
-                // Menu Icon (Hamburger)
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-              )}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Menu Dropdown */}
-      <div 
-        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out bg-slate-900 border-b border-slate-700 ${
-          isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-        }`}
-      >
-        <div className="px-6 py-8 space-y-4">
-          {navItems.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              onClick={() => setIsOpen(false)}
-              className={`block text-lg font-medium transition-colors ${
-                pathname === item.href
-                  ? 'text-emerald-400'
-                  : 'text-gray-300 hover:text-white'
-              }`}
-            >
-              {item.name}
-            </Link>
-          ))}
-          <div className="pt-4">
-            <Link
-              href="/"
-              onClick={() => setIsOpen(false)}
-              className="block w-full text-center bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-emerald-500/20 transition-transform active:scale-95"
-            >
-              Start Converting
-            </Link>
-          </div>
-        </div>
-      </div>
-    </nav>
-  )
-}
+              ) :

@@ -12,12 +12,12 @@ const Dropzone = dynamic(() => import('@/components/Dropzone'), {
 
 export default function Home() {
   return (
-    // Increased pt-24 to pt-40 (mobile) and pt-60 (desktop) for better spacing
-    <main className="min-h-screen bg-slate-900 pt-40 md:pt-60 pb-20">
+    // Balanced padding: pt-32 for mobile, pt-44 for desktop
+    <main className="min-h-screen bg-slate-900 pt-32 md:pt-44 pb-20">
       <div className="max-w-5xl mx-auto px-6">
         
         {/* Hero Section */}
-        <div className="text-center mb-20"> {/* Increased margin bottom to separate from Dropzone */}
+        <div className="text-center mb-16"> 
           <h1 className="text-3xl md:text-5xl font-bold text-white tracking-tight mb-6 leading-tight">
             Turn Any Bank Statement into a <br className="hidden md:block" />
             <span className="text-emerald-400">Clean Spreadsheet</span> in Seconds.
@@ -38,7 +38,7 @@ export default function Home() {
         </div>
 
         {/* Value Reinforcement */}
-        <div className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-10 text-center border-t border-slate-800 pt-12">
+        <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-10 text-center border-t border-slate-800 pt-12">
           <div>
             <h3 className="text-emerald-400 font-bold text-lg mb-2">Immediate Deletion</h3>
             <p className="text-slate-400 text-sm">Files are processed in memory and deleted instantly. Your financial privacy is our priority.</p>
@@ -54,7 +54,7 @@ export default function Home() {
         </div>
 
         {/* Pricing Link */}
-        <div className="text-center mt-16">
+        <div className="text-center mt-12">
           <Link href="/pricing" className="text-slate-500 hover:text-emerald-400 transition-colors font-medium text-lg inline-flex items-center gap-2">
             View Simple Pricing <span>→</span>
           </Link>

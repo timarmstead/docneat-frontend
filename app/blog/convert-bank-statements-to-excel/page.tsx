@@ -18,7 +18,7 @@ export default function BlogPostPage() {
       {/* Main Feature Image */}
       <div className="relative w-full h-[300px] md:h-[500px] mb-12">
         <Image 
-          src="/images/blog/bank-statement-to-excel.jpg" 
+          src="/images/blog/bank-statement-to-excel.png" 
           alt="Professional transformation of bank statement data into a clean Excel spreadsheet"
           fill
           className="rounded-2xl shadow-xl object-cover"

@@ -12,13 +12,13 @@ const Dropzone = dynamic(() => import('@/components/Dropzone'), {
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-slate-900 pt-24 pb-20">
+    // Increased pt-24 to pt-40 (mobile) and pt-60 (desktop) for better spacing
+    <main className="min-h-screen bg-slate-900 pt-40 md:pt-60 pb-20">
       <div className="max-w-5xl mx-auto px-6">
         
         {/* Hero Section */}
-        <div className="text-center mb-12">
-          {/* Headline: Reduced to text-5xl (desktop) and text-3xl (mobile) as requested */}
-          <h1 className="text-3xl md:text-5xl font-bold text-white tracking-tight mb-4 leading-tight">
+        <div className="text-center mb-20"> {/* Increased margin bottom to separate from Dropzone */}
+          <h1 className="text-3xl md:text-5xl font-bold text-white tracking-tight mb-6 leading-tight">
             Turn Any Bank Statement into a <br className="hidden md:block" />
             <span className="text-emerald-400">Clean Spreadsheet</span> in Seconds.
           </h1>
@@ -30,7 +30,6 @@ export default function Home() {
 
         {/* Upload Section */}
         <div className="relative group">
-          {/* Subtle glow effect behind the dropzone */}
           <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500/20 to-blue-500/20 rounded-3xl blur opacity-25 group-hover:opacity-40 transition duration-700"></div>
           
           <div className="relative">
@@ -39,7 +38,7 @@ export default function Home() {
         </div>
 
         {/* Value Reinforcement */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-10 text-center border-t border-slate-800 pt-12">
+        <div className="mt-24 grid grid-cols-1 md:grid-cols-3 gap-10 text-center border-t border-slate-800 pt-12">
           <div>
             <h3 className="text-emerald-400 font-bold text-lg mb-2">Immediate Deletion</h3>
             <p className="text-slate-400 text-sm">Files are processed in memory and deleted instantly. Your financial privacy is our priority.</p>
@@ -55,7 +54,7 @@ export default function Home() {
         </div>
 
         {/* Pricing Link */}
-        <div className="text-center mt-12">
+        <div className="text-center mt-16">
           <Link href="/pricing" className="text-slate-500 hover:text-emerald-400 transition-colors font-medium text-lg inline-flex items-center gap-2">
             View Simple Pricing <span>→</span>
           </Link>

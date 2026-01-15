@@ -12,7 +12,7 @@ const posts = [
     title: "How to Safely Import PDF Bank Statements into QuickBooks, Xero, or Excel",
     excerpt: "Integration is a massive pain point. Learn how to get clean data into your accounting software without formatting errors or security leaks.",
     href: "/blog/how-to-safely-import-bank-statements",
-    image: "/images/blog/accounting-software-import.png",
+    image: "/images/accounting-software-import.png",
     category: "Integrations"
   }
 ];

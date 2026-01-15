@@ -53,7 +53,7 @@ export default function PrivacyPage() {
         </div>
 
         <div>
-          <h2 className="text-xl font-semibold mb-3 text-gray-900">5. International Clients (EU, US, etc.)</h2>
+          <h2 className="text-xl font-semibold mb-3 text-gray-900">5. Global Data Compliance</h2>
           <p className="leading-relaxed">
             As a UK-based company, we process data in compliance with the UK GDPR. For our international clients, including those in the EU and USA, we ensure that any cross-border data transfers are protected by Standard Contractual Clauses (SCCs) to ensure your data remains protected to the highest standard.
           </p>

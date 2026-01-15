@@ -36,8 +36,8 @@ export default function Navbar() {
               />
             </div>
             <div className="flex flex-col">
-              <span className="text-xl md:text-2xl font-bold text-white tracking-tight leading-none uppercase">
-                DOCNEAT.com
+              <span className="text-xl md:text-2xl font-bold text-white tracking-tight leading-none">
+                DOCNEAT<span className="lowercase">.com</span>
               </span>
               <span className="text-[10px] md:text-xs text-emerald-400 font-medium tracking-[0.15em] mt-1">
                 SECURE | FAST | ACCURATE

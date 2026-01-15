@@ -22,7 +22,7 @@ export default function Pricing() {
             Simple, Transparent Pricing
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Accurate AI bank statement conversion at any scale
+            Secure, accurate bank statement conversion at any scale
           </p>
         </div>
 

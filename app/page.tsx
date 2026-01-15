@@ -52,16 +52,18 @@ export default function Home() {
           </div>
         </div>
 
-        {/* New Green Pricing Button */}
+        {/* Final CTA Button Section */}
         <div className="text-center mt-20">
           <Link 
             href="/pricing" 
-            className="inline-flex items-center justify-center px-10 py-4 bg-emerald-500 hover:bg-emerald-600 text-slate-900 font-bold rounded-xl transition-all shadow-lg shadow-emerald-500/20 text-lg group"
+            className="inline-flex items-center justify-center px-10 py-4 bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-slate-900 font-bold rounded-xl transition-all shadow-lg shadow-emerald-500/20 text-lg group"
           >
-            View Simple Pricing 
+            View Plans & Pricing 
             <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
           </Link>
-          <p className="text-slate-500 text-sm mt-4 italic">No hidden fees. Pay only for what you convert.</p>
+          <p className="text-slate-500 text-sm mt-4 font-medium italic">
+            *No hidden fees
+          </p>
         </div>
 
       </div>

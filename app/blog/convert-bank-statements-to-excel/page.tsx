@@ -9,21 +9,20 @@ export const metadata = {
 
 export default function BlogPostPage() {
   return (
-    /* Changed text-gray-800 to text-slate-300 and removed white-specific constraints */
-    <div className="max-w-4xl mx-auto px-6 py-12 md:py-20 text-slate-300">
+    /* Unified padding pt-32 / md:pt-44 to match the homepage exactly */
+    <div className="max-w-4xl mx-auto px-6 pt-32 md:pt-44 pb-20 text-slate-300">
       
-      {/* Heading changed to text-white */}
-      <h1 className="text-3xl md:text-5xl font-bold mb-6 text-white leading-tight">
+      {/* Heading - Aligned with homepage style */}
+      <h1 className="text-3xl md:text-5xl font-bold mb-6 text-white leading-tight tracking-tight">
         How to Convert Bank Statements to Excel: Stop Manual Data Entry in 2026
       </h1>
       
-      {/* Border and text lightened for dark mode */}
-      <p className="text-slate-500 mb-8 border-b border-slate-800 pb-4 text-sm">
+      <p className="text-slate-500 mb-10 border-b border-slate-800 pb-6 text-sm italic">
         Published: January 15, 2026
       </p>
 
-      {/* Main Feature Image */}
-      <div className="relative w-full h-[300px] md:h-[500px] mb-12">
+      {/* Main Feature Image - Enhanced with shadow and border */}
+      <div className="relative w-full h-[300px] md:h-[500px] mb-16">
         <Image 
           src="/images/blog/bank-statement-to-excel.png" 
           alt="Professional transformation of bank statement data into a clean Excel spreadsheet"
@@ -42,25 +41,24 @@ export default function BlogPostPage() {
           Welcome to 2026, where manual data entry for financial documents is rapidly becoming a relic of the past. Thanks to advanced OCR (Optical Character Recognition) and AI, converting bank statements to Excel is now faster, more accurate, and more secure than ever before.
         </p>
 
-        {/* Subheadings changed to text-white */}
-        <h2 className="text-2xl font-bold mt-10 mb-4 text-white">The Problem: The "Accounting Bottleneck"</h2>
+        <h2 className="text-2xl font-bold mt-12 mb-4 text-white">The Problem: The "Accounting Bottleneck"</h2>
         <p>
           This "accounting bottleneck" isn't just a nuisance; it's a significant drain on productivity. A single misplaced digit can throw off your entire reconciliation, leading to wasted time tracking down discrepancies and potential compliance issues.
         </p>
         
-        {/* Quote box adjusted for Dark Mode: dark emerald background with light emerald text */}
-        <div className="bg-emerald-950/30 border-l-4 border-emerald-500 p-6 my-8 rounded-r-lg">
-          <p className="italic text-emerald-400 font-medium">
+        {/* Quote box adjusted for the dark slate background */}
+        <div className="bg-emerald-950/30 border-l-4 border-emerald-500 p-8 my-10 rounded-r-lg">
+          <p className="italic text-emerald-400 font-medium text-xl">
             "Manual data entry isn't just tedious; it's a productivity black hole that costs businesses thousands each year in lost time and error correction."
           </p>
         </div>
 
-        <h2 className="text-2xl font-bold mt-10 mb-4 text-white">The Solution: Automated Data Extraction</h2>
+        <h2 className="text-2xl font-bold mt-12 mb-4 text-white">The Solution: Automated Data Extraction</h2>
         <p>
           At <Link href="/" className="text-emerald-400 hover:text-emerald-300 font-semibold underline decoration-emerald-500/30 underline-offset-4">DocNeat</Link>, we believe your time is better spent analyzing your finances, not manually transcribing them. Our platform transforms your bank statements, invoices, and receipts into ready-to-use Excel or CSV files in three simple steps:
         </p>
 
-        <ul className="space-y-4 py-4">
+        <ul className="space-y-6 py-4">
           <li className="flex items-start gap-4">
             <span className="flex-shrink-0 w-8 h-8 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold border border-emerald-500/20">1</span>
             <p><strong className="text-white">Upload:</strong> Drop your PDF or scan onto the platform.</p>
@@ -75,19 +73,26 @@ export default function BlogPostPage() {
           </li>
         </ul>
 
-        <h2 className="text-2xl font-bold mt-10 mb-4 text-white">Security First: Your Data is Safe</h2>
+        <h2 className="text-2xl font-bold mt-12 mb-4 text-white">Security First: Your Data is Safe</h2>
         <p>
-          We understand that financial data is sensitive. That's why DocNeat is built with an <strong className="text-emerald-400">Immediate Deletion Guarantee</strong>.
+          We understand that financial data is sensitive. That's why DocNeat is built with an <strong className="text-emerald-400 font-bold">Immediate Deletion Guarantee</strong>.
         </p>
         <p>
           All uploaded statements are processed in temporary memory and are deleted the moment the extraction is complete. We do not store your financial statement data, nor do we ever share it with third parties. For more details, see our <Link href="/privacy" className="text-emerald-400 hover:underline underline-offset-4">Privacy Policy</Link>.
         </p>
 
-        {/* Updated Call to Action Button with scale-effect */}
-        <div className="text-center mt-16 pt-10 border-t border-slate-800">
-          <Link href="/" className="inline-block bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 px-10 rounded-xl text-lg transition-all shadow-lg shadow-emerald-500/20 active:scale-95">
+        {/* Call to Action Button matches homepage style */}
+        <div className="text-center mt-20 pt-12 border-t border-slate-800">
+          <Link 
+            href="/" 
+            className="inline-flex items-center justify-center bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white font-bold py-4 px-12 rounded-xl text-lg transition-all shadow-lg shadow-emerald-500/20 group"
+          >
             Start Converting for Free
+            <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
           </Link>
+          <p className="text-slate-500 text-sm mt-4 font-medium italic">
+            *No sign-up required
+          </p>
         </div>
       </section>
     </div>

@@ -3,25 +3,26 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'How to Convert Bank Statements to Excel: Stop Manual Data Entry in 2026 — DocNeat.com Blog',
+  title: 'How to Convert Bank Statements to Excel: No More Manual Data Entry — DocNeat.com',
   description: 'Learn how to effortlessly convert PDF bank statements to Excel or CSV, eliminating manual data entry and human error. DocNeat offers fast, secure, and accurate conversions.',
 };
 
 export default function BlogPostPage() {
   return (
-    /* Unified padding pt-32 / md:pt-44 to match the homepage exactly */
+    /* Unified padding pt-32 / md:pt-44 to match the homepage and pricing exactly */
     <div className="max-w-4xl mx-auto px-6 pt-32 md:pt-44 pb-20 text-slate-300">
       
-      {/* Heading - Aligned with homepage style */}
+      {/* New Timeless Heading with Emerald Highlight */}
       <h1 className="text-3xl md:text-5xl font-bold mb-6 text-white leading-tight tracking-tight">
-        How to Convert Bank Statements to Excel: Stop Manual Data Entry in 2026
+        How to Convert Bank Statements to Excel: <br className="hidden md:block" />
+        <span className="text-emerald-400">No More Manual Data Entry</span>
       </h1>
       
       <p className="text-slate-500 mb-10 border-b border-slate-800 pb-6 text-sm italic">
-        Published: January 15, 2026
+        Updated: January 2026
       </p>
 
-      {/* Main Feature Image - Enhanced with shadow and border */}
+      {/* Main Feature Image */}
       <div className="relative w-full h-[300px] md:h-[500px] mb-16">
         <Image 
           src="/images/blog/bank-statement-to-excel.png" 
@@ -38,7 +39,7 @@ export default function BlogPostPage() {
         </p>
 
         <p>
-          Welcome to 2026, where manual data entry for financial documents is rapidly becoming a relic of the past. Thanks to advanced OCR (Optical Character Recognition) and AI, converting bank statements to Excel is now faster, more accurate, and more secure than ever before.
+          Manual data entry for financial documents is rapidly becoming a relic of the past. Thanks to advanced OCR (Optical Character Recognition) and AI, converting bank statements to Excel is now faster, more accurate, and more secure than ever before.
         </p>
 
         <h2 className="text-2xl font-bold mt-12 mb-4 text-white">The Problem: The "Accounting Bottleneck"</h2>
@@ -46,7 +47,6 @@ export default function BlogPostPage() {
           This "accounting bottleneck" isn't just a nuisance; it's a significant drain on productivity. A single misplaced digit can throw off your entire reconciliation, leading to wasted time tracking down discrepancies and potential compliance issues.
         </p>
         
-        {/* Quote box adjusted for the dark slate background */}
         <div className="bg-emerald-950/30 border-l-4 border-emerald-500 p-8 my-10 rounded-r-lg">
           <p className="italic text-emerald-400 font-medium text-xl">
             "Manual data entry isn't just tedious; it's a productivity black hole that costs businesses thousands each year in lost time and error correction."
@@ -81,7 +81,6 @@ export default function BlogPostPage() {
           All uploaded statements are processed in temporary memory and are deleted the moment the extraction is complete. We do not store your financial statement data, nor do we ever share it with third parties. For more details, see our <Link href="/privacy" className="text-emerald-400 hover:underline underline-offset-4">Privacy Policy</Link>.
         </p>
 
-        {/* Call to Action Button matches homepage style */}
         <div className="text-center mt-20 pt-12 border-t border-slate-800">
           <Link 
             href="/" 

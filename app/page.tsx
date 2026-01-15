@@ -52,11 +52,11 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Final CTA Button Section */}
+        {/* Updated Button Section with White Text */}
         <div className="text-center mt-20">
           <Link 
             href="/pricing" 
-            className="inline-flex items-center justify-center px-10 py-4 bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-slate-900 font-bold rounded-xl transition-all shadow-lg shadow-emerald-500/20 text-lg group"
+            className="inline-flex items-center justify-center px-10 py-4 bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white font-bold rounded-xl transition-all shadow-lg shadow-emerald-500/20 text-lg group"
           >
             View Plans & Pricing 
             <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>

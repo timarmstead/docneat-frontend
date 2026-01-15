@@ -8,7 +8,7 @@ const Navbar = dynamic(() => import('@/components/Navbar'), { ssr: false });
 
 export const metadata: Metadata = {
   title: 'DocNeat.com — Secure. Fast. Accurate.',
-  description: 'Convert bank statements, invoices, receipts to Excel/CSV instantly',
+  description: 'Convert bank statements, invoices, receipts to Excel/CSV instantly and securely',
 }
 
 export default function RootLayout({

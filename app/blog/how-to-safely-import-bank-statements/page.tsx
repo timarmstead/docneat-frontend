@@ -21,7 +21,7 @@ export default function SecondBlogPostPage() {
 
       <div className="relative w-full h-[300px] md:h-[500px] mb-16">
         <Image 
-          src="/images/blog/accounting-software-import.png" 
+          src="/images/accounting-software-import.png" 
           alt="Importing clean financial data into accounting dashboards like QuickBooks and Xero"
           fill
           className="rounded-2xl shadow-2xl object-cover border border-slate-800"

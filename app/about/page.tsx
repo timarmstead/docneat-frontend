@@ -12,7 +12,7 @@ export default function AboutPage() {
       <div className="max-w-4xl mx-auto px-6 pt-32 md:pt-44 pb-20">
         
         {/* Header Section */}
-        <section className="mb-16">
+        <section className="mb-8">
           <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight mb-8">
             About <span className="text-emerald-400">Us</span>
           </h1>

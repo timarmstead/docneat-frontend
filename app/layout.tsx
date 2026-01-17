@@ -46,7 +46,7 @@ export default function RootLayout({
                 <h4 className="text-emerald-400 font-bold text-xs uppercase tracking-widest">Navigation</h4>
                 <div className="flex flex-col gap-2 text-sm">
                   <Link href="/about" className="text-slate-400 hover:text-white transition-colors">About Us</Link>
-                  <Link href="/blog/convert-bank-statements-to-excel" className="text-slate-400 hover:text-white transition-colors">Resources & Blog</Link>
+                  <Link href="/blog" className="text-slate-400 hover:text-white transition-colors">Resources & Blog</Link>
                   <Link href="/pricing" className="text-slate-400 hover:text-white transition-colors">Pricing</Link>
                 </div>
               </div>

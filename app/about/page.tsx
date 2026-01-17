@@ -40,23 +40,22 @@ export default function AboutPage() {
 
           <hr className="border-slate-800 my-12" />
 
-          {/* Product Focus: DocNeat */}
+         {/* Product Focus: DocNeat */}
           <div className="relative group">
             <h2 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
               About <span className="text-emerald-400">DOCNEAT.com</span>
             </h2>
             <p>
-              DocNeat is our flagship solution for financial data management. Born from the frustration of manual bookkeeping, DocNeat was built to handle the heavy lifting of document conversion.
+              DocNeat is our flagship solution for financial data management. Born from the frustration of manual bookkeeping, DocNeat was built to handle the heavy lifting of document conversion with surgical precision.
             </p>
             <p className="mt-4">
               By leveraging secure OCR technology, we provide accountants, small business owners, and bookkeepers with an instant way to turn flat PDF bank statements into actionable Excel, CSV, or QuickBooks-ready data.
             </p>
             
             <div className="mt-10 p-6 bg-emerald-500/5 border border-emerald-500/20 rounded-2xl italic">
-              "We don't just process files; we protect your data. Our Zero-Storage commitment ensures that your financial privacy is never an afterthought."
+              "We don't just process files; we protect your data and ensure its integrity. Our <span className="text-emerald-400">Zero-Storage commitment</span> combined with our <span className="text-emerald-400">Precision-First extraction</span> ensures that your financial privacy and data accuracy are never an afterthought."
             </div>
           </div>
-        </section>
 
         {/* CTA Section */}
         <section className="mt-24 text-center">

@@ -46,7 +46,7 @@ export default function AboutPage() {
               About <span className="text-emerald-400">DOCNEAT.com</span>
             </h2>
             <p>
-              DocNeat is our flagship solution for financial data management. Born from the frustration of manual bookkeeping, DocNeat was built to handle the heavy lifting of document conversion.
+              DocNeat is our flagship solution for financial data management. Born from the frustration of manual bookkeeping, DocNeat was built to handle the heavy lifting of pdf document conversion.
             </p>
             <p className="mt-4">
               By leveraging secure OCR technology, we provide accountants, small business owners, and bookkeepers with an instant way to turn flat PDF bank statements into actionable Excel, CSV, or QuickBooks-ready data.

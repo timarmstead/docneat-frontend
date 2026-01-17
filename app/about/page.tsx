@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export const metadata = {
   title: 'About Us — DocNeat by Engaging Enterprises Ltd',
-  description: 'Learn about Engaging Enterprises Ltd and our mission to provide secure, accurate SaaS solutions like DocNeat.',
+  description: 'Learn about Engaging Enterprises Ltd and our mission to provide secure, customer-focused SaaS solutions like DocNeat.',
 };
 
 export default function AboutPage() {
@@ -52,13 +52,17 @@ export default function AboutPage() {
               By leveraging secure OCR technology, we provide accountants, small business owners, and bookkeepers with an instant way to turn flat PDF bank statements into actionable Excel, CSV, or QuickBooks-ready data.
             </p>
             
-            <div className="mt-10 p-6 bg-emerald-500/5 border border-emerald-500/20 rounded-2xl italic text-slate-200">
-              "We don't just process files; we protect your data and ensure its integrity. Our Zero-Storage commitment combined with our Precision-First extraction ensures that your financial privacy and data accuracy are never an afterthought."
+            {/* Highlighted Quote Section - Restored Formatting */}
+            <div className="mt-10 p-8 bg-emerald-500/5 border border-emerald-500/20 rounded-2xl italic relative overflow-hidden text-slate-200">
+              <div className="relative z-10">
+                "We don't just process files; we protect your data and ensure its integrity. Our <span className="text-emerald-400 font-semibold underline underline-offset-4 decoration-emerald-500/30">Zero-Storage commitment</span> combined with our <span className="text-emerald-400 font-semibold underline underline-offset-4 decoration-emerald-500/30">Precision-First extraction</span> ensures that your financial privacy and data accuracy are never an afterthought."
+              </div>
+              <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 blur-3xl rounded-full"></div>
             </div>
           </div>
         </section>
 
-        {/* CTA Section - Reverted to your original text */}
+        {/* CTA Section - Reverted to your exact text */}
         <section className="mt-24 text-center">
           <h3 className="text-white text-xl font-bold mb-6">Ready to see DocNeat in action?</h3>
           <Link 

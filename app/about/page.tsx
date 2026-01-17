@@ -32,7 +32,7 @@ export default function AboutPage() {
 
           <h2 className="text-2xl font-bold text-white mt-12 mb-4">Our Mission</h2>
           <p>
-            We strive to deliver customer focused saas products etc etc and then mention DocNeat specifically. 
+            We strive to deliver customer-focused SaaS (Software as a Service) products that solve real-world problems. We believe that professional software shouldn't be difficult to use, nor should it compromise on security. 
           </p>
           <p>
             Whether it is streamlining marketing workflows or automating data entry, our goal is to provide high-performance tools that allow our users to focus on what matters most: <span className="text-white font-medium">growth</span>.

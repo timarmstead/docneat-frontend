@@ -64,7 +64,7 @@ export default function AboutPage() {
 
         {/* CTA Section - Reverted to your exact text */}
         <section className="mt-24 text-center">
-          <h3 className="text-white text-xl font-bold mb-6">Ready to see DocNeat in action?</h3>
+          <h3 className="text-white text-2xl font-bold mb-6">Ready to see DocNeat in action?</h3>
           <Link 
             href="/" 
             className="inline-flex items-center justify-center bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white font-bold py-4 px-10 rounded-xl transition-all shadow-lg shadow-emerald-500/20"

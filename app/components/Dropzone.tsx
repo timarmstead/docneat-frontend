@@ -63,7 +63,6 @@ export default function Dropzone() {
       const result = await res.json();
 
       if (result.status === "PROCESSING") {
-        // Keep polling every 3 seconds
         setTimeout(() => pollStatus(jobId, fileKey), 3000);
       } else if (result.status === "COMPLETED") {
         setShowSuccess(true);
@@ -72,7 +71,6 @@ export default function Dropzone() {
           triggerDownload(result.csv_content, 'docneat-converted.csv');
         }
         
-        // Transition from "Success" back to normal state after a delay
         setTimeout(() => {
           setLoading(false);
           setShowSuccess(false);
@@ -136,7 +134,7 @@ export default function Dropzone() {
         {loading ? (
           <div className="text-center w-full max-w-md px-10">
             {showSuccess ? (
-              <div className="flex flex-col items-center animate-in fade-in zoom-in duration-500">
+              <div className="flex flex-col items-center">
                 <div className="bg-emerald-500/20 text-emerald-400 p-4 rounded-full mb-4">
                   <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
@@ -147,7 +145,6 @@ export default function Dropzone() {
               </div>
             ) : (
               <div className="w-full">
-                {/* Minimalist Progress Bar */}
                 <div className="w-full bg-slate-700 rounded-full h-2 mb-6 overflow-hidden">
                   <div 
                     className="bg-emerald-500 h-full rounded-full transition-all duration-700 ease-out" 
@@ -172,8 +169,38 @@ export default function Dropzone() {
         )}
       </div>
 
-      {/* Point 3 Excluded: Keeping your original table logic exactly as is */}
       {preview.length > 0 && (
         <div className="mt-8 overflow-hidden bg-slate-800 border border-slate-700 rounded-xl shadow-2xl">
           <div className="px-6 py-4 border-b border-slate-700 bg-slate-800/50 flex justify-between items-center">
-            <h3 className="text-white font-bold">
+            <h3 className="text-white font-bold">Conversion Preview (First 5 Rows)</h3>
+            <span className="text-emerald-400 text-xs font-mono uppercase tracking-widest">Success</span>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-slate-700">
+              <thead className="bg-slate-900/50">
+                <tr>
+                  {Object.keys(preview[0]).map((key) => (
+                    <th key={key} className="px-6 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                      {key}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-700">
+                {preview.slice(0, 5).map((row, i) => (
+                  <tr key={i} className="hover:bg-slate-700/30 transition-colors">
+                    {Object.values(row).map((val: any, j) => (
+                      <td key={j} className="px-6 py-4 text-sm text-slate-300">
+                        {val}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

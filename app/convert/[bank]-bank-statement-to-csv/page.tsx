@@ -1,13 +1,7 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 
-// --- TYPES ---
-interface PageProps {
-  params: Promise<{ bank: string }>;
-}
-
-// --- SEED DATA (The "First 10") ---
-// This mimics your database. Later, you'll move this to Railway.
+// --- SEED DATA ---
 const BANK_DATA: Record<string, { name: string; country: string }> = {
   "chase": { name: "Chase", country: "US" },
   "amex": { name: "American Express", country: "Global" },
@@ -21,85 +15,78 @@ const BANK_DATA: Record<string, { name: string; country: string }> = {
   "pnc": { name: "PNC", country: "US" },
 };
 
-// --- 1. PRE-RENDER THESE PATHS ---
-// This tells Vercel exactly which 10 pages to generate at build time,
-// solving the "Prerender Error".
+// --- 1. PRE-RENDER PATHS ---
 export async function generateStaticParams() {
-  return Object.keys(BANK_DATA).map((bank) => ({
-    bank: bank,
+  return Object.keys(BANK_DATA).map((bankKey) => ({
+    bank: bankKey,
   }));
 }
 
 // --- 2. DYNAMIC SEO METADATA ---
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { bank } = await params;
-  const data = BANK_DATA[bank.toLowerCase()];
+export async function generateMetadata({ params }: { params: { bank: string } }): Promise<Metadata> {
+  // Defensive check for Next.js 14 build worker
+  if (!params?.bank) return { title: "Bank Statement Converter | DocNeat" };
+
+  const data = BANK_DATA[params.bank.toLowerCase()];
   
   if (!data) return { title: "Bank Statement Converter | DocNeat" };
 
   return {
     title: `Convert ${data.name} PDF Statements to CSV | DocNeat`,
-    description: `Extract transaction data from your ${data.name} ${data.country} bank statements with 99.9% accuracy. Specifically formatted for Xero and QuickBooks.`,
+    description: `Extract transaction data from your ${data.name} ${data.country} bank statements with 99.9% accuracy.`,
   };
 }
 
 // --- 3. THE PAGE COMPONENT ---
-export default async function BankLandingPage({ params }: PageProps) {
-  const { bank } = await params;
-  const bankId = bank.toLowerCase();
+export default function BankLandingPage({ params }: { params: { bank: string } }) {
+  // 1. Check if params and bank exist (Crucial for build step)
+  if (!params?.bank) {
+    return notFound();
+  }
+
+  const bankId = params.bank.toLowerCase();
   const data = BANK_DATA[bankId];
 
-  // If someone visits a bank not in our list, show 404
+  // 2. If the bank isn't in our list, 404
   if (!data) {
-    notFound();
+    return notFound();
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* HERO SECTION: 
-         Tip: Swap these divs for Launch UI <Hero /> components 
-      */}
+    <div className="flex flex-col min-h-screen bg-white">
+      {/* Simple Hero Section */}
       <section className="py-20 px-6 bg-slate-50 border-b">
         <div className="max-w-5xl mx-auto text-center">
           <h1 className="text-5xl font-extrabold tracking-tight text-slate-900 mb-6">
-            Convert <span className="text-primary">{data.name}</span> Statements to CSV
+            Convert <span className="text-blue-600">{data.name}</span> Statements to CSV
           </h1>
           <p className="text-xl text-slate-600 mb-10 max-w-2xl mx-auto">
-            Stop manually typing data from your {data.name} {data.country} PDFs. 
-            Get perfectly formatted transaction lists in seconds.
+            Extract transaction data from your {data.name} {data.country} bank statements with 99.9% accuracy.
           </p>
           
-          {/* THE DROPZONE HOOK */}
-          <div className="max-w-md mx-auto p-8 border-2 border-dashed border-primary/30 rounded-2xl bg-white shadow-sm hover:border-primary transition-colors cursor-pointer">
-            <p className="text-sm font-medium text-slate-500">
-              Drop your {data.name} PDF here to start
-            </p>
+          {/* File Upload Placeholder */}
+          <div className="max-w-md mx-auto p-12 border-2 border-dashed border-blue-200 rounded-2xl bg-white shadow-sm">
+            <p className="text-blue-600 font-semibold">Click to upload your {data.name} PDF</p>
+            <p className="text-xs text-slate-400 mt-2">Secure, private, and encrypted</p>
           </div>
         </div>
       </section>
 
-      {/* FEATURES SECTION */}
+      {/* Feature Grid */}
       <section className="py-20 px-6 max-w-6xl mx-auto grid md:grid-cols-3 gap-12">
-        <div className="space-y-4">
-          <h3 className="text-xl font-bold">99.9% Table Accuracy</h3>
-          <p className="text-slate-600">DocNeat is optimized for the specific column layouts of {data.name} statements.</p>
+        <div className="p-6 rounded-xl border border-slate-100">
+          <h3 className="text-lg font-bold mb-2">Built for {data.name}</h3>
+          <p className="text-slate-600 text-sm">Custom parsers designed specifically for {data.name} statement layouts.</p>
         </div>
-        <div className="space-y-4">
-          <h3 className="text-xl font-bold">Privacy First</h3>
-          <p className="text-slate-600">Your financial data is processed in-memory and never stored on our servers.</p>
+        <div className="p-6 rounded-xl border border-slate-100">
+          <h3 className="text-lg font-bold mb-2">Zero Data Retention</h3>
+          <p className="text-slate-600 text-sm">We process your financial data and purge it instantly. No storage, no risk.</p>
         </div>
-        <div className="space-y-4">
-          <h3 className="text-xl font-bold">Accounting Ready</h3>
-          <p className="text-slate-600">Exports formatted specifically for easy import into Xero, QuickBooks, or Sage.</p>
+        <div className="p-6 rounded-xl border border-slate-100">
+          <h3 className="text-lg font-bold mb-2">Excel & CSV Ready</h3>
+          <p className="text-slate-600 text-sm">Perfectly formatted rows ready for import into your favorite accounting software.</p>
         </div>
       </section>
-
-      {/* STICKY CTA (Mobile Only Trend) */}
-      <div className="fixed bottom-4 left-4 right-4 md:hidden">
-        <button className="w-full bg-primary text-white py-4 rounded-full font-bold shadow-lg">
-          Convert {data.name} PDF Now
-        </button>
-      </div>
     </div>
   );
 }

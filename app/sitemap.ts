@@ -16,12 +16,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ]
 
   const bankUrls = bankList.map((bank) => {
-    // FIX: Replace '&' with 'and' and remove other non-url characters
     const safeSlug = bank
       .toLowerCase()
-      .replace(/&/g, 'and') // Changes M&T to mandt
-      .replace(/\s+/g, '-') // Replaces spaces with hyphens
-      .replace(/-+/g, '-'); // Removes double hyphens
+      .replace(/&/g, 'and')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-');
 
     return {
       url: `${baseUrl}/convert/${safeSlug}-statement-to-csv`,
@@ -37,6 +36,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date().toISOString(),
       changeFrequency: 'weekly' as const,
       priority: 1,
+    },
+    {
+      // NEW PILLAR PAGE
+      url: `${baseUrl}/convert/pdf-bank-statement-to-csv`,
+      lastModified: new Date().toISOString(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/pricing`,

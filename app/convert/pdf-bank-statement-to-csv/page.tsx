@@ -12,13 +12,13 @@ export default function PillarPage() {
 
   return (
     <div className="bg-slate-900 min-h-screen text-slate-200">
-      {/* Hero Section - Mirroring Homepage Vibe but SEO Targeted */}
-      <section className="pt-24 pb-20 px-6">
+      {/* Hero Section */}
+      <section className="pt-24 pb-8 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight">
             PDF Bank Statement to <span className="text-emerald-400">CSV</span>
           </h1>
-          <p className="text-xl text-slate-400 mb-12 max-w-2xl mx-auto">
+          <p className="text-xl text-slate-400 mb-8 max-w-2xl mx-auto">
             Turn any bank statement into a <strong className="text-white font-semibold">clean spreadsheet</strong> in seconds. 
             No complex software, no data retention, no errors.
           </p>
@@ -29,8 +29,8 @@ export default function PillarPage() {
         </div>
       </section>
 
-      {/* Trust & Logic Section */}
-      <section className="py-16 px-6 max-w-5xl mx-auto">
+      {/* Trust & Logic Section - Space Reduced Here */}
+      <section className="py-8 px-6 max-w-5xl mx-auto">
         <div className="grid md:grid-cols-3 gap-8 text-center">
           <div className="p-6">
             <div className="text-emerald-400 text-3xl mb-4">🔒</div>
@@ -50,7 +50,7 @@ export default function PillarPage() {
         </div>
       </section>
 
-      {/* The Hub / Bank Directory - CRITICAL FOR SEO */}
+      {/* The Hub / Bank Directory */}
       <section className="py-20 px-6 bg-slate-800/30 border-t border-slate-800">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">

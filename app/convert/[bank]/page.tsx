@@ -1,0 +1,92 @@
+import Hero from "../../components/sections/hero";
+import { CheckCircle2, Download, Upload, FileJson } from "lucide-react";
+
+export default function BankPage({ params }: { params: { bank: string } }) {
+  const slugParts = params.bank.split('-');
+  
+  // SEO CLEANING: Filter out tactical words to find the actual bank name
+  const ignoredWords = ['convert', 'statement', 'to', 'csv', 'pdf', 'conversion'];
+  const nameParts = slugParts.filter(part => !ignoredWords.includes(part.toLowerCase()));
+
+  const bankDisplayName = nameParts
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+
+  const badgeText = `${bankDisplayName} Statement Conversion`;
+  const heroTitle = `Convert your ${bankDisplayName} Statements to CSV`;
+  const heroDescription = `Extract transaction data from your ${bankDisplayName} PDF statements with 99.9% accuracy. Perfectly formatted for QuickBooks, Xero, and Excel.`;
+
+  return (
+    <main className="bg-white">
+      <Hero
+        title={heroTitle}
+        description={heroDescription}
+        bankName={badgeText}
+        bankSlug={params.bank} 
+      />
+
+      {/* Instructions Section with tightened top padding */}
+      <section className="pt-12 pb-24">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-3xl font-bold text-[#111729] mb-4 text-center">
+              How to export {bankDisplayName} transactions to CSV
+            </h2>
+            <p className="text-slate-500 text-center mb-16">
+              Follow these simple steps to get your {bankDisplayName} bank statement data ready for accounting or analysis.
+            </p>
+
+            <div className="grid gap-12">
+              <div className="flex gap-6">
+                <div className="flex-shrink-0 w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center">
+                  <Download className="text-emerald-600 w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-[#111729] mb-2">1. Download PDF from {bankDisplayName}</h3>
+                  <p className="text-slate-600 leading-relaxed">
+                    Log in to your {bankDisplayName} online banking portal. Navigate to your statements or transaction history and download the desired period as a PDF document.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex gap-6">
+                <div className="flex-shrink-0 w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center">
+                  <Upload className="text-emerald-600 w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-[#111729] mb-2">2. Upload to Docneat</h3>
+                  <p className="text-slate-600 leading-relaxed">
+                    Drag and drop your {bankDisplayName} PDF into the secure conversion box at the top of this page. Our AI immediately begins identifying headers and transaction rows.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex gap-6">
+                <div className="flex-shrink-0 w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center">
+                  <FileJson className="text-emerald-600 w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-[#111729] mb-2">3. Download as CSV or Excel</h3>
+                  <p className="text-slate-600 leading-relaxed">
+                    Review the preview of your data. Once satisfied, click export. Your file will be perfectly formatted for immediate import into QuickBooks, Xero, or Excel.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Trust/FAQ Box */}
+            <div className="mt-20 p-8 bg-slate-50 rounded-3xl border border-slate-100">
+                <h4 className="text-lg font-bold text-[#111729] mb-4 flex items-center gap-2">
+                    <CheckCircle2 className="text-emerald-500 w-5 h-5" />
+                    Why use an AI converter for {bankDisplayName}?
+                </h4>
+                <p className="text-sm text-slate-600 leading-relaxed">
+                    Standard PDF converters often fail to read {bankDisplayName} column layouts correctly, resulting in "merged" cells or missing dates. Our AI is specifically trained on {bankDisplayName} statement templates to ensure 100% data integrity.
+                </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  );
+}

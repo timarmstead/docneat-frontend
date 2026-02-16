@@ -48,6 +48,7 @@ export default function RootLayout({
                   <Link href="/about" className="text-slate-400 hover:text-white transition-colors">About Us</Link>
                   <Link href="/blog" className="text-slate-400 hover:text-white transition-colors">Resources & Blog</Link>
                   <Link href="/pricing" className="text-slate-400 hover:text-white transition-colors">Pricing</Link>
+                  <Link href="/convert" className="text-slate-400 hover:text-white transition-colors">Supported Banks</Link>
                 </div>
               </div>
 

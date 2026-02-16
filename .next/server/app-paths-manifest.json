@@ -1,3 +1,4 @@
 {
-  "/convert/pdf-bank-statement-to-csv/page": "app/convert/pdf-bank-statement-to-csv/page.js"
+  "/convert/page": "app/convert/page.js",
+  "/convert/[bank]/page": "app/convert/[bank]/page.js"
 }

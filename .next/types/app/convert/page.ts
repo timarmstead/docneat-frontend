@@ -1,8 +1,8 @@
-// File: /Users/timothyarmstead/Documents/Repository Location/docneat-frontend/app/convert/pdf-bank-statement-to-csv/page.tsx
-import * as entry from '../../../../../app/convert/pdf-bank-statement-to-csv/page.js'
+// File: /Users/timothyarmstead/Documents/Repository Location/docneat-frontend/app/convert/page.tsx
+import * as entry from '../../../../app/convert/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
-type TEntry = typeof import('../../../../../app/convert/pdf-bank-statement-to-csv/page.js')
+type TEntry = typeof import('../../../../app/convert/page.js')
 
 // Check that the entry is a valid entry
 checkFields<Diff<{

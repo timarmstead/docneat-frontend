@@ -1,92 +1,112 @@
-import Hero from "../../components/sections/hero";
-import { CheckCircle2, Download, Upload, FileJson } from "lucide-react";
+"use client";
 
-export default function BankPage({ params }: { params: { bank: string } }) {
-  const slugParts = params.bank.split('-');
+import React from 'react';
+import { useParams } from 'next/navigation';
+import Dropzone from '@/components/Dropzone';
+import Link from 'next/link';
+
+export default function BankConvertPage() {
+  const params = useParams();
+  const bankSlug = params.bank as string;
   
-  // SEO CLEANING: Filter out tactical words to find the actual bank name
-  const ignoredWords = ['convert', 'statement', 'to', 'csv', 'pdf', 'conversion'];
-  const nameParts = slugParts.filter(part => !ignoredWords.includes(part.toLowerCase()));
+  // LOGO.DEV PUBLIC KEY
+  const LOGO_DEV_KEY = 'pk_Ol0me5iRTGmkOcrArHEA5g'; 
 
-  const bankDisplayName = nameParts
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
+  // Format the name for display (e.g., chase -> Chase)
+  const bankName = bankSlug
+    .replace(/-/g, ' ')
+    .replace(/\b\w/g, (l) => l.toUpperCase())
+    .replace(/And/g, '&');
 
-  const badgeText = `${bankDisplayName} Statement Conversion`;
-  const heroTitle = `Convert your ${bankDisplayName} Statements to CSV`;
-  const heroDescription = `Extract transaction data from your ${bankDisplayName} PDF statements with 99.9% accuracy. Perfectly formatted for QuickBooks, Xero, and Excel.`;
+  // Domain Mapping: Maps your slugs to the actual website of the bank
+  const domainMap: Record<string, string> = {
+    'chase': 'chase.com',
+    'bank-of-america': 'bankofamerica.com',
+    'wells-fargo': 'wellsfargo.com',
+    'citibank': 'citi.com',
+    'capital-one': 'capitalone.com',
+    'td-bank': 'td.com',
+    'pnc-bank': 'pnc.com',
+    'us-bank': 'usbank.com',
+    'hsbc': 'hsbc.com',
+    'barclays': 'barclays.co.uk',
+    'monzo': 'monzo.com',
+    'revolut': 'revolut.com'
+  };
+
+  const logoDomain = domainMap[bankSlug] || `${bankSlug.replace(/-/g, '')}.com`;
+  const logoUrl = `https://img.logo.dev/${logoDomain}?token=${LOGO_DEV_KEY}`;
+  const snapshotUrl = `/banks/${bankSlug}.png`; 
 
   return (
-    <main className="bg-white">
-      <Hero
-        title={heroTitle}
-        description={heroDescription}
-        bankName={badgeText}
-        bankSlug={params.bank} 
-      />
-
-      {/* Instructions Section with tightened top padding */}
-      <section className="pt-12 pb-24">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl font-bold text-[#111729] mb-4 text-center">
-              How to export {bankDisplayName} transactions to CSV
-            </h2>
-            <p className="text-slate-500 text-center mb-16">
-              Follow these simple steps to get your {bankDisplayName} bank statement data ready for accounting or analysis.
-            </p>
-
-            <div className="grid gap-12">
-              <div className="flex gap-6">
-                <div className="flex-shrink-0 w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center">
-                  <Download className="text-emerald-600 w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-[#111729] mb-2">1. Download PDF from {bankDisplayName}</h3>
-                  <p className="text-slate-600 leading-relaxed">
-                    Log in to your {bankDisplayName} online banking portal. Navigate to your statements or transaction history and download the desired period as a PDF document.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-6">
-                <div className="flex-shrink-0 w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center">
-                  <Upload className="text-emerald-600 w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-[#111729] mb-2">2. Upload to Docneat</h3>
-                  <p className="text-slate-600 leading-relaxed">
-                    Drag and drop your {bankDisplayName} PDF into the secure conversion box at the top of this page. Our AI immediately begins identifying headers and transaction rows.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-6">
-                <div className="flex-shrink-0 w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center">
-                  <FileJson className="text-emerald-600 w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-[#111729] mb-2">3. Download as CSV or Excel</h3>
-                  <p className="text-slate-600 leading-relaxed">
-                    Review the preview of your data. Once satisfied, click export. Your file will be perfectly formatted for immediate import into QuickBooks, Xero, or Excel.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Trust/FAQ Box */}
-            <div className="mt-20 p-8 bg-slate-50 rounded-3xl border border-slate-100">
-                <h4 className="text-lg font-bold text-[#111729] mb-4 flex items-center gap-2">
-                    <CheckCircle2 className="text-emerald-500 w-5 h-5" />
-                    Why use an AI converter for {bankDisplayName}?
-                </h4>
-                <p className="text-sm text-slate-600 leading-relaxed">
-                    Standard PDF converters often fail to read {bankDisplayName} column layouts correctly, resulting in "merged" cells or missing dates. Our AI is specifically trained on {bankDisplayName} statement templates to ensure 100% data integrity.
-                </p>
+    <div className="bg-slate-900 min-h-screen text-slate-200">
+      <section className="pt-20 pb-12 px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          
+          {/* 1. The Dynamic Logo Container */}
+          <div className="flex justify-center mb-8">
+            <div className="w-24 h-24 bg-white rounded-3xl p-4 flex items-center justify-center shadow-2xl ring-4 ring-slate-800/50 transition-transform hover:scale-105">
+              <img 
+                src={logoUrl} 
+                alt={`${bankName} logo`} 
+                className="max-h-full max-w-full object-contain"
+                onError={(e) => {
+                    // If Logo.dev fails, hide the logo container entirely
+                    e.currentTarget.parentElement!.style.display = 'none';
+                }} 
+              />
             </div>
           </div>
+
+          <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-6 tracking-tight">
+            Convert {bankName} Statement to <span className="text-emerald-400">CSV</span>
+          </h1>
+          
+          <p className="text-lg text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed">
+            Extract transaction data from your <strong className="text-white font-semibold">{bankName}</strong> PDF statements 
+            instantly. Secure, accurate, and ready for QuickBooks or Xero.
+          </p>
+
+          {/* 2. The Conversion Tool */}
+          <div className="bg-slate-800/40 p-6 rounded-3xl border border-slate-700/50 shadow-2xl mb-16 backdrop-blur-md">
+            <Dropzone />
+          </div>
+
+          {/* 3. The Visual Proof Section */}
+          <div className="group transition-all duration-700">
+             <div className="flex items-center justify-center gap-4 mb-10">
+                <div className="h-[1px] w-16 bg-gradient-to-r from-transparent to-slate-700"></div>
+                <p className="text-[10px] uppercase tracking-[0.3em] text-slate-500 font-black">Supported Format Preview</p>
+                <div className="h-[1px] w-16 bg-gradient-to-l from-transparent to-slate-700"></div>
+             </div>
+             
+             <div className="relative mx-auto max-w-2xl rounded-2xl overflow-hidden border border-slate-700/50 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7)] bg-slate-950">
+               <img 
+                 src={snapshotUrl} 
+                 alt={`${bankName} statement layout example`}
+                 className="w-full h-auto opacity-40 group-hover:opacity-100 transition-opacity duration-1000 ease-in-out"
+                 onError={(e) => {
+                    // This hides the entire "Visual Proof" section if the PNG isn't in /public/banks/
+                    const section = e.currentTarget.closest('.group');
+                    if (section) (section as HTMLElement).style.display = 'none';
+                 }} 
+               />
+               <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent pointer-events-none" />
+             </div>
+             <p className="mt-6 text-sm text-slate-500 font-medium">
+                Verified extraction for {bankName} transaction layouts.
+             </p>
+          </div>
+
         </div>
       </section>
-    </main>
+
+      {/* Navigation Footer */}
+      <div className="text-center pb-20 mt-12">
+        <Link href="/convert/pdf-bank-statement-to-csv" className="inline-flex items-center gap-2 text-slate-500 hover:text-emerald-400 transition-all font-semibold text-sm">
+          <span>←</span> View all 50+ bank converters
+        </Link>
+      </div>
+    </div>
   );
 }

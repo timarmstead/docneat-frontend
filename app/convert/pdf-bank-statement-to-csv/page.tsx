@@ -13,7 +13,7 @@ export default function PillarPage() {
   return (
     <div className="bg-slate-900 min-h-screen text-slate-200">
       {/* Hero Section */}
-      <section className="pt-32 pb-8 px-6">
+      <section className="pt-34 pb-8 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6 tracking-tight">
             PDF Bank Statement to <span className="text-emerald-400">CSV</span>

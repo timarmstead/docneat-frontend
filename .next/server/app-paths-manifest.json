@@ -1,6 +1,4 @@
 {
-  "/not-found": "app/not-found.js",
-  "/sitemap.xml/[[...__metadata_id__]]/route": "app/sitemap.xml/[[...__metadata_id__]]/route.js",
   "/convert/[bank]/page": "app/convert/[bank]/page.js",
   "/convert/page": "app/convert/page.js"
 }

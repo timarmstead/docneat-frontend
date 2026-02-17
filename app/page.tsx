@@ -44,7 +44,7 @@ export default function Home() {
           </div>
           <div>
             <h3 className="text-emerald-400 font-bold text-lg mb-2">AI-Powered Accuracy</h3>
-            <p className="text-slate-400 text-sm">Advanced OCR built specifically for financial layouts ensures 99.9% data integrity.</p>
+            <p className="text-slate-400 text-sm">Advanced OCR built specifically for financial layouts ensures verified data integrity.</p>
           </div>
           <div>
             <h3 className="text-emerald-400 font-bold text-lg mb-2">Zero Setup</h3>

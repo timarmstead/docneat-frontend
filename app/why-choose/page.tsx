@@ -8,7 +8,7 @@ export const metadata = {
 
 const features = [
   {
-    title: "99.9% Data Accuracy",
+    title: "Verified Data Accuracy",
     description: "Our specialized OCR models are trained specifically on financial documents, handling complex tables and multi-page statements with pinpoint precision.",
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-emerald-400"><path d="m13 2-2 10h9L7 22l2-10H1z"/></svg>

@@ -4,15 +4,15 @@ import Hero from "../../components/sections/hero";
 import { CheckCircle2, Download, Upload, FileJson } from "lucide-react";
 
 export default function BankPage({ params }: { params: { bank: string } }) {
-  const slugParts = params.bank.split('-');
+  const slugParts = params.bank ? params.bank.split('-') : [];
   
-  // SEO CLEANING: Filter out tactical words to find the actual bank name
   const ignoredWords = ['convert', 'statement', 'to', 'csv', 'pdf', 'conversion'];
   const nameParts = slugParts.filter(part => !ignoredWords.includes(part.toLowerCase()));
 
-  const bankDisplayName = nameParts
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
+  // Fallback if nameParts is empty to prevent blank screen
+  const bankDisplayName = nameParts.length > 0 
+    ? nameParts.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+    : "Your Bank";
 
   // LOGO API LOGIC
   const LOGO_DEV_KEY = 'pk_Ol0me5iRTGmkOcrArHEA5g'; 
@@ -26,17 +26,35 @@ export default function BankPage({ params }: { params: { bank: string } }) {
     'pnc-bank': 'pnc.com',
     'us-bank': 'usbank.com',
     'hsbc': 'hsbc.com',
-    'barclays': 'barclays.co.uk'
+    'barclays': 'barclays.co.uk',
+    'halifax': 'halifax.co.uk'
   };
 
-  const bankSlug = params.bank.toLowerCase();
+  const bankSlug = params.bank ? params.bank.toLowerCase() : '';
   const matchedSlug = Object.keys(domainMap).find(key => bankSlug.includes(key));
-  const logoDomain = matchedSlug ? domainMap[matchedSlug] : `${nameParts.join('').toLowerCase()}.com`;
+  const logoDomain = matchedSlug ? domainMap[matchedSlug] : `${nameParts.join('').toLowerCase() || 'bank'}.com`;
   const logoUrl = `https://img.logo.dev/${logoDomain}?token=${LOGO_DEV_KEY}`;
 
-  const badgeText = `${bankDisplayName} Statement Conversion`;
+  // DYNAMIC CONTENT LOGIC - Revised for 100% Accuracy Messaging
+  const descriptions = [
+    `Extract transaction data from your ${bankDisplayName} PDF statements with verified accuracy. Perfectly formatted for QuickBooks, Xero, and Excel.`,
+    `Stop wasting hours on manual data entry. Our AI-powered tool converts ${bankDisplayName} PDFs into clean, audit-ready CSV files instantly.`,
+    `The most reliable way to turn ${bankDisplayName} digital statements into spreadsheets with complete data integrity. Secure, fast, and optimized for professional accounting.`
+  ];
+
+  const whyTexts = [
+    `PDF files are designed for viewing, not for data analysis. By converting your ${bankDisplayName} statements to CSV, you unlock the ability to import transactions directly into accounting software like QuickBooks or Xero.`,
+    `Manual entry from ${bankDisplayName} PDFs is prone to human error. Our converter preserves every decimal point and date, ensuring your books balance the first time you import them into your spreadsheet.`,
+    `Most generic converters struggle with the complex table structures found in ${bankDisplayName} documents. DocNeat is specifically tuned to recognize these layouts, saving you the time of cleaning up broken rows.`
+  ];
+
+  // Safety check for the index
+  const versionIndex = bankDisplayName.length % descriptions.length;
+
   const heroTitle = `Convert your ${bankDisplayName} Statements to CSV`;
-  const heroDescription = `Extract transaction data from your ${bankDisplayName} PDF statements with 99.9% accuracy. Perfectly formatted for QuickBooks, Xero, and Excel.`;
+  const heroDescription = descriptions[versionIndex] || descriptions[0];
+  const activeWhyText = whyTexts[versionIndex] || whyTexts[0];
+  const badgeText = `${bankDisplayName} Statement Conversion`;
 
   return (
     <main className="bg-white">
@@ -47,7 +65,6 @@ export default function BankPage({ params }: { params: { bank: string } }) {
         bankSlug={params.bank} 
       />
 
-      {/* Logo placed specifically under the Hero/CTA area */}
       <div className="flex justify-center -mt-8 mb-12">
         <div className="w-16 h-16 flex items-center justify-center bg-white p-2 rounded-xl shadow-sm border border-slate-100">
           <img 
@@ -59,7 +76,6 @@ export default function BankPage({ params }: { params: { bank: string } }) {
         </div>
       </div>
 
-      {/* Instructions Section with tightened top padding */}
       <section className="pt-12 pb-24">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto">
@@ -108,14 +124,13 @@ export default function BankPage({ params }: { params: { bank: string } }) {
               </div>
             </div>
 
-            {/* Trust/FAQ Box */}
             <div className="mt-20 p-8 bg-slate-50 rounded-3xl border border-slate-100">
                 <h4 className="text-lg font-bold text-[#111729] mb-4 flex items-center gap-2">
                     <CheckCircle2 className="text-emerald-500 w-5 h-5" />
                     Why use an AI converter for {bankDisplayName}?
                 </h4>
                 <p className="text-sm text-slate-600 leading-relaxed">
-                    Standard PDF converters often fail to read {bankDisplayName} column layouts correctly, resulting in "merged" cells or missing dates. Our AI is specifically trained on {bankDisplayName} statement templates to ensure 100% data integrity.
+                    {activeWhyText}
                 </p>
             </div>
           </div>

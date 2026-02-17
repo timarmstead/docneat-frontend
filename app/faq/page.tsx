@@ -17,7 +17,7 @@ const faqs = [
   },
   {
     question: "How accurate is the AI extraction?",
-    answer: "Our specialized financial OCR model reaches 99.9% accuracy. It is designed to handle complex bank layouts, multi-page statements, and even slightly blurry scans."
+    answer: "Our specialized financial OCR model delivers verified data accuracy. It is designed to handle complex bank layouts, multi-page statements, and even slightly blurry scans."
   },
   {
     question: "Do I need to create an account?",

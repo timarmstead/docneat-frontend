@@ -35,11 +35,11 @@ export default function BankPage({ params }: { params: { bank: string } }) {
   const logoDomain = matchedSlug ? domainMap[matchedSlug] : `${nameParts.join('').toLowerCase() || 'bank'}.com`;
   const logoUrl = `https://img.logo.dev/${logoDomain}?token=${LOGO_DEV_KEY}`;
 
-  // DYNAMIC CONTENT LOGIC - Revised for 100% Accuracy Messaging
+  // DYNAMIC CONTENT LOGIC - Revised for PDF Statements & 100% Accuracy Messaging
   const descriptions = [
     `Extract transaction data from your ${bankDisplayName} PDF statements with verified accuracy. Perfectly formatted for QuickBooks, Xero, and Excel.`,
     `Stop wasting hours on manual data entry. Our AI-powered tool converts ${bankDisplayName} PDFs into clean, audit-ready CSV files instantly.`,
-    `The most reliable way to turn ${bankDisplayName} digital statements into spreadsheets with complete data integrity. Secure, fast, and optimized for professional accounting.`
+    `The most reliable way to turn ${bankDisplayName} PDF statements into spreadsheets with complete data integrity. Secure, fast, and optimized for professional accounting.`
   ];
 
   const whyTexts = [

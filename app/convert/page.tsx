@@ -25,7 +25,7 @@ export default function ConvertDirectory() {
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Supported Banks</h1>
           <p className="text-slate-400 max-w-2xl mx-auto text-lg leading-relaxed">
-            Select your bank to convert PDF statements to CSV or Excel with 99.9% accuracy. 
+            Select your bank to convert PDF statements to CSV or Excel with verified data accuracy. 
             AI-optimized for global financial institutions.
           </p>
         </div>

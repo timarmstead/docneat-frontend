@@ -2,9 +2,12 @@
 
 import Hero from "../../components/sections/hero";
 import { CheckCircle2, Download, Upload, FileJson } from "lucide-react";
+import Link from "next/link";
 
 export default function BankPageClient({ params }: { params: { bank: string } }) {
-  const slugParts = params.bank ? params.bank.split('-') : [];
+  // Defensive check for params
+  const bankParam = params?.bank || "";
+  const slugParts = bankParam.split('-');
   
   const ignoredWords = ['convert', 'statement', 'to', 'csv', 'pdf', 'conversion'];
   const nameParts = slugParts.filter(part => !ignoredWords.includes(part.toLowerCase()));
@@ -21,7 +24,7 @@ export default function BankPageClient({ params }: { params: { bank: string } })
     'barclays': 'barclays.co.uk', 'halifax': 'halifax.co.uk'
   };
 
-  const bankSlug = params.bank ? params.bank.toLowerCase() : '';
+  const bankSlug = bankParam.toLowerCase();
   const matchedSlug = Object.keys(domainMap).find(key => bankSlug.includes(key));
   const logoDomain = matchedSlug ? domainMap[matchedSlug] : `${nameParts.join('').toLowerCase() || 'bank'}.com`;
   const logoUrl = `https://img.logo.dev/${logoDomain}?token=${LOGO_DEV_KEY}`;
@@ -44,13 +47,24 @@ export default function BankPageClient({ params }: { params: { bank: string } })
   const activeWhyText = whyTexts[versionIndex] || whyTexts[0];
   const badgeText = `${bankDisplayName} Statement Conversion`;
 
+  const relatedBanks = [
+    { name: "Chase", slug: "chase-statement-to-csv" },
+    { name: "Bank of America", slug: "bank-of-america-statement-to-csv" },
+    { name: "Wells Fargo", slug: "wells-fargo-statement-to-csv" },
+    { name: "HSBC", slug: "hsbc-statement-to-csv" },
+    { name: "Barclays", slug: "barclays-statement-to-csv" },
+    { name: "Capital One", slug: "capital-one-statement-to-csv" },
+    { name: "Citibank", slug: "citibank-statement-to-csv" },
+    { name: "PNC Bank", slug: "pnc-bank-statement-to-csv" }
+  ].filter(b => b.slug !== bankParam);
+
   return (
     <main className="bg-white">
       <Hero
         title={heroTitle}
         description={heroDescription}
         bankName={badgeText}
-        bankSlug={params.bank} 
+        bankSlug={bankParam} 
       />
 
       <div className="flex justify-center -mt-8 mb-12">
@@ -120,6 +134,21 @@ export default function BankPageClient({ params }: { params: { bank: string } })
                 <p className="text-sm text-slate-600 leading-relaxed">
                     {activeWhyText}
                 </p>
+            </div>
+
+            <div className="mt-24 border-t border-slate-100 pt-16">
+              <h3 className="text-xl font-bold text-[#111729] mb-8">Related Bank Converters</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {relatedBanks.map((bank) => (
+                  <Link 
+                    key={bank.slug}
+                    href={`/convert/${bank.slug}`}
+                    className="text-sm text-slate-500 hover:text-emerald-600 transition-colors"
+                  >
+                    {bank.name} to CSV
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
         </div>

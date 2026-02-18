@@ -6,15 +6,10 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/page": [
+    "/convert/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/page.js"
-    ],
-    "/convert/pdf-bank-statement-to-csv/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/convert/pdf-bank-statement-to-csv/page.js"
+      "static/chunks/app/convert/page.js"
     ],
     "/convert/[bank]/page": [
       "static/chunks/webpack.js",

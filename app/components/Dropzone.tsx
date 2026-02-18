@@ -30,7 +30,8 @@ export default function Dropzone() {
         });
       }, 600);
     } else {
-      setProgress(0);
+      // Keep progress at 100 if success is showing, otherwise reset to 0
+      if (!showSuccess) setProgress(0);
     }
     return () => clearInterval(interval);
   }, [loading, showSuccess]);
@@ -62,11 +63,17 @@ export default function Dropzone() {
       if (result.status === "PROCESSING") {
         setTimeout(() => pollStatus(jobId, fileKey), 3000);
       } else if (result.status === "COMPLETED") {
-        setShowSuccess(true);
+        // SET PREVIEW FIRST
         setPreview(result.preview || []);
+        
+        // TRIGGER DOWNLOAD BEFORE UPDATING UI STATE
         if (result.csv_content) {
           triggerDownload(result.csv_content, 'docneat-converted.csv');
         }
+
+        // NOW SHOW SUCCESS SCREEN
+        setProgress(100);
+        setShowSuccess(true);
       } else {
         throw new Error('Analysis failed on server');
       }
@@ -78,9 +85,10 @@ export default function Dropzone() {
   };
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
+    // RESET ALL STATES IMMEDIATELY FOR THE NEW UPLOAD
     setLoading(true);
-    setPreview([]);
     setShowSuccess(false);
+    setPreview([]);
     setProgress(5);
     
     const file = acceptedFiles[0];

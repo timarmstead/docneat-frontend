@@ -9,6 +9,7 @@ export default function Dropzone() {
   const [preview, setPreview] = useState<any[]>([]);
   const [progress, setProgress] = useState(0);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const getBrandedMessage = (prog: number) => {
     if (prog < 20) return "DocNeat is securing your data...";
@@ -20,7 +21,7 @@ export default function Dropzone() {
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
-    if (loading && !showSuccess) {
+    if (loading && !showSuccess && !error) {
       interval = setInterval(() => {
         setProgress((prev) => {
           if (prev < 30) return prev + 3; 
@@ -30,17 +31,16 @@ export default function Dropzone() {
         });
       }, 600);
     } else {
-      // Keep progress at 100 if success is showing, otherwise reset to 0
       if (!showSuccess) setProgress(0);
     }
     return () => clearInterval(interval);
-  }, [loading, showSuccess]);
+  }, [loading, showSuccess, error]);
 
   useEffect(() => {
-    if (loading && !showSuccess) {
+    if (loading && !showSuccess && !error) {
       setStatusMessage(getBrandedMessage(progress));
     }
-  }, [progress, loading, showSuccess]);
+  }, [progress, loading, showSuccess, error]);
 
   const triggerDownload = (csvContent: string, filename: string) => {
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -56,22 +56,23 @@ export default function Dropzone() {
   const pollStatus = async (jobId: string, fileKey: string) => {
     try {
       const res = await fetch(`https://docneat-backend.onrender.com/status/${jobId}?file_key=${fileKey}`);
-      if (!res.ok) throw new Error('Status check failed');
-      
       const result = await res.json();
+
+      if (res.status === 422 || result.status === "ERROR") {
+        setError(result.message || "Invalid bank statement format.");
+        setLoading(false);
+        return;
+      }
+
+      if (!res.ok) throw new Error('Status check failed');
 
       if (result.status === "PROCESSING") {
         setTimeout(() => pollStatus(jobId, fileKey), 3000);
       } else if (result.status === "COMPLETED") {
-        // SET PREVIEW FIRST
         setPreview(result.preview || []);
-        
-        // TRIGGER DOWNLOAD BEFORE UPDATING UI STATE
         if (result.csv_content) {
           triggerDownload(result.csv_content, 'docneat-converted.csv');
         }
-
-        // NOW SHOW SUCCESS SCREEN
         setProgress(100);
         setShowSuccess(true);
       } else {
@@ -79,15 +80,15 @@ export default function Dropzone() {
       }
     } catch (e) {
       console.error(e);
-      alert('Error checking document status.');
+      setError("Something went wrong with the connection. Please try again.");
       setLoading(false);
     }
   };
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
-    // RESET ALL STATES IMMEDIATELY FOR THE NEW UPLOAD
     setLoading(true);
     setShowSuccess(false);
+    setError(null);
     setPreview([]);
     setProgress(5);
     
@@ -111,7 +112,7 @@ export default function Dropzone() {
       }
     } catch (e) {
       console.error(e);
-      alert('Something went wrong. Please check your connection or file format.');
+      setError("The upload failed. Please check your internet connection.");
       setLoading(false);
     }
   }, []);
@@ -126,6 +127,7 @@ export default function Dropzone() {
     e.stopPropagation(); 
     setLoading(false);
     setShowSuccess(false);
+    setError(null);
     setPreview([]);
     setProgress(0);
   };
@@ -150,7 +152,6 @@ export default function Dropzone() {
                 </div>
                 <p className="text-2xl text-[#111729] font-bold">Statement Converted</p>
                 <p className="text-slate-500 mt-2">Your CSV has been downloaded successfully.</p>
-                
                 <button 
                   onClick={handleReset}
                   className="mt-8 px-6 py-2 bg-[#111729] hover:bg-slate-800 text-white font-semibold rounded-lg transition-colors shadow-lg"
@@ -170,6 +171,22 @@ export default function Dropzone() {
                 <p className="text-slate-400 text-sm mt-3 italic">Do not close this window</p>
               </div>
             )}
+          </div>
+        ) : error ? (
+          <div className="text-center px-10">
+            <div className="bg-red-100 text-red-600 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+            <p className="text-xl text-[#111729] font-bold">Unrecognized Format</p>
+            <p className="text-slate-500 mt-2 mb-6">{error}</p>
+            <button 
+              onClick={handleReset}
+              className="px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors shadow-md"
+            >
+              Try a different file
+            </button>
           </div>
         ) : (
           <div className="text-center px-6">

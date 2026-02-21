@@ -33,7 +33,7 @@ export default function RootLayout({
         {/* FORCED INJECTION: We pass the key directly. 
           If this is still missing, Vercel is failing to provide the env var to the build shell.
         */}
-        <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
+        <ClerkProvider publishableKey="pk_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
           <Navbar />
           
           <main className="flex-grow">

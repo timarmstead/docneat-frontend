@@ -2,9 +2,10 @@ import { clerkMiddleware } from "@clerk/nextjs/server";
 
 export default clerkMiddleware((auth, req) => {
 }, {
-  // Hard-code the keys here as well to match your Layout exactly
+  // Use the hard-coded publishable key that finally cleared the last error
   publishableKey: "pk_live_Y2xlcmsuZG9jbmVhdC5jb20k",
-  secretKey: process.env.CLERK_SECRET_KEY, 
+  // Manually tell Clerk exactly which variable to look for
+  secretKey: process.env.CLERK_SECRET_KEY,
 });
 
 export const config = {

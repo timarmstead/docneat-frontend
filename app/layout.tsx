@@ -26,8 +26,8 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       <body className="antialiased bg-slate-900 text-slate-200 flex flex-col min-h-screen">
-        {/* Wrapping the content inside the body ensures Next.js has context for cookies */}
-        <ClerkProvider publishableKey="pk_test_Y3Jpc3AtZmF3bi0zMi5jbGVyay5hY2NvdW50cy5kZXYk">
+        {/* Removed hard-coded test key to allow environment variables to take over */}
+        <ClerkProvider>
           <Navbar />
           
           {/* The main content area */}

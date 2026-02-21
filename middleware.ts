@@ -1,13 +1,11 @@
 import { clerkMiddleware } from "@clerk/nextjs/server";
 
 export default clerkMiddleware((auth, req) => {
-  // This will force the key to be logged to Vercel's console
-  console.log("DIAGNOSTIC - Secret Key exists:", !!process.env.CLERK_SECRET_KEY);
-  console.log("DIAGNOSTIC - Publishable Key exists:", !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
+  // logic
 }, {
-  // We hard-check the variables here
-  secretKey: process.env.CLERK_SECRET_KEY,
-  publishableKey: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
+  // PASTE YOUR ACTUAL SECRET KEY HERE FOR ONE TEST DEPLOY
+  secretKey: "sk_live_sWwNrq8yJDudwp8TfgdqsJPPc246TExnGVOfq9Qb7w", 
+  publishableKey: "pk_live_Y2xlcmsuZG9jbmVhdC5jb20k"
 });
 
 export const config = {

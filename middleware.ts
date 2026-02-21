@@ -1,10 +1,14 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { clerkMiddleware } from "@clerk/nextjs/server";
+
+const secretKey = process.env.CLERK_SECRET_KEY;
+const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
 export default clerkMiddleware((auth, req) => {
-  // This helps ensure the middleware has the keys it needs
+  // Empty for now to just get the site to load
 }, {
-  publishableKey: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
-  secretKey: process.env.CLERK_SECRET_KEY,
+  secretKey,
+  publishableKey,
+  debug: true // This will help us see EXACTLY what is failing in the logs
 });
 
 export const config = {

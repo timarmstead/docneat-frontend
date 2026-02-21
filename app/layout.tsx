@@ -23,17 +23,14 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  // DIAGNOSTIC: This will show up in your Vercel Build Logs (not the runtime logs)
-  // so you can see if the key is actually present during the build.
-  console.log("Build Check - Publishable Key exists:", !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
-
   return (
     <html lang="en" className="h-full">
       <body className="antialiased bg-slate-900 text-slate-200 flex flex-col min-h-screen">
-        {/* FORCED INJECTION: We pass the key directly. 
-          If this is still missing, Vercel is failing to provide the env var to the build shell.
+        {/* CRITICAL FIX: Hard-coding the LIVE publishable key. 
+          Replace the XXXXXX below with your actual key from the Clerk Dashboard.
+          It must start with 'pk_live_'.
         */}
-        <ClerkProvider publishableKey="pk_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
+        <ClerkProvider publishableKey="pk_live_Y2xlcmsuZG9jbmVhdC5jb20k">
           <Navbar />
           
           <main className="flex-grow">

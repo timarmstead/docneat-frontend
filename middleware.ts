@@ -1,13 +1,16 @@
 import { clerkMiddleware } from "@clerk/nextjs/server";
 
 export default clerkMiddleware((auth, req) => {
-  // logic
+  // Logic
 }, {
-  // PASTE YOUR ACTUAL SECRET KEY HERE FOR ONE TEST DEPLOY
-  secretKey: "sk_live_sWwNrq8yJDudwp8TfgdqsJPPc246TExnGVOfq9Qb7w", 
-  publishableKey: "pk_live_Y2xlcmsuZG9jbmVhdC5jb20k"
+  // We use the new variable name here
+  secretKey: process.env.CLERK_SECRET_KEY_LIVE || process.env.CLERK_SECRET_KEY,
+  publishableKey: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
 });
 
 export const config = {
-  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
+  matcher: [
+    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+    '/(api|trpc)(.*)',
+  ],
 };

@@ -4,7 +4,7 @@ const secretKey = process.env.CLERK_SECRET_KEY;
 const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
 export default clerkMiddleware((auth, req) => {
-  // Empty for now to just get the site to load
+  // Empty for now to just gets the site to load
 }, {
   secretKey,
   publishableKey,

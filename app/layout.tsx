@@ -23,19 +23,23 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  // DIAGNOSTIC: This will show up in your Vercel Build Logs (not the runtime logs)
+  // so you can see if the key is actually present during the build.
+  console.log("Build Check - Publishable Key exists:", !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
+
   return (
     <html lang="en" className="h-full">
       <body className="antialiased bg-slate-900 text-slate-200 flex flex-col min-h-screen">
-        {/* Removed hard-coded test key to allow environment variables to take over */}
-        <ClerkProvider>
+        {/* FORCED INJECTION: We pass the key directly. 
+          If this is still missing, Vercel is failing to provide the env var to the build shell.
+        */}
+        <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
           <Navbar />
           
-          {/* The main content area */}
           <main className="flex-grow">
             {children}
           </main>
 
-          {/* Updated Dark Footer */}
           <footer className="w-full py-12 px-6 md:px-12 border-t border-slate-800 bg-slate-900">
             <div className="max-w-7xl mx-auto">
               <div className="flex flex-col md:flex-row justify-between items-start gap-10">

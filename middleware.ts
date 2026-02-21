@@ -1,14 +1,12 @@
 import { clerkMiddleware } from "@clerk/nextjs/server";
 
-const secretKey = process.env.CLERK_SECRET_KEY;
-const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
-
 export default clerkMiddleware((auth, req) => {
-  // Empty for now to just gets the site to load
+  // Your logic here
 }, {
-  secretKey,
-  publishableKey,
-  debug: true // This will help us see EXACTLY what is failing in the logs
+  // THIS IS THE OPTIONS OBJECT
+  debug: true, 
+  publishableKey: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
+  secretKey: process.env.CLERK_SECRET_KEY,
 });
 
 export const config = {

@@ -12,7 +12,7 @@ export default function Pricing() {
   };
 
   return (
-    /* Updated background and text colors to match the site theme. Padding kept at pt-32 md:pt-44 */
+    /* Background and text colors matching site theme. Padding kept at pt-32 md:pt-44 */
     <div className="min-h-screen bg-slate-900 text-slate-300 pt-32 md:pt-44 pb-20">
       <div className="max-w-7xl mx-auto px-6 text-center">
         
@@ -22,55 +22,42 @@ export default function Pricing() {
             Simple, Transparent Pricing
           </h1>
           <p className="text-xl text-slate-400 max-w-2xl mx-auto">
-            Secure, accurate bank statement conversion at any scale
+            Secure, accurate bank statement conversion at any scale. 
+            <span className="block text-emerald-400 mt-2 text-lg">First 3 statements are on us.</span>
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+        {/* Grid adjusted to 3 columns for the new tier structure */}
+        <div className="grid md:grid-cols-3 gap-8 items-stretch max-w-6xl mx-auto">
           
-          {/* Free Tier */}
-          <div className="bg-slate-800/40 rounded-2xl shadow-sm p-8 border border-slate-800 flex flex-col">
-            <h3 className="text-xl font-bold mb-4 text-white">Free</h3>
-            <p className="text-4xl font-bold mb-2 text-white">$0<span className="text-lg font-normal text-slate-500">/mo</span></p>
-            <p className="text-sm text-slate-500 mb-6">Try our technology</p>
-            <ul className="text-left space-y-4 mb-8 flex-grow text-slate-400">
-              <li className="flex items-start text-sm">✓ <span className="ml-2">10 pages / month</span></li>
-              <li className="flex items-start text-sm">✓ <span className="ml-2">Standard AI extraction</span></li>
-              <li className="flex items-start text-sm">✓ <span className="ml-2">Excel & CSV exports</span></li>
-            </ul>
-            <div className="bg-slate-800 text-slate-500 py-3 rounded-lg font-semibold cursor-not-allowed text-sm">
-              Current Plan
-            </div>
-          </div>
-
-          {/* Starter Tier */}
+          {/* Starter Tier - Updated to $19 and 200 pages */}
           <div className="bg-slate-800/40 rounded-2xl shadow-sm p-8 border border-slate-800 flex flex-col hover:border-slate-700 transition">
             <h3 className="text-xl font-bold mb-4 text-white">Starter</h3>
-            <p className="text-4xl font-bold mb-2 text-white">$30<span className="text-lg font-normal text-slate-500">/mo</span></p>
-            <p className="text-sm text-slate-500 mb-6">Perfect for individuals</p>
+            <p className="text-4xl font-bold mb-2 text-white">$19<span className="text-lg font-normal text-slate-500">/mo</span></p>
+            <p className="text-sm text-slate-500 mb-6">Perfect for individuals & freelancers</p>
             <ul className="text-left space-y-4 mb-8 flex-grow text-slate-400">
-              <li className="flex items-start text-sm">✓ <span className="ml-2"><strong>400 pages</strong> / month</span></li>
+              <li className="flex items-start text-sm">✓ <span className="ml-2"><strong>200 pages</strong> / month</span></li>
               <li className="flex items-start text-sm">✓ <span className="ml-2">PDF & Scanned support</span></li>
               <li className="flex items-start text-sm">✓ <span className="ml-2">Unlimited file history</span></li>
               <li className="flex items-start text-sm">✓ <span className="ml-2">Email support</span></li>
             </ul>
             <button 
-              onClick={() => handleCheckout('https://buy.stripe.com/3cIbJ10LfdvC2p6dJI1gs00', 'starter')}
+              onClick={() => handleCheckout('https://buy.stripe.com/00wcN551v0IQ5Bi3541gs03', 'starter')}
               disabled={!!loading}
-              className="w-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 font-bold py-3 rounded-lg transition disabled:opacity-50 text-sm"
+              className="w-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 font-bold py-3 rounded-xl transition disabled:opacity-50 text-sm"
             >
               {loading === 'starter' ? 'Connecting...' : 'Choose Starter'}
             </button>
           </div>
 
-          {/* Pro Tier — Most Popular */}
-          <div className="bg-slate-800/60 rounded-2xl shadow-2xl p-8 border-4 border-emerald-500 relative flex flex-col lg:scale-110 z-10">
+          {/* Pro Tier — Updated to $49 and 1,000 pages */}
+          <div className="bg-slate-800/60 rounded-2xl shadow-2xl p-8 border-4 border-emerald-500 relative flex flex-col md:scale-105 z-10">
             <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-emerald-500 text-white px-6 py-2 rounded-full text-sm font-bold whitespace-nowrap">
               MOST POPULAR
             </div>
             <h3 className="text-xl font-bold mb-4 text-white">Professional</h3>
-            <p className="text-4xl font-bold mb-2 text-white">$60<span className="text-lg font-normal text-slate-500">/mo</span></p>
-            <p className="text-sm text-slate-400 mb-6">Best for Bookkeepers</p>
+            <p className="text-4xl font-bold mb-2 text-white">$49<span className="text-lg font-normal text-slate-500">/mo</span></p>
+            <p className="text-sm text-slate-400 mb-6">Best for Bookkeepers & Accountants</p>
             <ul className="text-left space-y-4 mb-8 flex-grow text-slate-300">
               <li className="flex items-start text-sm">✓ <span className="ml-2"><strong>1,000 pages</strong> / month</span></li>
               <li className="flex items-start text-sm">✓ <span className="ml-2">Batch uploads (up to 50)</span></li>
@@ -78,19 +65,19 @@ export default function Pricing() {
               <li className="flex items-start text-sm">✓ <span className="ml-2">Priority support</span></li>
             </ul>
             <button 
-              onClick={() => handleCheckout('https://buy.stripe.com/14AfZhfG9bnu4xe0WW1gs01', 'pro')}
+              onClick={() => handleCheckout('https://buy.stripe.com/cNicN551vbnu2p6axw1gs04', 'pro')}
               disabled={!!loading}
-              className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 rounded-lg transition disabled:opacity-50 shadow-lg active:scale-95"
+              className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 rounded-xl transition disabled:opacity-50 shadow-lg active:scale-95"
             >
               {loading === 'pro' ? 'Connecting...' : 'Start Pro Plan'}
             </button>
           </div>
 
-          {/* Business Tier */}
+          {/* Business Tier - Updated to 4,000 pages */}
           <div className="bg-slate-800/40 rounded-2xl shadow-sm p-8 border border-slate-800 flex flex-col hover:border-slate-700 transition">
             <h3 className="text-xl font-bold mb-4 text-white">Business</h3>
             <p className="text-4xl font-bold mb-2 text-white">$99<span className="text-lg font-normal text-slate-500">/mo</span></p>
-            <p className="text-sm text-slate-500 mb-6">Best for Firms & Lending</p>
+            <p className="text-sm text-slate-500 mb-6">Best for Firms & High Volume</p>
             <ul className="text-left space-y-4 mb-8 flex-grow text-slate-400">
               <li className="flex items-start text-sm">✓ <span className="ml-2"><strong>4,000 pages</strong> / month</span></li>
               <li className="flex items-start text-sm">✓ <span className="ml-2">API Access</span></li>
@@ -98,9 +85,9 @@ export default function Pricing() {
               <li className="flex items-start text-sm">✓ <span className="ml-2">Dedicated Account Manager</span></li>
             </ul>
             <button 
-              onClick={() => handleCheckout('https://buy.stripe.com/aFa28r2Tn2QY0gYbBA1gs02', 'business')}
+              onClick={() => handleCheckout('https://buy.stripe.com/00w3cvbpT0IQ5BieNM1gs05', 'business')}
               disabled={!!loading}
-              className="w-full bg-white hover:bg-slate-100 text-slate-900 font-bold py-3 rounded-lg transition disabled:opacity-50 text-sm active:scale-95"
+              className="w-full bg-white hover:bg-slate-100 text-slate-900 font-bold py-3 rounded-xl transition disabled:opacity-50 text-sm active:scale-95"
             >
               {loading === 'business' ? 'Connecting...' : 'Get Business'}
             </button>

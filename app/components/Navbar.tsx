@@ -4,10 +4,12 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
+import { UserButton, SignInButton, useUser } from '@clerk/nextjs'
 
 export default function Navbar() {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
+  const { isSignedIn } = useUser()
 
   const navItems = [
     { name: 'Why Choose', href: '/why-choose' },
@@ -45,6 +47,7 @@ export default function Navbar() {
             </div>
           </Link>
 
+          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center justify-center flex-1">
             <div className="flex items-center gap-10">
               {navItems.map((item) => (
@@ -61,7 +64,21 @@ export default function Navbar() {
             </div>
           </div>
 
-          <div className="md:hidden flex items-center">
+          {/* Desktop Auth Section - Cleaned Up */}
+          <div className="hidden md:flex items-center gap-4">
+            {isSignedIn ? (
+              <UserButton afterSignOutUrl="/" />
+            ) : (
+              <SignInButton mode="modal">
+                <button className="text-sm font-semibold text-gray-300 hover:text-white transition-colors border border-slate-700 px-4 py-2 rounded-lg">
+                  Sign In
+                </button>
+              </SignInButton>
+            )}
+          </div>
+
+          <div className="md:hidden flex items-center gap-4">
+            {isSignedIn && <UserButton afterSignOutUrl="/" />}
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="text-gray-300 hover:text-white p-2 transition-colors focus:outline-none"
@@ -77,9 +94,10 @@ export default function Navbar() {
         </div>
       </div>
 
+      {/* Mobile Menu - Cleaned Up */}
       <div 
         className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out bg-slate-900 border-b border-slate-700 ${
-          isOpen ? 'max-h-[400px] opacity-100' : 'max-h-0 opacity-0'
+          isOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
         <div className="px-6 py-8 space-y-4">
@@ -95,7 +113,19 @@ export default function Navbar() {
               {item.name}
             </Link>
           ))}
-          <div className="pt-4">
+          
+          {!isSignedIn && (
+            <SignInButton mode="modal">
+              <button 
+                onClick={() => setIsOpen(false)}
+                className="block text-lg font-medium text-gray-300 hover:text-white transition-colors"
+              >
+                Sign In
+              </button>
+            </SignInButton>
+          )}
+
+          <div className="pt-4 border-t border-slate-800">
             <Link
               href="/"
               onClick={() => setIsOpen(false)}

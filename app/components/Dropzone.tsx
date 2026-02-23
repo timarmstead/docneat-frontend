@@ -22,16 +22,26 @@ export default function Dropzone() {
   const [credits, setCredits] = useState<number>(3);
   const [isSyncing, setIsSyncing] = useState(true);
 
-  // Initial Sync from Clerk
+  // LOGIC FIX: Handle credits for BOTH guests and signed-in users
   useEffect(() => {
-    if (isLoaded && isSyncing) {
+    if (isLoaded) {
       if (isSignedIn && user) {
+        // For signed-in users, get from Clerk
         const userCredits = (user.publicMetadata as any).credits;
         setCredits(userCredits !== undefined ? userCredits : 3);
+      } else {
+        // For GUESTS, get from Browser LocalStorage
+        const savedCredits = localStorage.getItem('docneat_guest_credits');
+        if (savedCredits !== null) {
+          setCredits(parseInt(savedCredits));
+        } else {
+          setCredits(3);
+          localStorage.setItem('docneat_guest_credits', '3');
+        }
       }
       setIsSyncing(false);
     }
-  }, [isLoaded, isSignedIn, user, isSyncing]);
+  }, [isLoaded, isSignedIn, user]);
 
   const getBrandedMessage = (prog: number) => {
     if (prog < 20) return "DocNeat is securing your data...";
@@ -98,9 +108,14 @@ export default function Dropzone() {
         setPreview(result.preview || []);
         setProgress(100);
         
-        // Immediate UI Update
+        // LOGIC FIX: Update credits
         const nextCount = Math.max(0, credits - 1);
         setCredits(nextCount);
+        
+        if (!isSignedIn) {
+          localStorage.setItem('docneat_guest_credits', nextCount.toString());
+        }
+
         setShowSuccess(true);
 
         if (result.csv_content) {
@@ -108,8 +123,12 @@ export default function Dropzone() {
           triggerDownload(result.csv_content, 'docneat-converted.csv');
           
           if (isSignedIn) {
-            // Background database sync
-            subtractCredit().catch(e => console.error("Credit sync failed:", e));
+            try {
+              await subtractCredit();
+              await user?.reload();
+            } catch (err) {
+              console.error("Sync error:", err);
+            }
           }
         }
       }
@@ -120,7 +139,8 @@ export default function Dropzone() {
   };
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
-    if (isSignedIn && credits <= 0) {
+    // Check credits before starting
+    if (credits <= 0) {
       router.push('/pricing');
       return;
     }
@@ -248,9 +268,11 @@ export default function Dropzone() {
                     ? (credits > 0 
                         ? `You have ${credits} conversion${credits === 1 ? '' : 's'} remaining` 
                         : "Trial complete. Upgrade for instant, unlimited access.")
-                    : "First 3 conversions are free"}
+                    : (credits > 0 
+                        ? `First 3 conversions are free (${credits} left)` 
+                        : "Trial complete. Sign in to continue.")}
                 </p>
-                {isSignedIn && credits <= 0 && (
+                {credits <= 0 && (
                   <button 
                     onClick={(e) => { e.stopPropagation(); router.push('/pricing'); }}
                     className="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg transition-all active:scale-95"

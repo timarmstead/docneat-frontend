@@ -22,7 +22,7 @@ export default function Dropzone() {
   const [credits, setCredits] = useState<number>(3);
   const [isSyncing, setIsSyncing] = useState(true);
 
-  // Sync credits from Clerk only ONCE on initial load
+  // Initial Sync from Clerk
   useEffect(() => {
     if (isLoaded && isSyncing) {
       if (isSignedIn && user) {
@@ -98,7 +98,7 @@ export default function Dropzone() {
         setPreview(result.preview || []);
         setProgress(100);
         
-        // LOCK THE UI STATE: Set credits and success before background sync
+        // Immediate UI Update
         const nextCount = Math.max(0, credits - 1);
         setCredits(nextCount);
         setShowSuccess(true);
@@ -108,8 +108,8 @@ export default function Dropzone() {
           triggerDownload(result.csv_content, 'docneat-converted.csv');
           
           if (isSignedIn) {
-            // FIRE AND FORGET: Update DB in background
-            subtractCredit().catch(e => console.error("Sync failed:", e));
+            // Background database sync
+            subtractCredit().catch(e => console.error("Credit sync failed:", e));
           }
         }
       }
@@ -165,10 +165,7 @@ export default function Dropzone() {
     setProgress(0);
     setLoading(false);
     setShowSuccess(false);
-    
-    setTimeout(() => {
-      open();
-    }, 100);
+    setTimeout(() => open(), 100);
   };
 
   return (

@@ -97,23 +97,24 @@ export default function Dropzone() {
         setPreview(result.preview || []);
         setProgress(100);
         
-        const nextCount = Math.max(0, credits - 1);
-        setCredits(nextCount);
-        setShowSuccess(true);
-
+        // 1. Immediately update local UI so user sees the change
+        const newCount = Math.max(0, credits - 1);
+        setCredits(newCount);
+        
+        // 2. Prepare the Success View
         if (result.csv_content) {
           setCsvData(result.csv_content);
           triggerDownload(result.csv_content, 'docneat-converted.csv');
-          
-          if (isSignedIn) {
-            try {
-              await subtractCredit();
-              // Force Clerk to update its local cache immediately
-              await user?.reload();
-            } catch (err) {
-              console.error("Sync error:", err);
-            }
-          }
+        }
+
+        setShowSuccess(true);
+
+        // 3. Update Database in background without blocking the UI
+        if (isSignedIn) {
+          subtractCredit().then(() => {
+             // Silently reload in background; don't 'await' it to prevent UI hang
+             user?.reload();
+          }).catch(err => console.error("Sync error:", err));
         }
       }
     } catch (e) {
@@ -162,16 +163,17 @@ export default function Dropzone() {
 
   const handleResetAndOpen = (e: React.MouseEvent) => {
     e.stopPropagation(); 
+    // We clear data but keep 'isLoaded' state by not touching Clerk objects
     setPreview([]);
     setCsvData(null);
     setError(null);
     setProgress(0);
+    setLoading(false);
+    setShowSuccess(false);
     
     setTimeout(() => {
-      setLoading(false);
-      setShowSuccess(false);
       open();
-    }, 50);
+    }, 100);
   };
 
   return (

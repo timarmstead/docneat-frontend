@@ -2,14 +2,12 @@
 
 import { auth, createClerkClient } from '@clerk/nextjs/server';
 
-// ENSURE YOUR LIVE SECRET KEY IS HERE
-const CLERK_SECRET_KEY = "sk_live_sWwNrq8yJDudwp8TfgdqsJPPc246TExnGVOfq9Qb7w"; 
+const CLERK_SECRET_KEY = "sk_live_sWwNrq8yJDudwp8TfgdqsJPPc246TExnGVOfq9Qb7w";
 
 export async function subtractCredit() {
   const { userId } = await auth();
   
   if (!userId) {
-    console.error("SubtractCredit Error: No UserID found");
     throw new Error("Unauthorized");
   }
 

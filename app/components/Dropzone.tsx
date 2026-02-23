@@ -108,6 +108,8 @@ export default function Dropzone() {
           if (isSignedIn) {
             try {
               await subtractCredit();
+              // Force Clerk to update its local cache immediately
+              await user?.reload();
             } catch (err) {
               console.error("Sync error:", err);
             }

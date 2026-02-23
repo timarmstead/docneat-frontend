@@ -22,6 +22,7 @@ export default function Dropzone() {
   const [credits, setCredits] = useState<number>(3);
   const [isSyncing, setIsSyncing] = useState(true);
 
+  // Sync credits from Clerk on load
   useEffect(() => {
     if (isLoaded) {
       if (isSignedIn && user) {
@@ -40,6 +41,7 @@ export default function Dropzone() {
     return "Finalizing your export...";
   };
 
+  // Progress animation
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (loading && !showSuccess && !error) {
@@ -97,7 +99,9 @@ export default function Dropzone() {
         setPreview(result.preview || []);
         setProgress(100);
         
-        // Immediate UI update
+        // LOGIC FIX: Update UI immediately so user sees "2" even if DB is slow
+        const nextCount = Math.max(0, credits - 1);
+        setCredits(nextCount);
         setShowSuccess(true);
 
         if (result.csv_content) {
@@ -105,15 +109,9 @@ export default function Dropzone() {
           triggerDownload(result.csv_content, 'docneat-converted.csv');
           
           if (isSignedIn) {
-            // Deduct locally for immediate feedback
-            setCredits(prev => Math.max(0, prev - 1));
-
             try {
+              // Update database in background
               await subtractCredit();
-              // Refresh Clerk data in background
-              if (typeof window !== 'undefined' && (window as any).Clerk) {
-                await (window as any).Clerk.user?.reload();
-              }
             } catch (err) {
               console.error("Sync error:", err);
             }
@@ -172,7 +170,7 @@ export default function Dropzone() {
     setPreview([]);
     setCsvData(null);
     setProgress(0);
-    setTimeout(() => open(), 150);
+    setTimeout(() => open(), 100);
   };
 
   return (

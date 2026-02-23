@@ -2,13 +2,13 @@
 
 import React, { useState, useCallback, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { useUser, SignInButton, useAuth } from '@clerk/nextjs';
+import { useUser, useAuth } from '@clerk/nextjs'; // Added useAuth
 import { useRouter } from 'next/navigation';
 import { subtractCredit } from '../actions/credits';
 
 export default function Dropzone() {
   const { isSignedIn, user, isLoaded } = useUser();
-  const { getToken } = useAuth();
+  const { getToken } = useAuth(); // Initialize getToken
   const router = useRouter();
   
   const [loading, setLoading] = useState(false);
@@ -76,18 +76,12 @@ export default function Dropzone() {
 
   const pollStatus = async (jobId: string, fileKey: string) => {
     try {
-      const token = await getToken();
+      const token = await getToken(); // Get production token
       const res = await fetch(`https://docneat-backend.onrender.com/status/${jobId}?file_key=${fileKey}&t=${Date.now()}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
-
-      if (res.status === 502 || res.status === 504 || res.status === 503) {
-        setTimeout(() => pollStatus(jobId, fileKey), 4000);
-        return;
-      }
-
       const result = await res.json();
 
       if (res.status === 422 || result.status === "ERROR") {
@@ -96,19 +90,21 @@ export default function Dropzone() {
         return;
       }
 
-      if (result.status === "PROCESSING" || result.status === "PENDING") {
+      if (result.status === "PROCESSING") {
         setTimeout(() => pollStatus(jobId, fileKey), 3000);
       } else if (result.status === "COMPLETED") {
         setPreview(result.preview || []);
         setCsvData(result.csv_content || null);
         setProgress(100);
+        
+        // LOGIC FIX: Show success screen immediately when data arrives
+        setShowSuccess(true);
 
         if (result.csv_content && isSignedIn) {
           triggerDownload(result.csv_content, 'docneat-converted.csv');
           
           const nextCount = Math.max(0, credits - 1);
           setCredits(nextCount);
-          setShowSuccess(true);
 
           try {
             await subtractCredit();
@@ -121,8 +117,8 @@ export default function Dropzone() {
         }
       }
     } catch (e) {
-      console.log("Polling retry logic triggered...");
-      setTimeout(() => pollStatus(jobId, fileKey), 5000);
+      setError("Connection lost. Please try again.");
+      setLoading(false);
     }
   };
 
@@ -142,7 +138,7 @@ export default function Dropzone() {
     formData.append('file', file);
 
     try {
-      const token = await getToken();
+      const token = await getToken(); // Get production token for upload
       const res = await fetch('https://docneat-backend.onrender.com/upload', {
         method: 'POST',
         headers: {
@@ -158,7 +154,7 @@ export default function Dropzone() {
       setError("The upload failed.");
       setLoading(false);
     }
-  }, [isSignedIn, credits, router, getToken]);
+  }, [isSignedIn, credits, router, getToken]); // Added getToken to dependencies
 
   const { getRootProps, getInputProps, isDragActive, open } = useDropzone({ 
     onDrop, 

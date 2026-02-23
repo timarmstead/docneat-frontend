@@ -2,13 +2,13 @@
 
 import React, { useState, useCallback, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { useUser, useAuth } from '@clerk/nextjs'; // Added useAuth
+import { useUser, useAuth } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import { subtractCredit } from '../actions/credits';
 
 export default function Dropzone() {
   const { isSignedIn, user, isLoaded } = useUser();
-  const { getToken } = useAuth(); // Initialize getToken
+  const { getToken } = useAuth();
   const router = useRouter();
   
   const [loading, setLoading] = useState(false);
@@ -22,7 +22,6 @@ export default function Dropzone() {
   const [credits, setCredits] = useState<number>(3);
   const [isSyncing, setIsSyncing] = useState(true);
 
-  // Sync credits from Clerk
   useEffect(() => {
     if (isLoaded) {
       if (isSignedIn && user) {
@@ -41,7 +40,6 @@ export default function Dropzone() {
     return "Finalizing your export...";
   };
 
-  // Progress animation
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (loading && !showSuccess && !error) {
@@ -64,23 +62,26 @@ export default function Dropzone() {
   }, [progress, loading, showSuccess]);
 
   const triggerDownload = (csvContent: string, filename: string) => {
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    link.setAttribute('download', filename);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    try {
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("Download failed:", err);
+    }
   };
 
   const pollStatus = async (jobId: string, fileKey: string) => {
     try {
-      const token = await getToken(); // Get production token
+      const token = await getToken();
       const res = await fetch(`https://docneat-backend.onrender.com/status/${jobId}?file_key=${fileKey}&t=${Date.now()}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+        headers: { 'Authorization': `Bearer ${token}` }
       });
       const result = await res.json();
 
@@ -94,25 +95,28 @@ export default function Dropzone() {
         setTimeout(() => pollStatus(jobId, fileKey), 3000);
       } else if (result.status === "COMPLETED") {
         setPreview(result.preview || []);
-        setCsvData(result.csv_content || null);
         setProgress(100);
         
-        // LOGIC FIX: Show success screen immediately when data arrives
+        // Immediate UI update
         setShowSuccess(true);
 
-        if (result.csv_content && isSignedIn) {
+        if (result.csv_content) {
+          setCsvData(result.csv_content);
           triggerDownload(result.csv_content, 'docneat-converted.csv');
           
-          const nextCount = Math.max(0, credits - 1);
-          setCredits(nextCount);
+          if (isSignedIn) {
+            // Deduct locally for immediate feedback
+            setCredits(prev => Math.max(0, prev - 1));
 
-          try {
-            await subtractCredit();
-            if (typeof window !== 'undefined' && (window as any).Clerk) {
-              await (window as any).Clerk.user?.reload();
+            try {
+              await subtractCredit();
+              // Refresh Clerk data in background
+              if (typeof window !== 'undefined' && (window as any).Clerk) {
+                await (window as any).Clerk.user?.reload();
+              }
+            } catch (err) {
+              console.error("Sync error:", err);
             }
-          } catch (err) {
-            console.error("Sync error:", err);
           }
         }
       }
@@ -138,12 +142,10 @@ export default function Dropzone() {
     formData.append('file', file);
 
     try {
-      const token = await getToken(); // Get production token for upload
+      const token = await getToken();
       const res = await fetch('https://docneat-backend.onrender.com/upload', {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
+        headers: { 'Authorization': `Bearer ${token}` },
         body: formData,
       });
       const data = await res.json();
@@ -154,7 +156,7 @@ export default function Dropzone() {
       setError("The upload failed.");
       setLoading(false);
     }
-  }, [isSignedIn, credits, router, getToken]); // Added getToken to dependencies
+  }, [isSignedIn, credits, router, getToken]);
 
   const { getRootProps, getInputProps, isDragActive, open } = useDropzone({ 
     onDrop, 
@@ -170,10 +172,7 @@ export default function Dropzone() {
     setPreview([]);
     setCsvData(null);
     setProgress(0);
-    
-    setTimeout(() => {
-      open();
-    }, 150);
+    setTimeout(() => open(), 150);
   };
 
   return (

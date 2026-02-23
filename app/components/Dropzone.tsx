@@ -22,15 +22,16 @@ export default function Dropzone() {
   const [credits, setCredits] = useState<number>(3);
   const [isSyncing, setIsSyncing] = useState(true);
 
+  // Sync credits from Clerk only ONCE on initial load
   useEffect(() => {
-    if (isLoaded) {
+    if (isLoaded && isSyncing) {
       if (isSignedIn && user) {
         const userCredits = (user.publicMetadata as any).credits;
         setCredits(userCredits !== undefined ? userCredits : 3);
       }
       setIsSyncing(false);
     }
-  }, [isLoaded, isSignedIn, user]);
+  }, [isLoaded, isSignedIn, user, isSyncing]);
 
   const getBrandedMessage = (prog: number) => {
     if (prog < 20) return "DocNeat is securing your data...";
@@ -97,24 +98,19 @@ export default function Dropzone() {
         setPreview(result.preview || []);
         setProgress(100);
         
-        // 1. Immediately update local UI so user sees the change
-        const newCount = Math.max(0, credits - 1);
-        setCredits(newCount);
-        
-        // 2. Prepare the Success View
+        // LOCK THE UI STATE: Set credits and success before background sync
+        const nextCount = Math.max(0, credits - 1);
+        setCredits(nextCount);
+        setShowSuccess(true);
+
         if (result.csv_content) {
           setCsvData(result.csv_content);
           triggerDownload(result.csv_content, 'docneat-converted.csv');
-        }
-
-        setShowSuccess(true);
-
-        // 3. Update Database in background without blocking the UI
-        if (isSignedIn) {
-          subtractCredit().then(() => {
-             // Silently reload in background; don't 'await' it to prevent UI hang
-             user?.reload();
-          }).catch(err => console.error("Sync error:", err));
+          
+          if (isSignedIn) {
+            // FIRE AND FORGET: Update DB in background
+            subtractCredit().catch(e => console.error("Sync failed:", e));
+          }
         }
       }
     } catch (e) {
@@ -163,7 +159,6 @@ export default function Dropzone() {
 
   const handleResetAndOpen = (e: React.MouseEvent) => {
     e.stopPropagation(); 
-    // We clear data but keep 'isLoaded' state by not touching Clerk objects
     setPreview([]);
     setCsvData(null);
     setError(null);

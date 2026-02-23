@@ -2,12 +2,13 @@
 
 import React, { useState, useCallback, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { useUser, SignInButton } from '@clerk/nextjs';
+import { useUser, SignInButton, useAuth } from '@clerk/nextjs'; // Added useAuth
 import { useRouter } from 'next/navigation';
 import { subtractCredit } from '../actions/credits';
 
 export default function Dropzone() {
   const { isSignedIn, user, isLoaded } = useUser();
+  const { getToken } = useAuth(); // Initialize getToken
   const router = useRouter();
   
   const [loading, setLoading] = useState(false);
@@ -75,7 +76,12 @@ export default function Dropzone() {
 
   const pollStatus = async (jobId: string, fileKey: string) => {
     try {
-      const res = await fetch(`https://docneat-backend.onrender.com/status/${jobId}?file_key=${fileKey}`);
+      const token = await getToken(); // Get token for polling
+      const res = await fetch(`https://docneat-backend.onrender.com/status/${jobId}?file_key=${fileKey}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
       const result = await res.json();
 
       if (res.status === 422 || result.status === "ERROR") {
@@ -130,8 +136,12 @@ export default function Dropzone() {
     formData.append('file', file);
 
     try {
+      const token = await getToken(); // Get token for upload
       const res = await fetch('https://docneat-backend.onrender.com/upload', {
         method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
         body: formData,
       });
       const data = await res.json();
@@ -142,7 +152,7 @@ export default function Dropzone() {
       setError("The upload failed.");
       setLoading(false);
     }
-  }, [isSignedIn, credits, router]);
+  }, [isSignedIn, credits, router, getToken]); // Added getToken to dependency array
 
   const { getRootProps, getInputProps, isDragActive, open } = useDropzone({ 
     onDrop, 
@@ -293,4 +303,3 @@ export default function Dropzone() {
     </div>
   );
 }
-// restore point

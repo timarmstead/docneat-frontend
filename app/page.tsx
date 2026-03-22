@@ -47,8 +47,8 @@ export default function Home() {
             <p className="text-slate-400 text-sm">Advanced OCR built specifically for financial layouts ensures verified data integrity.</p>
           </div>
           <div>
-            <h3 className="text-emerald-400 font-bold text-lg mb-2">Zero Setup</h3>
-            <p className="text-slate-400 text-sm">No accounts or credit cards required. Start converting your documents immediately.</p>
+            <h3 className="text-emerald-400 font-bold text-lg mb-2">Workflow Optimized</h3>
+            <p className="text-slate-400 text-sm">Eliminate hours of manual data entry with our high-speed, automated extraction engine.</p>
           </div>
         </div>
 

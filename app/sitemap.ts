@@ -3,6 +3,7 @@ import { MetadataRoute } from 'next'
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://www.docneat.com'
 
+  // This list must stay synced with your supported banks
   const bankList = [
     "Chase", "Bank of America", "Wells Fargo", "Citibank", "Capital One", 
     "TD Bank", "PNC Bank", "US Bank", "RBC", "BMO", "Scotiabank", "CIBC",
@@ -16,44 +17,45 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ]
 
   const bankUrls = bankList.map((bank) => {
+    // Standardize slug to match the [bank] dynamic route expectations
     const safeSlug = bank
       .toLowerCase()
-      .replace(/&/g, 'and')
+      .trim()
       .replace(/\s+/g, '-')
-      .replace(/-+/g, '-');
+      .replace(/[^\w-]+/g, ''); // Remove non-word chars
 
     return {
       url: `${baseUrl}/convert/${safeSlug}-statement-to-csv`,
-      lastModified: new Date().toISOString(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
+      // Setting this to today's date tells Google the content has been updated
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const, // Changed from monthly to weekly to encourage re-crawling
+      priority: 0.8,
     };
   });
 
   return [
     {
       url: baseUrl,
-      lastModified: new Date().toISOString(),
-      changeFrequency: 'weekly' as const,
+      lastModified: new Date(),
+      changeFrequency: 'daily' as const,
       priority: 1,
     },
     {
-      // NEW PILLAR PAGE
       url: `${baseUrl}/convert/pdf-bank-statement-to-csv`,
-      lastModified: new Date().toISOString(),
+      lastModified: new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.9,
     },
     {
       url: `${baseUrl}/pricing`,
-      lastModified: new Date().toISOString(),
+      lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.8,
     },
     {
       url: `${baseUrl}/convert`,
-      lastModified: new Date().toISOString(),
-      changeFrequency: 'weekly' as const,
+      lastModified: new Date(),
+      changeFrequency: 'daily' as const,
       priority: 0.9,
     },
     ...bankUrls,

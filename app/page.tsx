@@ -1,6 +1,21 @@
+import { Metadata } from 'next'
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 
+// 1. SEO METADATA - This controls how you appear on Google
+export const metadata: Metadata = {
+  title: 'DocNeat.com — Bank Statement Converter',
+  description: 'The world\'s fastest AI bank statement converter. Extract transaction data from PDF statements into Excel or CSV with verified accuracy.',
+  openGraph: {
+    title: 'DocNeat.com — Bank Statement Converter',
+    description: 'Convert PDF bank statements to Excel and CSV instantly.',
+    siteName: 'DocNeat.com - Bank Statement Converter',
+    type: 'website',
+    url: 'https://www.docneat.com',
+  }
+}
+
+// 2. VISUAL COMPONENTS
 const Dropzone = dynamic(() => import('@/components/Dropzone'), {
   ssr: false,
   loading: () => (

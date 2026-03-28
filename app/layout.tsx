@@ -8,6 +8,7 @@ import { ClerkProvider } from '@clerk/nextjs'
 const Navbar = dynamic(() => import('@/components/Navbar'), { ssr: false });
 
 export const metadata: Metadata = {
+  // CLEANED: This sets the "Site Name" and default title without adding extra suffixes
   title: 'DocNeat.com — Secure. Fast. Accurate.',
   description: 'Convert bank statements, invoices, receipts to Excel/CSV instantly and securely',
   verification: {

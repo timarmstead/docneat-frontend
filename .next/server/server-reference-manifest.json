@@ -2,23 +2,25 @@
   "node": {
     "52102190fc3cd1045ab8710da6fdb08771fffc3d": {
       "workers": {
-        "app/convert/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Ftimothyarmstead%2FDocuments%2FRepository%20Location%2Fdocneat-frontend%2Fnode_modules%2F%40clerk%2Fnextjs%2Fdist%2Fesm%2Fapp-router%2Fserver-actions.js%22%2C%5B%22invalidateCacheAction%22%5D%5D%5D&__client_imported__=true!",
-        "app/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Ftimothyarmstead%2FDocuments%2FRepository%20Location%2Fdocneat-frontend%2Fnode_modules%2F%40clerk%2Fnextjs%2Fdist%2Fesm%2Fapp-router%2Fserver-actions.js%22%2C%5B%22invalidateCacheAction%22%5D%5D%2C%5B%22%2FUsers%2Ftimothyarmstead%2FDocuments%2FRepository%20Location%2Fdocneat-frontend%2Fapp%2Factions%2Fcredits.ts%22%2C%5B%22subtractCredit%22%5D%5D%5D&__client_imported__=true!"
+        "app/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Ftimothyarmstead%2FDocuments%2FRepository%20Location%2Fdocneat-frontend%2Fnode_modules%2F%40clerk%2Fnextjs%2Fdist%2Fesm%2Fapp-router%2Fserver-actions.js%22%2C%5B%22invalidateCacheAction%22%5D%5D%2C%5B%22%2FUsers%2Ftimothyarmstead%2FDocuments%2FRepository%20Location%2Fdocneat-frontend%2Fapp%2Factions%2Fcredits.ts%22%2C%5B%22subtractCredit%22%5D%5D%5D&__client_imported__=true!",
+        "app/convert/[bank]/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Ftimothyarmstead%2FDocuments%2FRepository%20Location%2Fdocneat-frontend%2Fnode_modules%2F%40clerk%2Fnextjs%2Fdist%2Fesm%2Fapp-router%2Fserver-actions.js%22%2C%5B%22invalidateCacheAction%22%5D%5D%2C%5B%22%2FUsers%2Ftimothyarmstead%2FDocuments%2FRepository%20Location%2Fdocneat-frontend%2Fapp%2Factions%2Fcredits.ts%22%2C%5B%22subtractCredit%22%5D%5D%5D&__client_imported__=true!"
       },
       "layer": {
-        "app/convert/page": "action-browser",
-        "app/page": "action-browser"
+        "app/page": "action-browser",
+        "app/convert/[bank]/page": "action-browser"
       }
     },
     "aff833747cb568c76fac5a7c96ed17d7061e337c": {
       "workers": {
-        "app/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Ftimothyarmstead%2FDocuments%2FRepository%20Location%2Fdocneat-frontend%2Fnode_modules%2F%40clerk%2Fnextjs%2Fdist%2Fesm%2Fapp-router%2Fserver-actions.js%22%2C%5B%22invalidateCacheAction%22%5D%5D%2C%5B%22%2FUsers%2Ftimothyarmstead%2FDocuments%2FRepository%20Location%2Fdocneat-frontend%2Fapp%2Factions%2Fcredits.ts%22%2C%5B%22subtractCredit%22%5D%5D%5D&__client_imported__=true!"
+        "app/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Ftimothyarmstead%2FDocuments%2FRepository%20Location%2Fdocneat-frontend%2Fnode_modules%2F%40clerk%2Fnextjs%2Fdist%2Fesm%2Fapp-router%2Fserver-actions.js%22%2C%5B%22invalidateCacheAction%22%5D%5D%2C%5B%22%2FUsers%2Ftimothyarmstead%2FDocuments%2FRepository%20Location%2Fdocneat-frontend%2Fapp%2Factions%2Fcredits.ts%22%2C%5B%22subtractCredit%22%5D%5D%5D&__client_imported__=true!",
+        "app/convert/[bank]/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Ftimothyarmstead%2FDocuments%2FRepository%20Location%2Fdocneat-frontend%2Fnode_modules%2F%40clerk%2Fnextjs%2Fdist%2Fesm%2Fapp-router%2Fserver-actions.js%22%2C%5B%22invalidateCacheAction%22%5D%5D%2C%5B%22%2FUsers%2Ftimothyarmstead%2FDocuments%2FRepository%20Location%2Fdocneat-frontend%2Fapp%2Factions%2Fcredits.ts%22%2C%5B%22subtractCredit%22%5D%5D%5D&__client_imported__=true!"
       },
       "layer": {
-        "app/page": "action-browser"
+        "app/page": "action-browser",
+        "app/convert/[bank]/page": "action-browser"
       }
     }
   },
   "edge": {},
-  "encryptionKey": "tcnktNlIwbyJ/FfKWf/WCWCJShI6Sa6lTJBqrtnnES4="
+  "encryptionKey": "olAJRQ/+4IJdWhxEMUTZVWVWuBbfXFasAHp08+ZROLU="
 }

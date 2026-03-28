@@ -126,7 +126,36 @@ export default function BankPageClient({ params }: { params: { bank: string } })
               </div>
             </div>
 
-            <div className="mt-20 p-8 bg-slate-50 rounded-3xl border border-slate-100">
+            {/* NEW TECHNICAL SPECIFICATIONS TABLE FOR PSEO INDEXING */}
+            <div className="mt-20 border border-slate-100 rounded-2xl overflow-hidden shadow-sm">
+              <div className="bg-slate-50 border-b border-slate-100 px-6 py-4">
+                <h3 className="text-lg font-bold text-[#111729]">Technical Specifications: {bankDisplayName}</h3>
+              </div>
+              <div className="bg-white p-0">
+                <table className="w-full text-left border-collapse">
+                  <tbody>
+                    <tr className="border-b border-slate-50">
+                      <td className="px-6 py-4 text-sm font-semibold text-slate-500 w-1/3 bg-slate-50/30">Document Source</td>
+                      <td className="px-6 py-4 text-sm text-slate-600">Standard {bankDisplayName} Bank PDF</td>
+                    </tr>
+                    <tr className="border-b border-slate-50">
+                      <td className="px-6 py-4 text-sm font-semibold text-slate-500 bg-slate-50/30">Processing Engine</td>
+                      <td className="px-6 py-4 text-sm text-emerald-600 font-medium">DocNeat Financial OCR (v2.1)</td>
+                    </tr>
+                    <tr className="border-b border-slate-50">
+                      <td className="px-6 py-4 text-sm font-semibold text-slate-500 bg-slate-50/30">Encryption Level</td>
+                      <td className="px-6 py-4 text-sm text-slate-600">256-bit AES (SSL Secured)</td>
+                    </tr>
+                    <tr>
+                      <td className="px-6 py-4 text-sm font-semibold text-slate-500 bg-slate-50/30">Target Compatibility</td>
+                      <td className="px-6 py-4 text-sm text-slate-600">QuickBooks, Xero, Sage, Excel</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div className="mt-12 p-8 bg-slate-50 rounded-3xl border border-slate-100">
                 <h4 className="text-lg font-bold text-[#111729] mb-4 flex items-center gap-2">
                     <CheckCircle2 className="text-emerald-500 w-5 h-5" />
                     Why use an AI converter for {bankDisplayName}?

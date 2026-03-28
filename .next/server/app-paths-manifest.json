@@ -1,4 +1,4 @@
 {
-  "/convert/page": "app/convert/page.js",
+  "/convert/[bank]/page": "app/convert/[bank]/page.js",
   "/page": "app/page.js"
 }

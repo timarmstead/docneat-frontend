@@ -1,1 +1,1 @@
-self.__REACT_LOADABLE_MANIFEST="{}"
+self.__REACT_LOADABLE_MANIFEST="{\"app/components/sections/hero.tsx -> ../../components/Dropzone\":{\"id\":\"app/components/sections/hero.tsx -> ../../components/Dropzone\",\"files\":[\"static/chunks/_app-pages-browser_app_components_Dropzone_tsx.js\"]}}"

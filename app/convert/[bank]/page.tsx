@@ -2,40 +2,33 @@ import { Metadata } from 'next'
 import BankPageClient from './BankPageClient'
 
 export async function generateMetadata({ params }: { params: { bank: string } }): Promise<Metadata> {
+  // We take the EXACT slug from the URL (e.g., "chase-statement-to-csv")
   const bankParam = params?.bank || "";
-  const slugParts = bankParam.split('-');
   
-  // Logic to extract the bank name from the URL slug
-  const ignoredWords = ['convert', 'statement', 'to', 'csv', 'pdf', 'conversion'];
-  const nameParts = slugParts.filter(part => !ignoredWords.includes(part.toLowerCase()));
+  // We split it by dashes and remove the "filler" words to find the bank name
+  const nameParts = bankParam
+    .split('-')
+    .filter(word => !['convert', 'statement', 'to', 'csv', 'pdf', 'excel', 'xlsx', 'converter'].includes(word.toLowerCase()));
 
+  // We capitalize it (e.g., "chase" becomes "Chase")
   const bankDisplayName = nameParts.length > 0 
     ? nameParts.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
     : "Bank";
 
   return {
-    // Optimized Title: Targeting "Convert Chase Statement to Excel"
-    title: `Convert ${bankDisplayName} PDF Statement to Excel & CSV | DocNeat Statement Converter`,
+    // This ONLY changes what shows up on Google and in the Browser Tab
+    title: `Convert ${bankDisplayName} PDF Statement to Excel & CSV | DocNeat`,
     
-    // Optimized Description: High-conversion marketing copy
-    description: `Instantly convert ${bankDisplayName} PDF bank statements to Excel (XLS) or CSV with AI-powered accuracy. Secure, private processing for professional bookkeeping and audits.`,
+    description: `Instantly convert ${bankDisplayName} PDF bank statements to Excel or CSV with AI-powered accuracy. Secure, private processing by DocNeat Statement Converter.`,
     
-    // Social media / OpenGraph settings
     openGraph: {
-      title: `Convert ${bankDisplayName} PDF to Excel & CSV | DocNeat`,
-      description: `Fast and secure ${bankDisplayName} statement converter.`,
-      type: 'website',
+      title: `Convert ${bankDisplayName} PDF to Excel | DocNeat`,
+      description: `Fast and secure ${bankDisplayName} statement conversion.`,
       url: `https://www.docneat.com/convert/${bankParam}`,
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: `Convert ${bankDisplayName} PDF to Excel & CSV`,
-      description: `AI-powered ${bankDisplayName} statement conversion.`,
     }
   }
 }
 
 export default function BankPage({ params }: { params: { bank: string } }) {
-  // This passes the bank parameter to the Client component for rendering the page content
   return <BankPageClient params={params} />
 }

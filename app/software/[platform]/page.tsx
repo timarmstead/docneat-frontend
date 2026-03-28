@@ -1,9 +1,28 @@
-"use client"; 
-
+import { Metadata } from 'next'
 import Hero from "@/components/sections/hero";
 import { CheckCircle2, ArrowRightLeft, FileSpreadsheet, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 
+// 1. GENERATE HIGH-CTR METADATA
+export async function generateMetadata({ params }: { params: { platform: string } }): Promise<Metadata> {
+  const platformRaw = params.platform.split('-').pop() || "Accounting Software";
+  const platformName = platformRaw.charAt(0).toUpperCase() + platformRaw.slice(1);
+
+  return {
+    // Optimized Title: Matches "Import PDF to QuickBooks" intent
+    title: `Import PDF Bank Statements into ${platformName} | DocNeat Converter`,
+    
+    // Optimized Description: Focuses on "No Manual Entry" and "Audit-Ready"
+    description: `The fastest way to convert PDF bank statements for ${platformName} import. Automatically format transaction data into clean, audit-ready CSVs with AI-powered accuracy.`,
+    
+    openGraph: {
+      title: `Import PDF to ${platformName} | DocNeat`,
+      description: `Seamless bank statement conversion for ${platformName}.`,
+    }
+  }
+}
+
+// 2. PAGE COMPONENT
 export default function SoftwarePage({ params }: { params: { platform: string } }) {
   const platformRaw = params.platform.split('-').pop() || "Accounting Software";
   const platformName = platformRaw.charAt(0).toUpperCase() + platformRaw.slice(1);
@@ -68,30 +87,30 @@ export default function SoftwarePage({ params }: { params: { platform: string } 
               </div>
             </div>
 
-            {/* INTEGRATION TABLE */}
             <div className="mt-20 border border-slate-100 rounded-2xl overflow-hidden shadow-sm">
               <div className="bg-slate-50 border-b border-slate-100 px-6 py-4">
                 <h3 className="text-lg font-bold text-[#111729]">{platformName} Import Specs</h3>
               </div>
-              <table className="w-full text-left border-collapse">
-                <tbody>
-                  <tr className="border-b border-slate-50">
-                    <td className="px-6 py-4 text-sm font-semibold text-slate-500 w-1/3 bg-slate-50/30">Output Format</td>
-                    <td className="px-6 py-4 text-sm text-slate-600">CSV (Optimized for {platformName})</td>
-                  </tr>
-                  <tr className="border-b border-slate-50">
-                    <td className="px-6 py-4 text-sm font-semibold text-slate-500 bg-slate-50/30">Date Format</td>
-                    <td className="px-6 py-4 text-sm text-slate-600">Auto-detected (MM/DD/YYYY or DD/MM/YYYY)</td>
-                  </tr>
-                  <tr>
-                    <td className="px-6 py-4 text-sm font-semibold text-slate-500 bg-slate-50/30">Data Privacy</td>
-                    <td className="px-6 py-4 text-sm text-emerald-600 font-medium">Memory-only processing (No retention)</td>
-                  </tr>
-                </tbody>
-              </table>
+              <div className="bg-white p-0">
+                <table className="w-full text-left border-collapse">
+                  <tbody>
+                    <tr className="border-b border-slate-50">
+                      <td className="px-6 py-4 text-sm font-semibold text-slate-500 w-1/3 bg-slate-50/30">Output Format</td>
+                      <td className="px-6 py-4 text-sm text-slate-600">CSV (Optimized for {platformName})</td>
+                    </tr>
+                    <tr className="border-b border-slate-50">
+                      <td className="px-6 py-4 text-sm font-semibold text-slate-500 bg-slate-50/30">Date Format</td>
+                      <td className="px-6 py-4 text-sm text-slate-600">Auto-detected (MM/DD/YYYY or DD/MM/YYYY)</td>
+                    </tr>
+                    <tr>
+                      <td className="px-6 py-4 text-sm font-semibold text-slate-500 bg-slate-50/30">Data Privacy</td>
+                      <td className="px-6 py-4 text-sm text-emerald-600 font-medium">Memory-only processing (No retention)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
 
-            {/* LINKING BACK TO BANKS */}
             <div className="mt-24 border-t border-slate-100 pt-16">
               <h3 className="text-xl font-bold text-[#111729] mb-8">Popular Banks for {platformName}</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

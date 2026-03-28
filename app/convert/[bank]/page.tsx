@@ -14,17 +14,18 @@ export async function generateMetadata({ params }: { params: { bank: string } })
     : "Bank";
 
   return {
-    // This is the blue link title people see on Google
-    title: `Convert ${bankDisplayName} PDF Statement to Excel & CSV | DocNeat`,
+    // Optimized Title: Targeting "Convert Chase Statement to Excel"
+    title: `Convert ${bankDisplayName} PDF Statement to Excel & CSV | DocNeat Statement Converter`,
     
-    // This is the grey snippet text below the link on Google
+    // Optimized Description: High-conversion marketing copy
     description: `Instantly convert ${bankDisplayName} PDF bank statements to Excel (XLS) or CSV with AI-powered accuracy. Secure, private processing for professional bookkeeping and audits.`,
     
-    // Social media preview settings
+    // Social media / OpenGraph settings
     openGraph: {
-      title: `Convert ${bankDisplayName} PDF to Excel & CSV`,
+      title: `Convert ${bankDisplayName} PDF to Excel & CSV | DocNeat`,
       description: `Fast and secure ${bankDisplayName} statement converter.`,
       type: 'website',
+      url: `https://www.docneat.com/convert/${bankParam}`,
     },
     twitter: {
       card: 'summary_large_image',
@@ -35,5 +36,6 @@ export async function generateMetadata({ params }: { params: { bank: string } })
 }
 
 export default function BankPage({ params }: { params: { bank: string } }) {
+  // This passes the bank parameter to the Client component for rendering the page content
   return <BankPageClient params={params} />
 }

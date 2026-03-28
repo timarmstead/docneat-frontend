@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: { params: { platform: string 
 
   return {
     // Optimized Title: Matches "Import PDF to QuickBooks" intent
-    title: `Import PDF Bank Statements into ${platformName} | DocNeat Converter`,
+    title: `Import PDF Bank Statements into ${platformName} | DocNeat Statement Converter`,
     
     // Optimized Description: Focuses on "No Manual Entry" and "Audit-Ready"
     description: `The fastest way to convert PDF bank statements for ${platformName} import. Automatically format transaction data into clean, audit-ready CSVs with AI-powered accuracy.`,

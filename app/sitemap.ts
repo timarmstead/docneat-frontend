@@ -3,7 +3,7 @@ import { MetadataRoute } from 'next'
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://www.docneat.com'
 
-  // This list must stay synced with your supported banks
+  // Standardized Bank List
   const bankList = [
     "Chase", "Bank of America", "Wells Fargo", "Citibank", "Capital One", 
     "TD Bank", "PNC Bank", "US Bank", "RBC", "BMO", "Scotiabank", "CIBC",
@@ -16,23 +16,34 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "First Republic", "Regions Bank", "M&T Bank", "Huntington", "KeyBank", "Discover"
   ]
 
+  // Software Integration Cluster
+  const softwareList = ["quickbooks", "xero", "sage", "excel", "freshbooks"]
+
+  // 1. Generate Bank Pages URLs
   const bankUrls = bankList.map((bank) => {
-    // Standardize slug to match the [bank] dynamic route expectations
     const safeSlug = bank
       .toLowerCase()
       .trim()
       .replace(/\s+/g, '-')
-      .replace(/[^\w-]+/g, ''); // Remove non-word chars
+      .replace(/[^\w-]+/g, '');
 
     return {
       url: `${baseUrl}/convert/${safeSlug}-statement-to-csv`,
-      // Setting this to today's date tells Google the content has been updated
       lastModified: new Date(),
-      changeFrequency: 'weekly' as const, // Changed from monthly to weekly to encourage re-crawling
+      changeFrequency: 'weekly' as const,
       priority: 0.8,
     };
   });
 
+  // 2. Generate Software Integration URLs
+  const softwareUrls = softwareList.map((platform) => ({
+    url: `${baseUrl}/software/convert-pdf-to-${platform}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.9,
+  }));
+
+  // 3. Return Combined Sitemap
   return [
     {
       url: baseUrl,
@@ -59,5 +70,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     ...bankUrls,
+    ...softwareUrls,
   ]
 }

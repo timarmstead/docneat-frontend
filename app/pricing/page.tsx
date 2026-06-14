@@ -5,14 +5,34 @@ import { useState } from 'react';
 export default function Pricing() {
   const [loading, setLoading] = useState<string | null>(null);
 
-  const handleCheckout = (url: string, id: string) => {
+  const handleCheckout = async (priceId: string, id: string) => {
     setLoading(id);
-    // Direct redirect to your Stripe Payment Link
-    window.location.href = url;
+    
+    try {
+      const response = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ priceId }),
+      });
+
+      const data = await response.json();
+
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        console.error('No URL returned from checkout API');
+        setLoading(null);
+      }
+    } catch (error) {
+      console.error('Checkout failed:', error);
+      setLoading(null);
+    }
   };
 
+  /* Background and text colors matching site theme. Padding kept at pt-32 md:pt-44 */
   return (
-    /* Background and text colors matching site theme. Padding kept at pt-32 md:pt-44 */
     <div className="min-h-screen bg-slate-900 text-slate-300 pt-32 md:pt-44 pb-20">
       <div className="max-w-7xl mx-auto px-6 text-center">
         
@@ -42,7 +62,7 @@ export default function Pricing() {
               <li className="flex items-start text-sm">✓ <span className="ml-2">Email support</span></li>
             </ul>
             <button 
-              onClick={() => handleCheckout('https://buy.stripe.com/00wcN551v0IQ5Bi3541gs03', 'starter')}
+              onClick={() => handleCheckout('price_1T3EewGWw5FE61zBrfAEqUDA', 'starter')}
               disabled={!!loading}
               className="w-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 font-bold py-3 rounded-xl transition disabled:opacity-50 text-sm"
             >
@@ -65,7 +85,7 @@ export default function Pricing() {
               <li className="flex items-start text-sm">✓ <span className="ml-2">Priority support</span></li>
             </ul>
             <button 
-              onClick={() => handleCheckout('https://buy.stripe.com/cNicN551vbnu2p6axw1gs04', 'pro')}
+              onClick={() => handleCheckout('price_1T3EfqGWw5FE61zBmse60X9V', 'pro')}
               disabled={!!loading}
               className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 rounded-xl transition disabled:opacity-50 shadow-lg active:scale-95"
             >
@@ -85,7 +105,7 @@ export default function Pricing() {
               <li className="flex items-start text-sm">✓ <span className="ml-2">Dedicated Account Manager</span></li>
             </ul>
             <button 
-              onClick={() => handleCheckout('https://buy.stripe.com/00w3cvbpT0IQ5BieNM1gs05', 'business')}
+              onClick={() => handleCheckout('price_1T3EgWGWw5FE61zBCy208ve3', 'business')}
               disabled={!!loading}
               className="w-full bg-white hover:bg-slate-100 text-slate-900 font-bold py-3 rounded-xl transition disabled:opacity-50 text-sm active:scale-95"
             >

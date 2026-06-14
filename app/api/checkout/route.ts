@@ -31,8 +31,11 @@ export async function POST(req: Request) {
       ],
       mode: 'subscription',
       allow_promotion_codes: true, // <-- Enables the coupon box on checkout
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?success=true`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/pricing?canceled=true`,
+      
+      // HARDCODED URLs to bypass Vercel environment variable issues
+      success_url: `https://www.docneat.com/dashboard?success=true`,
+      cancel_url: `https://www.docneat.com/pricing?canceled=true`,
+      
       metadata: {
         userId: userId || '', // Attach Clerk ID to the transaction payload
       },

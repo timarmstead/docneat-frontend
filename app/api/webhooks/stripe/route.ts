@@ -1,88 +1,73 @@
-// app/api/webhooks/stripe/route.ts
 import { NextResponse } from 'next/server';
+import { clerkClient } from '@clerk/nextjs/server';
 import Stripe from 'stripe';
-import { createClerkClient } from '@clerk/nextjs/server';
 
-// All secrets are now safely swapped for server environment references
-const stripe = new Stripe(process.env.STRIPE_SERVER_SECRET_KEY!);
+// Initialize Stripe
+const stripe = new Stripe(process.env.STRIPE_SERVER_SECRET_KEY as string, {
+  apiVersion: '2023-10-16',
+});
+
+// Load the webhook secret (whsec_...) from environment variables
+const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET as string;
 
 export async function POST(req: Request) {
-  const payload = await req.text();
-  const sig = req.headers.get('stripe-signature');
-  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+  // 1. Retrieve the raw body and signature header required by Stripe
+  const body = await req.text();
+  const sig = req.headers.get('stripe-signature') as string;
 
   let event: Stripe.Event;
 
+  // 2. Cryptographically verify the event came from Stripe, not a bad actor
   try {
     if (!sig || !webhookSecret) {
-      console.error("Missing signature parameter or webhook secret environment setup");
-      return new NextResponse('Webhook configuration error', { status: 400 });
+      console.error('Missing Stripe signature or webhook secret');
+      return new NextResponse('Missing signature or secret', { status: 400 });
     }
-    event = stripe.webhooks.constructEvent(payload, sig, webhookSecret);
+    event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
   } catch (err: any) {
-    console.error(`Webhook Signature Verification Failed: ${err.message}`);
+    console.error(`Webhook Verification Error: ${err.message}`);
     return new NextResponse(`Webhook Error: ${err.message}`, { status: 400 });
   }
 
+  // 3. Process the successful payment event
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object as Stripe.Checkout.Session;
     
+    // Extract the exact metadata we passed in during the checkout route
+    const customerEmail = session.customer_details?.email;
     const userId = session.metadata?.userId;
-    const email = session.customer_details?.email;
-    const allocatedCredits = 100; 
 
-    // Pulls your live Clerk access safely from the server environment
-    const clerk = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY });
+    console.log(`Processing checkout for User ID: ${userId} | Email: ${customerEmail}`);
 
     try {
+      // Initialize the Clerk backend client
+      const client = await clerkClient();
+      
       if (userId) {
-        console.log(`Processing paid user upgrade for Clerk User ID: ${userId}`);
-        const user = await clerk.users.getUser(userId);
-        const existingCredits = (user.publicMetadata as any).credits ?? 0;
-
-        await clerk.users.updateUserMetadata(userId, {
+        // Case A: Existing logged-in user upgrading
+        // Update their profile to reflect their new tier and credits
+        await client.users.updateUserMetadata(userId, {
           publicMetadata: {
-            credits: existingCredits + allocatedCredits,
-            stripeSubscriptionId: session.subscription as string,
+            stripeCustomerId: session.customer,
+            stripeSubscriptionId: session.subscription,
+            plan: 'premium',
+            credits: 100, 
           },
         });
-        console.log(`Successfully upgraded credits for User ID: ${userId}`);
-
-      } else if (email) {
-        console.log(`Processing auto-provisioning for Guest Customer: ${email}`);
-        const existingUsers = await clerk.users.getUserList({ emailAddress: [email] });
+        console.log(`Successfully upgraded Clerk user: ${userId}`);
         
-        if (existingUsers.data.length > 0) {
-          const targetUser = existingUsers.data[0];
-          const existingCredits = (targetUser.publicMetadata as any).credits ?? 0;
-          
-          await clerk.users.updateUserMetadata(targetUser.id, {
-            publicMetadata: {
-              credits: existingCredits + allocatedCredits,
-              stripeSubscriptionId: session.subscription as string,
-            },
-          });
-          console.log(`Linked subscription to existing account found for email: ${email}`);
-        } else {
-          const temporaryPassword = `DocNeatPass_${Math.random().toString(36).slice(-8)}!`;
-          
-          await clerk.users.createUser({
-            emailAddress: [email],
-            password: temporaryPassword,
-            skipPasswordRequirement: false,
-            publicMetadata: {
-              credits: allocatedCredits,
-              stripeSubscriptionId: session.subscription as string,
-            },
-          });
-          console.log(`Clerk account auto-created for new customer: ${email}.`);
-        }
+      } else if (customerEmail) {
+        // Case B: Guest checkout (Auto-provisioning)
+        // Add logic here to create an account or send an invite via Clerk BAPI
+        console.log(`Guest checkout recorded for email: ${customerEmail}`);
       }
-    } catch (apiErr) {
-      console.error("Failed executing synchronization logic during webhook transaction:", apiErr);
-      return new NextResponse('Internal Execution Error', { status: 500 });
+    } catch (error) {
+      console.error('Clerk Database Error: Failed to update user metadata', error);
+      // Return a 500 error so Stripe knows to retry the webhook later
+      return new NextResponse('Error updating User Metadata', { status: 500 });
     }
   }
 
-  return new NextResponse('Webhook processed completely', { status: 200 });
+  // 4. Return a 200 OK to Stripe so they mark the event as successfully delivered
+  return new NextResponse('Webhook processed successfully', { status: 200 });
 }

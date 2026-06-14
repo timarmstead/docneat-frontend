@@ -1,41 +1,48 @@
-// app/api/checkout/route.ts
 import { NextResponse } from 'next/server';
+import { auth } from '@clerk/nextjs/server';
 import Stripe from 'stripe';
 
-// Pass only the environment variable—no empty trailing object fields!
-const stripe = new Stripe(process.env.STRIPE_SERVER_SECRET_KEY!);
+// Initialize Stripe with your secret key
+const stripe = new Stripe(process.env.STRIPE_SERVER_SECRET_KEY as string, {
+  apiVersion: '2023-10-16', // Use your current API version
+});
 
-export async function POST(request: Request) {
+export async function POST(req: Request) {
   try {
-    const body = await request.json();
-    const { priceId, userId } = body;
+    // 1. Get the authenticated user's ID from Clerk
+    const { userId } = auth(); 
+    
+    // 2. Parse the request body (e.g., priceId sent from the frontend)
+    const body = await req.json();
+    const { priceId } = body; 
 
     if (!priceId) {
-      return NextResponse.json({ error: 'Missing priceId' }, { status: 400 });
+      return new NextResponse('Price ID is required', { status: 400 });
     }
 
-    const metadata: Record<string, string> = {};
-    if (userId) {
-      metadata.userId = userId;
-    }
-
+    // 3. Create the Stripe Checkout Session
     const session = await stripe.checkout.sessions.create({
-      mode: 'subscription',
       payment_method_types: ['card'],
-      line_items: [{ price: priceId, quantity: 1 }],
-      success_url: `${process.env.NEXT_PUBLIC_URL || 'https://docneat.com'}/success`,
-      cancel_url: `${process.env.NEXT_PUBLIC_URL || 'https://docneat.com'}/pricing`,
-      metadata: metadata,
+      line_items: [
+        {
+          price: priceId,
+          quantity: 1,
+        },
+      ],
+      mode: 'subscription',
+      allow_promotion_codes: true, // <-- Enables the coupon box on checkout
+      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?success=true`,
+      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/pricing?canceled=true`,
+      metadata: {
+        userId: userId || '', // Attach Clerk ID to the transaction payload
+      },
     });
 
+    // 4. Return the secure Stripe URL to the frontend
     return NextResponse.json({ url: session.url });
-  } catch (error) {
-    console.error('Stripe checkout error:', error);
-    return NextResponse.json(
-      { error: 'Failed to create checkout session' },
-      { status: 500 }
-    );
+
+  } catch (error: any) {
+    console.error('Stripe Checkout Error:', error);
+    return new NextResponse('Internal Server Error', { status: 500 });
   }
 }
-
-export const dynamic = 'force-dynamic';

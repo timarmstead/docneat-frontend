@@ -1,5 +1,8 @@
 // app/success/page.tsx
+'use client';
+
 import Link from 'next/link';
+import { SignInButton } from '@clerk/nextjs';
 
 export default function SuccessPage() {
   return (
@@ -26,8 +29,7 @@ export default function SuccessPage() {
           <strong>Didn't receive an email?</strong> Check your spam folder, or{' '}
           <a href="mailto:support@docneat.com" className="underline font-medium">
             contact support
-          </a>
-          .
+          </a>.
         </div>
 
         {/* CTAs */}
@@ -38,12 +40,11 @@ export default function SuccessPage() {
           >
             Start Converting Statements
           </Link>
-          <Link
-            href="/sign-in"
-            className="w-full border border-slate-200 hover:border-slate-300 text-slate-600 font-medium py-3 px-6 rounded-xl transition-all"
-          >
-            Sign In to Your Account
-          </Link>
+          <SignInButton mode="modal">
+            <button className="w-full border border-slate-200 hover:border-slate-300 text-slate-600 font-medium py-3 px-6 rounded-xl transition-all">
+              Sign In to Your Account
+            </button>
+          </SignInButton>
         </div>
 
       </div>

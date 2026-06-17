@@ -4,10 +4,8 @@ import Stripe from 'stripe';
 import { createClerkClient } from '@clerk/nextjs/server';
 
 const stripe = new Stripe(process.env.STRIPE_SERVER_SECRET_KEY!);
-
 const clerk = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY });
 
-// Map Stripe Price IDs to page credits
 const PLAN_CREDITS: Record<string, number> = {
   'price_1T3EewGWw5FE61zBrfAEqUDA': 200,   // Starter
   'price_1T3EfqGWw5FE61zBmse60X9V': 1000,  // Professional
@@ -39,8 +37,8 @@ export async function POST(req: Request) {
     const email = session.customer_details?.email;
     const subscriptionId = session.subscription as string;
 
-    // Get the price ID from the subscription to determine plan
-    let allocatedCredits = 200; // default to Starter
+    // Determine credits from plan
+    let allocatedCredits = 200;
     try {
       const subscription = await stripe.subscriptions.retrieve(subscriptionId);
       const priceId = subscription.items.data[0]?.price.id;
@@ -53,30 +51,28 @@ export async function POST(req: Request) {
     }
 
     try {
-      // Case 1: Logged-in user upgraded their plan
       if (userId) {
+        // Case 1: Logged-in user upgrading
         console.log(`Upgrading existing Clerk user: ${userId}`);
         const user = await clerk.users.getUser(userId);
         const existingCredits = (user.publicMetadata as any).credits ?? 0;
-
         await clerk.users.updateUserMetadata(userId, {
           publicMetadata: {
             credits: existingCredits + allocatedCredits,
             stripeSubscriptionId: subscriptionId,
           },
         });
-        console.log(`Credits updated for user ${userId}: ${existingCredits} + ${allocatedCredits}`);
+        console.log(`Credits updated for user ${userId}`);
 
-      // Case 2: Guest checkout — find or create Clerk account
       } else if (email) {
-        console.log(`Guest checkout for email: ${email}`);
+        // Case 2: Guest checkout
+        console.log(`Guest checkout for: ${email}`);
         const existingUsers = await clerk.users.getUserList({ emailAddress: [email] });
 
         if (existingUsers.data.length > 0) {
-          // Account exists — just top up credits
+          // Account exists — top up credits
           const targetUser = existingUsers.data[0];
           const existingCredits = (targetUser.publicMetadata as any).credits ?? 0;
-
           await clerk.users.updateUserMetadata(targetUser.id, {
             publicMetadata: {
               credits: existingCredits + allocatedCredits,
@@ -86,26 +82,38 @@ export async function POST(req: Request) {
           console.log(`Topped up existing account for ${email}`);
 
         } else {
-          // No account — create one and send invite email
-          await clerk.users.createUser({
+          // No account — create user with a password so they can sign in
+          // We set a temporary password and send them a sign-in token
+          const tempPassword = `DocNeat_${Math.random().toString(36).slice(-10)}!A1`;
+          
+          const newUser = await clerk.users.createUser({
             emailAddress: [email],
-            skipPasswordRequirement: true,
+            password: tempPassword,
             publicMetadata: {
               credits: allocatedCredits,
               stripeSubscriptionId: subscriptionId,
+              mustResetPassword: true,
             },
           });
+          console.log(`Created new Clerk user for ${email}: ${newUser.id}`);
 
-          // Send invitation email so user can set their password and log in
+          // Create a sign-in token they can use to access their account
+          const signInToken = await clerk.signInTokens.createSignInToken({
+            userId: newUser.id,
+            expiresInSeconds: 60 * 60 * 24 * 7, // 7 days
+          });
+
+          // Log the token URL — in production you would send this via your email provider
+          const signInUrl = `${process.env.NEXT_PUBLIC_URL || 'https://www.docneat.com'}?__clerk_ticket=${signInToken.token}`;
+          console.log(`Sign-in URL for ${email}: ${signInUrl}`);
+
+          // Send welcome email via Clerk's built-in invitation system
           await clerk.invitations.createInvitation({
             emailAddress: email,
-            redirectUrl: `${process.env.NEXT_PUBLIC_URL || 'https://www.docneat.com'}/sign-in`,
-            publicMetadata: {
-              credits: allocatedCredits,
-            },
+            redirectUrl: `${process.env.NEXT_PUBLIC_URL || 'https://www.docneat.com'}`,
+            ignoreExisting: true,
           });
-
-          console.log(`New Clerk account created and invite sent to ${email}`);
+          console.log(`Invitation sent to ${email}`);
         }
       }
     } catch (apiErr) {

@@ -1,54 +1,116 @@
+// app/api/webhooks/stripe/route.ts
 import { NextResponse } from 'next/server';
-import { clerkClient } from '@clerk/nextjs/server';
 import Stripe from 'stripe';
+import { createClerkClient } from '@clerk/nextjs/server';
 
-const stripe = new Stripe(process.env.STRIPE_SERVER_SECRET_KEY as string, {
-  apiVersion: '2023-10-16',
-});
+const stripe = new Stripe(process.env.STRIPE_SERVER_SECRET_KEY!);
 
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET as string;
+const clerk = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY });
+
+// Map Stripe Price IDs to page credits
+const PLAN_CREDITS: Record<string, number> = {
+  'price_1T3EewGWw5FE61zBrfAEqUDA': 200,   // Starter
+  'price_1T3EfqGWw5FE61zBmse60X9V': 1000,  // Professional
+  'price_1T3EgWGWw5FE61zBCy208ve3': 4000,  // Business
+};
 
 export async function POST(req: Request) {
-  const body = await req.text();
-  const sig = req.headers.get('stripe-signature') as string;
+  const payload = await req.text();
+  const sig = req.headers.get('stripe-signature');
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
   let event: Stripe.Event;
 
   try {
-    event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
+    if (!sig || !webhookSecret) {
+      console.error('Missing stripe-signature or STRIPE_WEBHOOK_SECRET');
+      return new NextResponse('Webhook configuration error', { status: 400 });
+    }
+    event = stripe.webhooks.constructEvent(payload, sig, webhookSecret);
   } catch (err: any) {
+    console.error(`Webhook signature verification failed: ${err.message}`);
     return new NextResponse(`Webhook Error: ${err.message}`, { status: 400 });
   }
 
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object as Stripe.Checkout.Session;
-    const customerEmail = session.customer_details?.email;
+
     const userId = session.metadata?.userId;
+    const email = session.customer_details?.email;
+    const subscriptionId = session.subscription as string;
 
-    // Define plan credit mapping
-    const PLAN_CREDITS: { [key: string]: number } = {
-      'price_1T3EewGWw5FE61zBrfAEqUDA': 200,    // Starter
-      'price_1T3EfqGWw5FE61zBmse60X9V': 1000,   // Pro
-      'price_1T3EgWGWw5FE61zBCy208ve3': 4000    // Business
-    };
+    // Get the price ID from the subscription to determine plan
+    let allocatedCredits = 200; // default to Starter
+    try {
+      const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+      const priceId = subscription.items.data[0]?.price.id;
+      if (priceId && PLAN_CREDITS[priceId]) {
+        allocatedCredits = PLAN_CREDITS[priceId];
+      }
+      console.log(`Plan detected: ${priceId} → ${allocatedCredits} credits`);
+    } catch (err) {
+      console.error('Could not retrieve subscription details:', err);
+    }
 
-    const lineItems = await stripe.checkout.sessions.listLineItems(session.id);
-    const priceId = lineItems.data[0]?.price?.id || '';
-    const creditAmount = PLAN_CREDITS[priceId] || 3;
-    const planName = priceId === 'price_1T3EgWGWw5FE61zBCy208ve3' ? 'business' : priceId === 'price_1T3EfqGWw5FE61zBmse60X9V' ? 'pro' : 'starter';
+    try {
+      // Case 1: Logged-in user upgraded their plan
+      if (userId) {
+        console.log(`Upgrading existing Clerk user: ${userId}`);
+        const user = await clerk.users.getUser(userId);
+        const existingCredits = (user.publicMetadata as any).credits ?? 0;
 
-    const client = await clerkClient();
+        await clerk.users.updateUserMetadata(userId, {
+          publicMetadata: {
+            credits: existingCredits + allocatedCredits,
+            stripeSubscriptionId: subscriptionId,
+          },
+        });
+        console.log(`Credits updated for user ${userId}: ${existingCredits} + ${allocatedCredits}`);
 
-    if (userId) {
-      await client.users.updateUserMetadata(userId, {
-        publicMetadata: { plan: planName, credits: creditAmount },
-      });
-    } else if (customerEmail) {
-      await client.users.createUser({
-        emailAddress: [customerEmail],
-        publicMetadata: { plan: planName, credits: creditAmount },
-        skipPasswordRequirement: true,
-      });
+      // Case 2: Guest checkout — find or create Clerk account
+      } else if (email) {
+        console.log(`Guest checkout for email: ${email}`);
+        const existingUsers = await clerk.users.getUserList({ emailAddress: [email] });
+
+        if (existingUsers.data.length > 0) {
+          // Account exists — just top up credits
+          const targetUser = existingUsers.data[0];
+          const existingCredits = (targetUser.publicMetadata as any).credits ?? 0;
+
+          await clerk.users.updateUserMetadata(targetUser.id, {
+            publicMetadata: {
+              credits: existingCredits + allocatedCredits,
+              stripeSubscriptionId: subscriptionId,
+            },
+          });
+          console.log(`Topped up existing account for ${email}`);
+
+        } else {
+          // No account — create one and send invite email
+          await clerk.users.createUser({
+            emailAddress: [email],
+            skipPasswordRequirement: true,
+            publicMetadata: {
+              credits: allocatedCredits,
+              stripeSubscriptionId: subscriptionId,
+            },
+          });
+
+          // Send invitation email so user can set their password and log in
+          await clerk.invitations.createInvitation({
+            emailAddress: email,
+            redirectUrl: `${process.env.NEXT_PUBLIC_URL || 'https://www.docneat.com'}/sign-in`,
+            publicMetadata: {
+              credits: allocatedCredits,
+            },
+          });
+
+          console.log(`New Clerk account created and invite sent to ${email}`);
+        }
+      }
+    } catch (apiErr) {
+      console.error('Clerk sync error during webhook:', apiErr);
+      return new NextResponse('Internal server error', { status: 500 });
     }
   }
 

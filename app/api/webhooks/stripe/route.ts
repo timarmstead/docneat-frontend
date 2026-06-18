@@ -116,7 +116,7 @@ export async function POST(req: Request) {
             expiresInSeconds: 60 * 60 * 24 * 7,
           });
 
-          const signInUrl = `${process.env.NEXT_PUBLIC_URL || 'https://www.docneat.com'}?__clerk_ticket=${signInToken.token}`;
+          const signInUrl = `${process.env.NEXT_PUBLIC_URL || 'https://www.docneat.com'}/welcome?__clerk_ticket=${signInToken.token}`;
 
           // Send branded welcome email via Resend
           await sendWelcomeEmail({

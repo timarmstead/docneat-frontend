@@ -1,7 +1,5 @@
-// lib/resend.ts
+// app/lib/resend.ts
 import { Resend } from 'resend';
-
-export const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function sendWelcomeEmail({
   email,
@@ -14,6 +12,8 @@ export async function sendWelcomeEmail({
   credits: number;
   planName: string;
 }) {
+  const resend = new Resend(process.env.RESEND_API_KEY);
+  
   await resend.emails.send({
     from: 'DocNeat <noreply@docneat.com>',
     to: email,
@@ -47,7 +47,6 @@ export async function sendWelcomeEmail({
           <tr>
             <td style="background-color:#ffffff;padding:48px 40px;">
               
-              <!-- Success icon -->
               <div style="text-align:center;margin-bottom:32px;">
                 <div style="display:inline-block;background-color:#d1fae5;border-radius:50%;padding:20px;">
                   <span style="font-size:36px;">✅</span>
@@ -63,7 +62,6 @@ export async function sendWelcomeEmail({
                 and you have <strong>${credits} page credits</strong> ready to use.
               </p>
 
-              <!-- Credits box -->
               <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
                 <tr>
                   <td style="background-color:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:20px;text-align:center;">
@@ -75,11 +73,9 @@ export async function sendWelcomeEmail({
               </table>
 
               <p style="margin:0 0 32px;font-size:16px;color:#475569;line-height:1.6;text-align:center;">
-                To access your account and start converting bank statements, 
-                click the button below to set your password.
+                Click the button below to set your password and access your account.
               </p>
 
-              <!-- CTA Button -->
               <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
                 <tr>
                   <td align="center">
@@ -92,7 +88,7 @@ export async function sendWelcomeEmail({
               </table>
 
               <p style="margin:0 0 8px;font-size:13px;color:#94a3b8;text-align:center;">
-                This link expires in 7 days. If you have any issues, contact us at 
+                This link expires in 7 days. Need help? Contact us at 
                 <a href="mailto:support@docneat.com" style="color:#10b981;">support@docneat.com</a>
               </p>
 

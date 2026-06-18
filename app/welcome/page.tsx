@@ -2,12 +2,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useSignIn, useUser } from '@clerk/nextjs';
+import { useSignIn, useClerk } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 
 export default function WelcomePage() {
-  const { signIn, isLoaded: signInLoaded } = useSignIn();
-  const { user, isLoaded: userLoaded } = useUser();
+  const { signIn, isLoaded } = useSignIn();
+  const { user } = useClerk();
   const router = useRouter();
   const [status, setStatus] = useState<'loading' | 'set-password' | 'error'>('loading');
   const [password, setPassword] = useState('');
@@ -16,7 +16,7 @@ export default function WelcomePage() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    if (!signInLoaded) return;
+    if (!isLoaded || !signIn) return;
 
     const ticket = new URLSearchParams(window.location.search).get('__clerk_ticket');
     if (!ticket) {
@@ -27,12 +27,16 @@ export default function WelcomePage() {
     signIn.create({
       strategy: 'ticket',
       ticket,
-    }).then(() => {
-      setStatus('set-password');
+    }).then((result) => {
+      if (result.status === 'complete') {
+        setStatus('set-password');
+      } else {
+        setStatus('error');
+      }
     }).catch(() => {
       setStatus('error');
     });
-  }, [signInLoaded]);
+  }, [isLoaded, signIn]);
 
   const handleSetPassword = async () => {
     if (password.length < 8) {

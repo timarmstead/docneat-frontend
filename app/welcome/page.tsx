@@ -20,20 +20,26 @@ export default function WelcomePage() {
 
     const ticket = new URLSearchParams(window.location.search).get('__clerk_ticket');
     if (!ticket) {
+      console.log('No ticket found in URL');
       setStatus('error');
       return;
     }
+
+    console.log('Attempting ticket sign-in with:', ticket.substring(0, 20) + '...');
 
     signIn.create({
       strategy: 'ticket',
       ticket,
     }).then((result) => {
+      console.log('Clerk ticket result status:', result.status);
       if (result.status === 'complete') {
         setStatus('set-password');
       } else {
+        console.log('Unexpected status:', result.status);
         setStatus('error');
       }
-    }).catch(() => {
+    }).catch((err) => {
+      console.log('Clerk ticket error:', JSON.stringify(err));
       setStatus('error');
     });
   }, [isLoaded, signIn]);

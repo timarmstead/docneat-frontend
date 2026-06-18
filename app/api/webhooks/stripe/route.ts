@@ -2,6 +2,7 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createClerkClient } from '@clerk/nextjs/server';
+import { sendWelcomeEmail } from '@/lib/resend';
 
 const stripe = new Stripe(process.env.STRIPE_SERVER_SECRET_KEY!);
 const clerk = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY });
@@ -10,6 +11,12 @@ const PLAN_CREDITS: Record<string, number> = {
   'price_1T3EewGWw5FE61zBrfAEqUDA': 200,   // Starter
   'price_1T3EfqGWw5FE61zBmse60X9V': 1000,  // Professional
   'price_1T3EgWGWw5FE61zBCy208ve3': 4000,  // Business
+};
+
+const PLAN_NAMES: Record<string, string> = {
+  'price_1T3EewGWw5FE61zBrfAEqUDA': 'Starter',
+  'price_1T3EfqGWw5FE61zBmse60X9V': 'Professional',
+  'price_1T3EgWGWw5FE61zBCy208ve3': 'Business',
 };
 
 export async function POST(req: Request) {
@@ -37,15 +44,19 @@ export async function POST(req: Request) {
     const email = session.customer_details?.email;
     const subscriptionId = session.subscription as string;
 
-    // Determine credits from plan
+    // Determine credits and plan name from price ID
     let allocatedCredits = 200;
+    let planName = 'Starter';
+    let priceId = '';
+
     try {
       const subscription = await stripe.subscriptions.retrieve(subscriptionId);
-      const priceId = subscription.items.data[0]?.price.id;
+      priceId = subscription.items.data[0]?.price.id;
       if (priceId && PLAN_CREDITS[priceId]) {
         allocatedCredits = PLAN_CREDITS[priceId];
+        planName = PLAN_NAMES[priceId];
       }
-      console.log(`Plan detected: ${priceId} → ${allocatedCredits} credits`);
+      console.log(`Plan detected: ${planName} → ${allocatedCredits} credits`);
     } catch (err) {
       console.error('Could not retrieve subscription details:', err);
     }
@@ -60,6 +71,7 @@ export async function POST(req: Request) {
           publicMetadata: {
             credits: existingCredits + allocatedCredits,
             stripeSubscriptionId: subscriptionId,
+            planName,
           },
         });
         console.log(`Credits updated for user ${userId}`);
@@ -77,43 +89,44 @@ export async function POST(req: Request) {
             publicMetadata: {
               credits: existingCredits + allocatedCredits,
               stripeSubscriptionId: subscriptionId,
+              planName,
             },
           });
           console.log(`Topped up existing account for ${email}`);
 
         } else {
-          // No account — create user with a password so they can sign in
-          // We set a temporary password and send them a sign-in token
+          // No account — create user and send welcome email
           const tempPassword = `DocNeat_${Math.random().toString(36).slice(-10)}!A1`;
-          
+
           const newUser = await clerk.users.createUser({
             emailAddress: [email],
             password: tempPassword,
             publicMetadata: {
               credits: allocatedCredits,
               stripeSubscriptionId: subscriptionId,
+              planName,
               mustResetPassword: true,
             },
           });
           console.log(`Created new Clerk user for ${email}: ${newUser.id}`);
 
-          // Create a sign-in token they can use to access their account
+          // Create a 7-day sign-in token
           const signInToken = await clerk.signInTokens.createSignInToken({
             userId: newUser.id,
-            expiresInSeconds: 60 * 60 * 24 * 7, // 7 days
+            expiresInSeconds: 60 * 60 * 24 * 7,
           });
 
-          // Log the token URL — in production you would send this via your email provider
           const signInUrl = `${process.env.NEXT_PUBLIC_URL || 'https://www.docneat.com'}?__clerk_ticket=${signInToken.token}`;
-          console.log(`Sign-in URL for ${email}: ${signInUrl}`);
 
-          // Send welcome email via Clerk's built-in invitation system
-          await clerk.invitations.createInvitation({
-            emailAddress: email,
-            redirectUrl: `${process.env.NEXT_PUBLIC_URL || 'https://www.docneat.com'}`,
-            ignoreExisting: true,
+          // Send branded welcome email via Resend
+          await sendWelcomeEmail({
+            email,
+            signInUrl,
+            credits: allocatedCredits,
+            planName,
           });
-          console.log(`Invitation sent to ${email}`);
+
+          console.log(`Welcome email sent to ${email}`);
         }
       }
     } catch (apiErr) {

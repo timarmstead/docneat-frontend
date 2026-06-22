@@ -3,21 +3,21 @@ import { Resend } from 'resend';
 
 export async function sendWelcomeEmail({
   email,
-  signInUrl,
+  tempPassword,
   credits,
   planName,
 }: {
   email: string;
-  signInUrl: string;
+  tempPassword: string;
   credits: number;
   planName: string;
 }) {
   const resend = new Resend(process.env.RESEND_API_KEY);
-  
+
   await resend.emails.send({
     from: 'DocNeat <noreply@docneat.com>',
     to: email,
-    subject: 'Welcome to DocNeat — Set Up Your Account',
+    subject: 'Welcome to DocNeat — Your Account is Ready',
     html: `
 <!DOCTYPE html>
 <html>
@@ -30,7 +30,7 @@ export async function sendWelcomeEmail({
     <tr>
       <td align="center">
         <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
-          
+
           <!-- Header -->
           <tr>
             <td style="background-color:#0f172a;padding:32px 40px;border-radius:16px 16px 0 0;text-align:center;">
@@ -46,7 +46,7 @@ export async function sendWelcomeEmail({
           <!-- Body -->
           <tr>
             <td style="background-color:#ffffff;padding:48px 40px;">
-              
+
               <div style="text-align:center;margin-bottom:32px;">
                 <div style="display:inline-block;background-color:#d1fae5;border-radius:50%;padding:20px;">
                   <span style="font-size:36px;">✅</span>
@@ -56,12 +56,13 @@ export async function sendWelcomeEmail({
               <h1 style="margin:0 0 16px;font-size:28px;font-weight:800;color:#111729;text-align:center;">
                 Welcome to DocNeat!
               </h1>
-              
+
               <p style="margin:0 0 24px;font-size:16px;color:#475569;line-height:1.6;text-align:center;">
-                Your payment was successful. Your <strong>${planName}</strong> plan is active 
+                Your payment was successful. Your <strong>${planName}</strong> plan is active
                 and you have <strong>${credits} page credits</strong> ready to use.
               </p>
 
+              <!-- Credits box -->
               <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
                 <tr>
                   <td style="background-color:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:20px;text-align:center;">
@@ -72,23 +73,41 @@ export async function sendWelcomeEmail({
                 </tr>
               </table>
 
-              <p style="margin:0 0 32px;font-size:16px;color:#475569;line-height:1.6;text-align:center;">
-                Click the button below to set your password and access your account.
+              <p style="margin:0 0 16px;font-size:16px;color:#475569;line-height:1.6;text-align:center;">
+                Your account has been created. Use the details below to sign in:
               </p>
 
+              <!-- Login details box -->
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
+                <tr>
+                  <td style="background-color:#f8fafc;border:2px solid #e2e8f0;border-radius:12px;padding:24px;">
+                    <p style="margin:0 0 12px;font-size:13px;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;">Your Login Details</p>
+                    <p style="margin:0 0 8px;font-size:15px;color:#111729;">
+                      <strong>Email:</strong> ${email}
+                    </p>
+                    <p style="margin:0 0 16px;font-size:15px;color:#111729;">
+                      <strong>Temporary Password:</strong>
+                      <span style="font-family:monospace;background:#e2e8f0;padding:2px 8px;border-radius:4px;font-size:16px;">${tempPassword}</span>
+                    </p>
+                    <p style="margin:0;font-size:13px;color:#94a3b8;">Please change your password after signing in.</p>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- CTA Button -->
               <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
                 <tr>
                   <td align="center">
-                    <a href="${signInUrl}" 
+                    <a href="https://www.docneat.com"
                        style="display:inline-block;background-color:#10b981;color:#ffffff;font-size:16px;font-weight:700;text-decoration:none;padding:16px 40px;border-radius:12px;">
-                      Set Up My Account →
+                      Sign In to DocNeat →
                     </a>
                   </td>
                 </tr>
               </table>
 
-              <p style="margin:0 0 8px;font-size:13px;color:#94a3b8;text-align:center;">
-                This link expires in 7 days. Need help? Contact us at 
+              <p style="margin:0;font-size:13px;color:#94a3b8;text-align:center;">
+                Need help? Contact us at
                 <a href="mailto:support@docneat.com" style="color:#10b981;">support@docneat.com</a>
               </p>
 

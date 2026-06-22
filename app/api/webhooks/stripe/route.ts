@@ -2,6 +2,7 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createClerkClient } from '@clerk/nextjs/server';
+import { sendWelcomeEmail } from '@/lib/resend';
 
 const stripe = new Stripe(process.env.STRIPE_SERVER_SECRET_KEY!);
 const clerk = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY });
@@ -17,6 +18,15 @@ const PLAN_NAMES: Record<string, string> = {
   'price_1T3EfqGWw5FE61zBmse60X9V': 'Professional',
   'price_1T3EgWGWw5FE61zBCy208ve3': 'Business',
 };
+
+function generateTempPassword(): string {
+  const chars = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+  let password = '';
+  for (let i = 0; i < 10; i++) {
+    password += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return `Dn-${password}!`;
+}
 
 export async function POST(req: Request) {
   const payload = await req.text();
@@ -60,6 +70,7 @@ export async function POST(req: Request) {
 
     try {
       if (userId) {
+        // Case 1: Logged-in user upgrading
         console.log(`Upgrading existing Clerk user: ${userId}`);
         const user = await clerk.users.getUser(userId);
         const existingCredits = (user.publicMetadata as any).credits ?? 0;
@@ -73,10 +84,12 @@ export async function POST(req: Request) {
         console.log(`Credits updated for user ${userId}`);
 
       } else if (email) {
+        // Case 2: Guest checkout
         console.log(`Guest checkout for: ${email}`);
         const existingUsers = await clerk.users.getUserList({ emailAddress: [email] });
 
         if (existingUsers.data.length > 0) {
+          // Account exists — top up credits
           const targetUser = existingUsers.data[0];
           const existingCredits = (targetUser.publicMetadata as any).credits ?? 0;
           await clerk.users.updateUserMetadata(targetUser.id, {
@@ -89,16 +102,28 @@ export async function POST(req: Request) {
           console.log(`Topped up existing account for ${email}`);
 
         } else {
-          await clerk.invitations.createInvitation({
-            emailAddress: email,
-            redirectUrl: `${process.env.NEXT_PUBLIC_URL || 'https://www.docneat.com'}/welcome`,
+          // No account — create with temp password and send welcome email
+          const tempPassword = generateTempPassword();
+
+          await clerk.users.createUser({
+            emailAddress: [email],
+            password: tempPassword,
             publicMetadata: {
               credits: allocatedCredits,
               stripeSubscriptionId: subscriptionId,
               planName,
             },
           });
-          console.log(`Clerk invitation sent to ${email}`);
+          console.log(`Created Clerk account for ${email}`);
+
+          // Send branded welcome email with temp password via Resend
+          await sendWelcomeEmail({
+            email,
+            tempPassword,
+            credits: allocatedCredits,
+            planName,
+          });
+          console.log(`Welcome email sent to ${email}`);
         }
       }
     } catch (apiErr) {

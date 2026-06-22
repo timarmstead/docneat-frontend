@@ -2,7 +2,6 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createClerkClient } from '@clerk/nextjs/server';
-import { sendWelcomeEmail } from '@/lib/resend';
 
 const stripe = new Stripe(process.env.STRIPE_SERVER_SECRET_KEY!);
 const clerk = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY });
@@ -44,14 +43,13 @@ export async function POST(req: Request) {
     const email = session.customer_details?.email;
     const subscriptionId = session.subscription as string;
 
-    // Determine credits and plan name from price ID
+    // Determine credits and plan from price ID
     let allocatedCredits = 200;
     let planName = 'Starter';
-    let priceId = '';
 
     try {
       const subscription = await stripe.subscriptions.retrieve(subscriptionId);
-      priceId = subscription.items.data[0]?.price.id;
+      const priceId = subscription.items.data[0]?.price.id;
       if (priceId && PLAN_CREDITS[priceId]) {
         allocatedCredits = PLAN_CREDITS[priceId];
         planName = PLAN_NAMES[priceId];
@@ -95,38 +93,17 @@ export async function POST(req: Request) {
           console.log(`Topped up existing account for ${email}`);
 
         } else {
-          // No account — create user and send welcome email
-          const tempPassword = `DocNeat_${Math.random().toString(36).slice(-10)}!A1`;
-
-          const newUser = await clerk.users.createUser({
-            emailAddress: [email],
-            password: tempPassword,
+          // No account — send Clerk invitation (handles account creation + email)
+          await clerk.invitations.createInvitation({
+            emailAddress: email,
+            redirectUrl: `${process.env.NEXT_PUBLIC_URL || 'https://www.docneat.com'}`,
             publicMetadata: {
               credits: allocatedCredits,
               stripeSubscriptionId: subscriptionId,
               planName,
-              mustResetPassword: true,
             },
           });
-          console.log(`Created new Clerk user for ${email}: ${newUser.id}`);
-
-          // Create a 7-day sign-in token
-          const signInToken = await clerk.signInTokens.createSignInToken({
-            userId: newUser.id,
-            expiresInSeconds: 60 * 60 * 24 * 7,
-          });
-
-          const signInUrl = `${process.env.NEXT_PUBLIC_URL || 'https://www.docneat.com'}/welcome?__clerk_ticket=${signInToken.token}`;
-
-          // Send branded welcome email via Resend
-          await sendWelcomeEmail({
-            email,
-            signInUrl,
-            credits: allocatedCredits,
-            planName,
-          });
-
-          console.log(`Welcome email sent to ${email}`);
+          console.log(`Clerk invitation sent to ${email}`);
         }
       }
     } catch (apiErr) {

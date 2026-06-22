@@ -2,12 +2,12 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
-import { useSignIn, useClerk } from '@clerk/nextjs';
+import { useSignIn, useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 
 export default function WelcomePage() {
-  const { signIn, isLoaded } = useSignIn();
-  const { user } = useClerk();
+  const { signIn, isLoaded: signInLoaded } = useSignIn();
+  const { user, isLoaded: userLoaded } = useUser();
   const router = useRouter();
   const hasAttempted = useRef(false);
   const [status, setStatus] = useState<'loading' | 'set-password' | 'error'>('loading');
@@ -17,7 +17,7 @@ export default function WelcomePage() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    if (!isLoaded || !signIn) return;
+    if (!signInLoaded || !signIn) return;
     if (hasAttempted.current) return;
     hasAttempted.current = true;
 
@@ -30,19 +30,20 @@ export default function WelcomePage() {
     signIn.create({
       strategy: 'ticket',
       ticket,
-    }).then((result) => {
-      // Success — show password form regardless of status
+    }).then(() => {
       setStatus('set-password');
     }).catch((err: any) => {
       const code = err?.errors?.[0]?.code;
-      // session_exists means ticket already worked — show password form
       if (code === 'session_exists') {
         setStatus('set-password');
       } else {
         setStatus('error');
       }
     });
-  }, [isLoaded]);
+  }, [signInLoaded]);
+
+  // Wait for user to be available before allowing password set
+  const isUserReady = userLoaded && !!user;
 
   const handleSetPassword = async () => {
     if (password.length < 8) {
@@ -54,7 +55,7 @@ export default function WelcomePage() {
       return;
     }
     if (!user) {
-      setError('Not signed in. Please try the link again.');
+      setError('Account not ready yet — please wait a moment and try again.');
       return;
     }
 
@@ -97,38 +98,48 @@ export default function WelcomePage() {
             <h1 className="text-2xl font-bold text-[#111729] mb-2">Welcome to DocNeat!</h1>
             <p className="text-slate-500 mb-8">Set a password to secure your account.</p>
 
-            <div className="text-left space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">New Password</label>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  className="w-full border border-slate-200 rounded-xl px-4 py-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-400"
-                  placeholder="At least 8 characters"
-                />
+            {!isUserReady ? (
+              <div className="flex items-center justify-center gap-2 text-slate-400 py-4">
+                <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+                </svg>
+                <span>Loading your account...</span>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Confirm Password</label>
-                <input
-                  type="password"
-                  value={confirm}
-                  onChange={e => setConfirm(e.target.value)}
-                  className="w-full border border-slate-200 rounded-xl px-4 py-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-400"
-                  placeholder="Repeat your password"
-                />
+            ) : (
+              <div className="text-left space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">New Password</label>
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    className="w-full border border-slate-200 rounded-xl px-4 py-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                    placeholder="At least 8 characters"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Confirm Password</label>
+                  <input
+                    type="password"
+                    value={confirm}
+                    onChange={e => setConfirm(e.target.value)}
+                    className="w-full border border-slate-200 rounded-xl px-4 py-3 text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                    placeholder="Repeat your password"
+                  />
+                </div>
+
+                {error && <p className="text-red-500 text-sm">{error}</p>}
+
+                <button
+                  onClick={handleSetPassword}
+                  disabled={saving}
+                  className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 rounded-xl transition-all active:scale-95 disabled:opacity-50"
+                >
+                  {saving ? 'Saving...' : 'Set Password & Go to DocNeat →'}
+                </button>
               </div>
-
-              {error && <p className="text-red-500 text-sm">{error}</p>}
-
-              <button
-                onClick={handleSetPassword}
-                disabled={saving}
-                className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 rounded-xl transition-all active:scale-95 disabled:opacity-50"
-              >
-                {saving ? 'Saving...' : 'Set Password & Go to DocNeat →'}
-              </button>
-            </div>
+            )}
           </>
         )}
 

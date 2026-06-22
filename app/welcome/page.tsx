@@ -1,7 +1,7 @@
 // app/welcome/page.tsx
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useSignIn, useClerk } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 
@@ -9,6 +9,7 @@ export default function WelcomePage() {
   const { signIn, isLoaded } = useSignIn();
   const { user } = useClerk();
   const router = useRouter();
+  const hasAttempted = useRef(false);
   const [status, setStatus] = useState<'loading' | 'set-password' | 'error'>('loading');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
@@ -17,32 +18,31 @@ export default function WelcomePage() {
 
   useEffect(() => {
     if (!isLoaded || !signIn) return;
+    if (hasAttempted.current) return;
+    hasAttempted.current = true;
 
     const ticket = new URLSearchParams(window.location.search).get('__clerk_ticket');
     if (!ticket) {
-      console.log('No ticket found in URL');
       setStatus('error');
       return;
     }
-
-    console.log('Attempting ticket sign-in with:', ticket.substring(0, 20) + '...');
 
     signIn.create({
       strategy: 'ticket',
       ticket,
     }).then((result) => {
-      console.log('Clerk ticket result status:', result.status);
-      if (result.status === 'complete') {
+      // Success — show password form regardless of status
+      setStatus('set-password');
+    }).catch((err: any) => {
+      const code = err?.errors?.[0]?.code;
+      // session_exists means ticket already worked — show password form
+      if (code === 'session_exists') {
         setStatus('set-password');
       } else {
-        console.log('Unexpected status:', result.status);
         setStatus('error');
       }
-    }).catch((err) => {
-      console.log('Clerk ticket error:', JSON.stringify(err));
-      setStatus('error');
     });
-  }, [isLoaded, signIn]);
+  }, [isLoaded]);
 
   const handleSetPassword = async () => {
     if (password.length < 8) {

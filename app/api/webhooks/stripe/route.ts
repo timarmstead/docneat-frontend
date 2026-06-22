@@ -43,7 +43,6 @@ export async function POST(req: Request) {
     const email = session.customer_details?.email;
     const subscriptionId = session.subscription as string;
 
-    // Determine credits and plan from price ID
     let allocatedCredits = 200;
     let planName = 'Starter';
 
@@ -61,7 +60,6 @@ export async function POST(req: Request) {
 
     try {
       if (userId) {
-        // Case 1: Logged-in user upgrading
         console.log(`Upgrading existing Clerk user: ${userId}`);
         const user = await clerk.users.getUser(userId);
         const existingCredits = (user.publicMetadata as any).credits ?? 0;
@@ -75,12 +73,10 @@ export async function POST(req: Request) {
         console.log(`Credits updated for user ${userId}`);
 
       } else if (email) {
-        // Case 2: Guest checkout
         console.log(`Guest checkout for: ${email}`);
         const existingUsers = await clerk.users.getUserList({ emailAddress: [email] });
 
         if (existingUsers.data.length > 0) {
-          // Account exists — top up credits
           const targetUser = existingUsers.data[0];
           const existingCredits = (targetUser.publicMetadata as any).credits ?? 0;
           await clerk.users.updateUserMetadata(targetUser.id, {
@@ -93,10 +89,9 @@ export async function POST(req: Request) {
           console.log(`Topped up existing account for ${email}`);
 
         } else {
-          // No account — send Clerk invitation (handles account creation + email)
           await clerk.invitations.createInvitation({
             emailAddress: email,
-            redirectUrl: `${process.env.NEXT_PUBLIC_URL || 'https://www.docneat.com'}`,
+            redirectUrl: `${process.env.NEXT_PUBLIC_URL || 'https://www.docneat.com'}/welcome`,
             publicMetadata: {
               credits: allocatedCredits,
               stripeSubscriptionId: subscriptionId,

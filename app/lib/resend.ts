@@ -98,7 +98,7 @@ export async function sendWelcomeEmail({
               <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
                 <tr>
                   <td align="center">
-                    <a href="https://www.docneat.com"
+                    <a href="https://www.docneat.com/dashboard"
                        style="display:inline-block;background-color:#10b981;color:#ffffff;font-size:16px;font-weight:700;text-decoration:none;padding:16px 40px;border-radius:12px;">
                       Sign In to DocNeat →
                     </a>

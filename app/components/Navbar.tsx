@@ -27,12 +27,12 @@ export default function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-900 border-b border-slate-700 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
-          
+
           <Link href="/" className="flex-shrink-0 flex items-center gap-3" onClick={() => setIsOpen(false)}>
             <div className="relative w-10 h-10 md:w-12 md:h-12 overflow-hidden rounded-lg">
-              <Image 
-                src="/images/DocNeat-Logo.png" 
-                alt="DocNeat Logo" 
+              <Image
+                src="/images/DocNeat-Logo.png"
+                alt="DocNeat Logo"
                 fill
                 className="object-contain"
               />
@@ -64,10 +64,20 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Desktop Auth Section - Cleaned Up */}
+          {/* Desktop Auth Section */}
           <div className="hidden md:flex items-center gap-4">
             {isSignedIn ? (
-              <UserButton afterSignOutUrl="/" />
+              <div className="flex items-center gap-4">
+                <Link
+                  href="/dashboard"
+                  className={`text-base font-medium transition-colors ${
+                    pathname === '/dashboard' ? 'text-emerald-400' : 'text-gray-300 hover:text-white'
+                  }`}
+                >
+                  My Account
+                </Link>
+                <UserButton afterSignOutUrl="/" />
+              </div>
             ) : (
               <SignInButton mode="modal">
                 <button className="text-sm font-semibold text-gray-300 hover:text-white transition-colors border border-slate-700 px-4 py-2 rounded-lg">
@@ -94,8 +104,8 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu - Cleaned Up */}
-      <div 
+      {/* Mobile Menu */}
+      <div
         className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out bg-slate-900 border-b border-slate-700 ${
           isOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
         }`}
@@ -113,10 +123,20 @@ export default function Navbar() {
               {item.name}
             </Link>
           ))}
-          
-          {!isSignedIn && (
+
+          {isSignedIn ? (
+            <Link
+              href="/dashboard"
+              onClick={() => setIsOpen(false)}
+              className={`block text-lg font-medium transition-colors ${
+                pathname === '/dashboard' ? 'text-emerald-400' : 'text-gray-300 hover:text-white'
+              }`}
+            >
+              My Account
+            </Link>
+          ) : (
             <SignInButton mode="modal">
-              <button 
+              <button
                 onClick={() => setIsOpen(false)}
                 className="block text-lg font-medium text-gray-300 hover:text-white transition-colors"
               >

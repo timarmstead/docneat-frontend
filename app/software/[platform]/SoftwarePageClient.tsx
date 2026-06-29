@@ -56,9 +56,9 @@ export default function SoftwarePageClient({ params }: { params: { platform: str
                 { num: "<30s", label: "Average conversion" },
                 { num: "0", label: "Manual cleanup needed" },
               ].map((stat) => (
-                <div key={stat.label} className="bg-slate-50 rounded-xl p-4 text-center">
-                  <div className="text-2xl font-bold text-[#111729]">{stat.num}</div>
-                  <div className="text-xs text-slate-500 mt-1">{stat.label}</div>
+                <div key={stat.label} className="bg-emerald-50 border border-emerald-100 rounded-xl p-5 text-center">
+                  <div className="text-3xl font-bold text-emerald-600">{stat.num}</div>
+                  <div className="text-sm text-slate-600 font-medium mt-1">{stat.label}</div>
                 </div>
               ))}
             </div>

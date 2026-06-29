@@ -31,7 +31,7 @@ const allPlatforms = [
 ];
 
 export default function SoftwarePageClient({ params }: { params: { platform: string } }) {
-  const platformParam = params?.platform || "";
+  const platformParam = (params?.platform || "").replace("convert-pdf-to-", "");
   const data = softwareDataMap[platformParam] || null;
   const displayName = data?.displayName || platformParam.charAt(0).toUpperCase() + platformParam.slice(1);
   const related = allPlatforms.filter(p => p.slug !== platformParam);

@@ -14,6 +14,13 @@ const posts = [
     href: "/blog/how-to-safely-import-bank-statements",
     image: "/images/accounting-software-import.png",
     category: "Integrations"
+  },
+  {
+    title: "How to Convert a Bank Statement PDF to Excel: Three Methods Compared",
+    excerpt: "Copy-paste, native bank export, or a dedicated converter — we break down which method works best depending on how many statements you have and what you need to do with the data.",
+    href: "/blog/bank-statement-pdf-to-excel",
+    image: "/images/blog/bank-statement-pdf-to-excel.png",
+    category: "How-to Guide"
   }
 ];
 
@@ -61,7 +68,6 @@ export default function BlogIndexPage() {
         {/* Article Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
           
-          {/* Article 2 (New) */}
           {posts.map((post, index) => (
             <Link key={index} href={post.href} className="flex flex-col group">
               <div className="relative h-64 w-full mb-6 overflow-hidden rounded-2xl border border-slate-800 group-hover:border-emerald-500/30 transition-all">
@@ -85,15 +91,7 @@ export default function BlogIndexPage() {
             </Link>
           ))}
 
-          {/* Placeholders for Future Content */}
-          <div className="flex flex-col opacity-50 grayscale hover:grayscale-0 transition-all">
-            <div className="bg-slate-800/50 h-64 rounded-2xl mb-6 flex items-center justify-center border border-slate-800 border-dashed">
-               <span className="text-slate-500 font-medium">Coming Soon</span>
-            </div>
-            <h3 className="text-xl font-bold text-slate-500 mb-2">The Future of Financial OCR</h3>
-            <p className="text-slate-600 text-sm">How deep learning is making traditional scanning obsolete.</p>
-          </div>
-
+          {/* Placeholder for Future Content */}
           <div className="flex flex-col opacity-50 grayscale hover:grayscale-0 transition-all">
             <div className="bg-slate-800/50 h-64 rounded-2xl mb-6 flex items-center justify-center border border-slate-800 border-dashed">
                <span className="text-slate-500 font-medium">Coming Soon</span>

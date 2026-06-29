@@ -12,14 +12,17 @@ export default function Navbar() {
   const { isSignedIn } = useUser()
 
   const navItems = [
-    { name: 'Why Choose', href: '/why-choose' },
-    { name: 'Pricing',    href: '/pricing' },
-    { name: 'FAQ',        href: '/faq' },
-    { name: 'Blog',       href: '/blog' },
+    { name: 'Supported Banks', href: '/convert' },
+    { name: 'Integrations',    href: '/software/convert-pdf-to-quickbooks' },
+    { name: 'Pricing',         href: '/pricing' },
+    { name: 'FAQ',             href: '/faq' },
+    { name: 'Blog',            href: '/blog' },
   ]
 
   const isActive = (href: string) => {
     if (href === '/blog') return pathname.startsWith('/blog')
+    if (href === '/convert') return pathname.startsWith('/convert')
+    if (href === '/software/convert-pdf-to-quickbooks') return pathname.startsWith('/software')
     return pathname === href
   }
 
@@ -49,12 +52,12 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center justify-center flex-1">
-            <div className="flex items-center gap-10">
+            <div className="flex items-center gap-8">
               {navItems.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`text-base font-medium transition-colors ${
+                  className={`text-sm font-medium transition-colors ${
                     isActive(item.href) ? 'text-emerald-400' : 'text-gray-300 hover:text-white'
                   }`}
                 >
@@ -70,7 +73,7 @@ export default function Navbar() {
               <div className="flex items-center gap-4">
                 <Link
                   href="/dashboard"
-                  className={`text-base font-medium transition-colors ${
+                  className={`text-sm font-medium transition-colors ${
                     pathname === '/dashboard' ? 'text-emerald-400' : 'text-gray-300 hover:text-white'
                   }`}
                 >

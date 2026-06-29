@@ -2,6 +2,24 @@ import { Metadata } from 'next'
 import BankPageClient from './BankPageClient'
 import { bankDataMap } from './bankData'
 
+const bankList = [
+  "Chase", "Bank of America", "Wells Fargo", "Citibank", "Capital One",
+  "TD Bank", "PNC Bank", "US Bank", "RBC", "BMO", "Scotiabank", "CIBC",
+  "HSBC", "Barclays", "NatWest", "Lloyds Bank", "Santander", "Monzo",
+  "Revolut", "Starling Bank", "Deutsche Bank", "Societe Generale", "Halifax",
+  "Axis Bank", "HDFC Bank", "SBI", "ICICI Bank", "Canara Bank", "TMB",
+  "KVB", "Kotak Mahindra", "Yes Bank", "Standard Chartered",
+  "NAB", "ANZ Bank", "Commonwealth Bank", "Westpac", "DBS Bank", "Mercury",
+  "Chime", "Ally Bank", "Fifth Third", "SunTrust", "Silicon Valley Bank",
+  "First Republic", "Regions Bank", "M&T Bank", "Huntington", "KeyBank", "Discover"
+];
+
+export async function generateStaticParams() {
+  return bankList.map((bank) => ({
+    bank: `${bank.toLowerCase().replace(/\s+/g, '-')}-statement-to-csv`,
+  }));
+}
+
 export async function generateMetadata({ params }: { params: { bank: string } }): Promise<Metadata> {
   const bankParam = params?.bank || "";
   
@@ -40,7 +58,6 @@ function buildSchemaJsonLd(bankParam: string, bankDisplayName: string) {
   const bankData = bankDataMap[bankKey] || null;
   const pageUrl = `https://www.docneat.com/convert/${bankParam}`;
 
-  // HowTo schema
   const howToSchema = {
     "@context": "https://schema.org",
     "@type": "HowTo",
@@ -78,7 +95,6 @@ function buildSchemaJsonLd(bankParam: string, bankDisplayName: string) {
     ]
   };
 
-  // FAQ schema — uses bank-specific FAQs if available, falls back to generic
   const faqItems = bankData?.faqs ?? [
     {
       question: `How do I convert a ${bankDisplayName} PDF statement to CSV?`,
@@ -115,7 +131,6 @@ function buildSchemaJsonLd(bankParam: string, bankDisplayName: string) {
     }))
   };
 
-  // SoftwareApplication schema for DocNeat itself
   const softwareSchema = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",

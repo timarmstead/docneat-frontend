@@ -1,3 +1,4 @@
+// app/pricing/page.tsx
 'use client'; 
 
 import { useState } from 'react';
@@ -31,7 +32,6 @@ export default function Pricing() {
     }
   };
 
-  /* Background and text colors matching site theme. Padding kept at pt-32 md:pt-44 */
   return (
     <div className="min-h-screen bg-slate-900 text-slate-300 pt-32 md:pt-44 pb-20">
       <div className="max-w-7xl mx-auto px-6 text-center">
@@ -47,22 +47,21 @@ export default function Pricing() {
           </p>
         </div>
 
-        {/* Grid adjusted to 3 columns for the new tier structure */}
         <div className="grid md:grid-cols-3 gap-8 items-stretch max-w-6xl mx-auto">
           
-          {/* Starter Tier - Updated to $19 and 200 pages */}
+          {/* Starter Tier */}
           <div className="bg-slate-800/40 rounded-2xl shadow-sm p-8 border border-slate-800 flex flex-col hover:border-slate-700 transition">
             <h3 className="text-xl font-bold mb-4 text-white">Starter</h3>
-            <p className="text-4xl font-bold mb-2 text-white">$19<span className="text-lg font-normal text-slate-500">/mo</span></p>
+            <p className="text-4xl font-bold mb-2 text-white">$30<span className="text-lg font-normal text-slate-500">/mo</span></p>
             <p className="text-sm text-slate-500 mb-6">Perfect for individuals & freelancers</p>
             <ul className="text-left space-y-4 mb-8 flex-grow text-slate-400">
-              <li className="flex items-start text-sm">✓ <span className="ml-2"><strong>200 pages</strong> / month</span></li>
+              <li className="flex items-start text-sm">✓ <span className="ml-2"><strong>400 pages</strong> / month</span></li>
               <li className="flex items-start text-sm">✓ <span className="ml-2">PDF & Scanned support</span></li>
               <li className="flex items-start text-sm">✓ <span className="ml-2">Unlimited file history</span></li>
               <li className="flex items-start text-sm">✓ <span className="ml-2">Email support</span></li>
             </ul>
             <button 
-              onClick={() => handleCheckout('price_1T3EewGWw5FE61zBrfAEqUDA', 'starter')}
+              onClick={() => handleCheckout('price_1Tnd0LGWw5FE61zB1vFKR0TK', 'starter')}
               disabled={!!loading}
               className="w-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 font-bold py-3 rounded-xl transition disabled:opacity-50 text-sm"
             >
@@ -70,13 +69,13 @@ export default function Pricing() {
             </button>
           </div>
 
-          {/* Pro Tier — Updated to $49 and 1,000 pages */}
+          {/* Pro Tier */}
           <div className="bg-slate-800/60 rounded-2xl shadow-2xl p-8 border-4 border-emerald-500 relative flex flex-col md:scale-105 z-10">
             <div className="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-emerald-500 text-white px-6 py-2 rounded-full text-sm font-bold whitespace-nowrap">
               MOST POPULAR
             </div>
             <h3 className="text-xl font-bold mb-4 text-white">Professional</h3>
-            <p className="text-4xl font-bold mb-2 text-white">$49<span className="text-lg font-normal text-slate-500">/mo</span></p>
+            <p className="text-4xl font-bold mb-2 text-white">$60<span className="text-lg font-normal text-slate-500">/mo</span></p>
             <p className="text-sm text-slate-400 mb-6">Best for Bookkeepers & Accountants</p>
             <ul className="text-left space-y-4 mb-8 flex-grow text-slate-300">
               <li className="flex items-start text-sm">✓ <span className="ml-2"><strong>1,000 pages</strong> / month</span></li>
@@ -85,7 +84,7 @@ export default function Pricing() {
               <li className="flex items-start text-sm">✓ <span className="ml-2">Priority support</span></li>
             </ul>
             <button 
-              onClick={() => handleCheckout('price_1T3EfqGWw5FE61zBmse60X9V', 'pro')}
+              onClick={() => handleCheckout('price_1Tnd18GWw5FE61zBX1BGIvpm', 'pro')}
               disabled={!!loading}
               className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 rounded-xl transition disabled:opacity-50 shadow-lg active:scale-95"
             >
@@ -93,7 +92,7 @@ export default function Pricing() {
             </button>
           </div>
 
-          {/* Business Tier - Updated to 4,000 pages */}
+          {/* Business Tier */}
           <div className="bg-slate-800/40 rounded-2xl shadow-sm p-8 border border-slate-800 flex flex-col hover:border-slate-700 transition">
             <h3 className="text-xl font-bold mb-4 text-white">Business</h3>
             <p className="text-4xl font-bold mb-2 text-white">$99<span className="text-lg font-normal text-slate-500">/mo</span></p>
@@ -116,7 +115,7 @@ export default function Pricing() {
         </div>
         
         <div className="mt-24 border-t border-slate-800 pt-10">
-           <p className="text-slate-500">
+          <p className="text-slate-500">
             Need a custom volume or on-premise solution? 
             <a href="mailto:support@docneat.com" className="ml-2 text-emerald-400 font-semibold underline hover:text-emerald-300 transition-colors">
               Contact us

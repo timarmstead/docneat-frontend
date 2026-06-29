@@ -8,14 +8,14 @@ const stripe = new Stripe(process.env.STRIPE_SERVER_SECRET_KEY!);
 const clerk = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY });
 
 const PLAN_CREDITS: Record<string, number> = {
-  'price_1T3EewGWw5FE61zBrfAEqUDA': 200,   // Starter
-  'price_1T3EfqGWw5FE61zBmse60X9V': 1000,  // Professional
-  'price_1T3EgWGWw5FE61zBCy208ve3': 4000,  // Business
+  'price_1Tnd0LGWw5FE61zB1vFKR0TK': 400,   // Starter $30
+  'price_1Tnd18GWw5FE61zBX1BGIvpm': 1000,  // Professional $60
+  'price_1T3EgWGWw5FE61zBCy208ve3': 4000,  // Business $99
 };
 
 const PLAN_NAMES: Record<string, string> = {
-  'price_1T3EewGWw5FE61zBrfAEqUDA': 'Starter',
-  'price_1T3EfqGWw5FE61zBmse60X9V': 'Professional',
+  'price_1Tnd0LGWw5FE61zB1vFKR0TK': 'Starter',
+  'price_1Tnd18GWw5FE61zBX1BGIvpm': 'Professional',
   'price_1T3EgWGWw5FE61zBCy208ve3': 'Business',
 };
 
@@ -53,7 +53,7 @@ export async function POST(req: Request) {
     const email = session.customer_details?.email;
     const subscriptionId = session.subscription as string;
 
-    let allocatedCredits = 200;
+    let allocatedCredits = 400;
     let planName = 'Starter';
 
     try {
@@ -70,7 +70,6 @@ export async function POST(req: Request) {
 
     try {
       if (userId) {
-        // Case 1: Logged-in user upgrading
         console.log(`Upgrading existing Clerk user: ${userId}`);
         const user = await clerk.users.getUser(userId);
         const existingCredits = (user.publicMetadata as any).credits ?? 0;
@@ -84,12 +83,10 @@ export async function POST(req: Request) {
         console.log(`Credits updated for user ${userId}`);
 
       } else if (email) {
-        // Case 2: Guest checkout
         console.log(`Guest checkout for: ${email}`);
         const existingUsers = await clerk.users.getUserList({ emailAddress: [email] });
 
         if (existingUsers.data.length > 0) {
-          // Account exists — top up credits
           const targetUser = existingUsers.data[0];
           const existingCredits = (targetUser.publicMetadata as any).credits ?? 0;
           await clerk.users.updateUserMetadata(targetUser.id, {
@@ -102,7 +99,6 @@ export async function POST(req: Request) {
           console.log(`Topped up existing account for ${email}`);
 
         } else {
-          // No account — create with temp password and send welcome email
           const tempPassword = generateTempPassword();
 
           await clerk.users.createUser({
@@ -116,7 +112,6 @@ export async function POST(req: Request) {
           });
           console.log(`Created Clerk account for ${email}`);
 
-          // Send branded welcome email with temp password via Resend
           await sendWelcomeEmail({
             email,
             tempPassword,

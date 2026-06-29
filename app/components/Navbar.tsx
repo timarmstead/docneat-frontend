@@ -12,16 +12,15 @@ export default function Navbar() {
   const { isSignedIn } = useUser()
 
   const navItems = [
-    { name: 'Supported Banks', href: '/convert' },
-    { name: 'Integrations',    href: '/software/convert-pdf-to-quickbooks' },
-    { name: 'Pricing',         href: '/pricing' },
-    { name: 'FAQ',             href: '/faq' },
-    { name: 'Blog',            href: '/blog' },
+    { name: 'Why Choose', href: '/why-choose' },
+    { name: 'Integrations', href: '/software/convert-pdf-to-quickbooks' },
+    { name: 'Pricing',      href: '/pricing' },
+    { name: 'FAQ',          href: '/faq' },
+    { name: 'Blog',         href: '/blog' },
   ]
 
   const isActive = (href: string) => {
     if (href === '/blog') return pathname.startsWith('/blog')
-    if (href === '/convert') return pathname.startsWith('/convert')
     if (href === '/software/convert-pdf-to-quickbooks') return pathname.startsWith('/software')
     return pathname === href
   }

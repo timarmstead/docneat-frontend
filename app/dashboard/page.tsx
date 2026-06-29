@@ -34,7 +34,7 @@ export default function DashboardPage() {
   const hasSubscription = !!metadata.stripeSubscriptionId;
 
   const planMax: Record<string, number> = {
-    Starter: 200,
+    Starter: 400,
     Professional: 1000,
     Business: 4000,
     Free: 3,

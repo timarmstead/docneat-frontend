@@ -4,11 +4,9 @@ import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { ClerkProvider } from '@clerk/nextjs'
 
-// Dynamically import Navbar to prevent Hydration errors
 const Navbar = dynamic(() => import('@/components/Navbar'), { ssr: false });
 
 export const metadata: Metadata = {
-  // CLEANED: This sets the "Site Name" and default title without adding extra suffixes
   title: 'DocNeat.com — Secure. Fast. Accurate.',
   description: 'Convert bank statements, invoices, receipts to Excel/CSV instantly and securely',
   verification: {
@@ -27,10 +25,6 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       <body className="antialiased bg-slate-900 text-slate-200 flex flex-col min-h-screen">
-        {/* CRITICAL FIX: Hard-coding the LIVE publishable key. 
-          Replace the XXXXXX below with your actual key from the Clerk Dashboard.
-          It must start with 'pk_live_'.
-        */}
         <ClerkProvider publishableKey="pk_live_Y2xlcmsuZG9jbmVhdC5jb20k">
           <Navbar />
           
@@ -59,6 +53,7 @@ export default function RootLayout({
                     <Link href="/blog" className="text-slate-400 hover:text-white transition-colors">Resources & Blog</Link>
                     <Link href="/pricing" className="text-slate-400 hover:text-white transition-colors">Pricing</Link>
                     <Link href="/convert" className="text-slate-400 hover:text-white transition-colors">Supported Banks</Link>
+                    <Link href="/software/convert-pdf-to-quickbooks" className="text-slate-400 hover:text-white transition-colors">Integrations</Link>
                   </div>
                 </div>
 

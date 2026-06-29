@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import SoftwarePageClient from './SoftwarePageClient'
-import { softwareDataMap } from './SoftwareData'
+import { softwareDataMap } from './softwareData'
 
 const platformList = ["quickbooks", "xero", "sage", "excel", "freshbooks"];
 

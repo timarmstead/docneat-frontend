@@ -22,7 +22,7 @@ export default function BlogPostPage() {
 
       <div className="relative w-full h-[300px] md:h-[500px] mb-16">
         <Image
-          src="/images/blog/bank-statement-pdf-to-excel.png"
+          src="/images/blog/bank-statement-to-excel.png"
           alt="Bank statement PDF being converted into a clean Excel spreadsheet"
           fill
           className="rounded-2xl shadow-2xl object-cover border border-slate-800"

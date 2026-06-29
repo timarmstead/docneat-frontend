@@ -19,7 +19,7 @@ const posts = [
     title: "How to Convert a Bank Statement PDF to Excel: Three Methods Compared",
     excerpt: "Copy-paste, native bank export, or a dedicated converter — we break down which method works best depending on how many statements you have and what you need to do with the data.",
     href: "/blog/bank-statement-pdf-to-excel",
-    image: "/images/blog/bank-statement-pdf-to-excel.png",
+    image: "/images/blog/bank-statement-to-excel.png",
     category: "How-to Guide"
   }
 ];

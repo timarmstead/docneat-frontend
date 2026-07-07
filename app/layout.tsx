@@ -3,6 +3,7 @@ import './globals.css'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { ClerkProvider } from '@clerk/nextjs'
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 const Navbar = dynamic(() => import('@/components/Navbar'), { ssr: false });
 
@@ -79,6 +80,7 @@ export default function RootLayout({
             </div>
           </footer>
         </ClerkProvider>
+        <GoogleAnalytics gaId="G-L67W4WVTBB" />
       </body>
     </html>
   )

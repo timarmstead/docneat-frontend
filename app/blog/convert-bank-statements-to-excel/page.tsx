@@ -25,7 +25,7 @@ export default function BlogPostPage() {
       {/* Main Feature Image */}
       <div className="relative w-full h-[300px] md:h-[500px] mb-16">
         <Image 
-          src="/images/blog/bank-statement-to-excel.png" 
+          src="/images/blog/How-to-Convert-Bank-Statements-to-Excel.png" 
           alt="Professional transformation of bank statement data into a clean Excel spreadsheet"
           fill
           className="rounded-2xl shadow-2xl object-cover border border-slate-800"
@@ -97,3 +97,4 @@ export default function BlogPostPage() {
     </div>
   );
 }
+

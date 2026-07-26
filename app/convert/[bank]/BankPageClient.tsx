@@ -1,7 +1,7 @@
 "use client";
 
 import Hero from "../../components/sections/hero";
-import { CheckCircle2, Download, Upload, FileJson, ChevronDown } from "lucide-react";
+import { CheckCircle2, Download, Upload, FileJson, ChevronDown, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { bankDataMap, BankData } from "./bankData";
@@ -40,7 +40,6 @@ export default function BankPageClient({ params }: { params: { bank: string } })
       ? nameParts.map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ")
       : "Your Bank";
 
-  // Look up bank-specific data, fall back to generic if not found
   const bankKey = nameParts.join("-").toLowerCase();
   const bankData: BankData | null = bankDataMap[bankKey] || null;
 
@@ -180,9 +179,48 @@ export default function BankPageClient({ params }: { params: { bank: string } })
               </div>
             </div>
 
+            {/* Native export section */}
+            {bankData?.nativeExport && (
+              <div className="mt-16 border border-slate-100 rounded-2xl overflow-hidden shadow-sm">
+                <div className="bg-slate-50 border-b border-slate-100 px-6 py-4">
+                  <h3 className="text-lg font-bold text-[#111729]">
+                    How to download {bankDisplayName} transactions as CSV directly
+                  </h3>
+                </div>
+                <div className="p-6">
+                  <p className="text-sm text-slate-600 leading-relaxed mb-4">
+                    {bankData.nativeExport.intro}
+                  </p>
+                  <ol className="space-y-3 mb-6">
+                    {bankData.nativeExport.steps.map((step, i) => (
+                      <li key={i} className="flex gap-3 text-sm text-slate-600">
+                        <span className="flex-shrink-0 w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 text-xs font-semibold flex items-center justify-center mt-0.5">
+                          {i + 1}
+                        </span>
+                        <span className="leading-relaxed">{step}</span>
+                      </li>
+                    ))}
+                  </ol>
+                  <div className="bg-amber-50 border border-amber-100 rounded-xl p-4">
+                    <p className="text-sm text-amber-800 leading-relaxed">
+                      <strong>When the native export isn't enough:</strong>{" "}
+                      {bankData.nativeExport.limitation}
+                    </p>
+                    <Link
+                      href="/"
+                      className="inline-flex items-center gap-1.5 mt-3 text-sm font-semibold text-emerald-600 hover:text-emerald-700 transition-colors"
+                    >
+                      Convert your {bankDisplayName} PDF with DocNeat
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Statement format — bank-specific */}
             {bankData?.statementFormat && (
-              <div className="mt-16 p-8 bg-slate-50 rounded-3xl border border-slate-100">
+              <div className="mt-8 p-8 bg-slate-50 rounded-3xl border border-slate-100">
                 <h4 className="text-lg font-bold text-[#111729] mb-3">
                   {bankDisplayName} statement format
                 </h4>

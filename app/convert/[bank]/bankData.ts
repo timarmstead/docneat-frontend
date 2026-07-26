@@ -3,6 +3,12 @@ export interface BankFAQ {
   answer: string;
 }
 
+export interface NativeExport {
+  intro: string;
+  steps: string[];
+  limitation: string;
+}
+
 export interface BankData {
   displayName: string;
   region: string;
@@ -13,6 +19,7 @@ export interface BankData {
   faqs: BankFAQ[];
   relatedBanks: { name: string; slug: string }[];
   compatibility: string;
+  nativeExport?: NativeExport;
 }
 
 export const bankDataMap: Record<string, BankData> = {
@@ -45,7 +52,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "US Bank", slug: "us-bank-statement-to-csv" },
       { name: "TD Bank", slug: "td-bank-statement-to-csv" }
     ],
-    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings."
+    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings.",
+    nativeExport: {
+      intro: "Chase online banking allows you to download transaction history as a CSV file directly — no conversion needed for recent transactions.",
+      steps: [
+          "Sign in to chase.com and select your account",
+          "Click the download icon (arrow pointing down) near your transaction list",
+          "Select CSV as the file format",
+          "Choose your date range (up to 7 years available)",
+          "Click Download"
+      ].filter(Boolean),
+      limitation: "Chase's native CSV export only covers transactions within online banking history. For older archived statements delivered as PDFs, or for client statements received as PDF files, DocNeat converts any Chase PDF into a clean CSV instantly."
+    },
   },
 
   "bank-of-america": {
@@ -76,7 +94,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "US Bank", slug: "us-bank-statement-to-csv" },
       { name: "Regions Bank", slug: "regions-bank-statement-to-csv" }
     ],
-    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings."
+    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings.",
+    nativeExport: {
+      intro: "Bank of America lets you download transactions as a CSV file directly from your online banking account.",
+      steps: [
+          "Sign in to bankofamerica.com and select your account",
+          "Click Download Transactions near the top of your transaction list",
+          "Select Microsoft Excel format (CSV) from the dropdown",
+          "Choose your date range",
+          "Click Download"
+      ].filter(Boolean),
+      limitation: "Bank of America's native export is limited to recent transaction history. For older PDF statements or client statements sent as PDFs, DocNeat converts any BofA PDF to CSV in seconds."
+    },
   },
 
   "wells-fargo": {
@@ -107,7 +136,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "Fifth Third", slug: "fifth-third-statement-to-csv" },
       { name: "KeyBank", slug: "keybank-statement-to-csv" }
     ],
-    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings."
+    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings.",
+    nativeExport: {
+      intro: "Wells Fargo online banking includes a native download option for transactions in CSV format.",
+      steps: [
+          "Sign in to wellsfargo.com and select your account",
+          "Click Download Account Activity",
+          "Choose Comma Separated Values (CSV) as the file type",
+          "Set your date range",
+          "Click Download"
+      ].filter(Boolean),
+      limitation: "Wells Fargo's native export covers recent activity only. For historical PDF statements or PDF statements received from clients, DocNeat handles the conversion accurately including Wells Fargo's separate debit and credit column format."
+    },
   },
 
   "citibank": {
@@ -138,7 +178,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "TD Bank", slug: "td-bank-statement-to-csv" },
       { name: "Discover", slug: "discover-statement-to-csv" }
     ],
-    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings."
+    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings.",
+    nativeExport: {
+      intro: "Citibank online banking allows you to download account activity as a CSV file.",
+      steps: [
+          "Sign in to citi.com and select your account",
+          "Click Download near your transaction list",
+          "Select CSV as the download format",
+          "Choose your date range",
+          "Click Download"
+      ].filter(Boolean),
+      limitation: "Citi's native CSV export is limited to recent transactions. For older archived statements delivered as PDFs, or for Citibank statements received as PDF files from clients, DocNeat converts them to CSV accurately."
+    },
   },
 
   "capital-one": {
@@ -169,7 +220,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "Chime", slug: "chime-statement-to-csv" },
       { name: "Mercury", slug: "mercury-statement-to-csv" }
     ],
-    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings."
+    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings.",
+    nativeExport: {
+      intro: "Capital One allows you to download your transaction history as a CSV file from online banking.",
+      steps: [
+          "Sign in to capitalone.com and select your account",
+          "Click Download at the top of your transaction history",
+          "Select CSV as the format",
+          "Choose your date range",
+          "Click Download"
+      ].filter(Boolean),
+      limitation: "Capital One's native export covers online banking history only. For PDF statements that go back further, or for Capital One PDFs received from clients or accountants, DocNeat converts them directly to CSV."
+    },
   },
 
   "td-bank": {
@@ -200,7 +262,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "PNC Bank", slug: "pnc-bank-statement-to-csv" },
       { name: "US Bank", slug: "us-bank-statement-to-csv" }
     ],
-    compatibility: "QuickBooks, Xero, Sage, Excel — supports both MM/DD/YYYY (US) and DD/MM/YYYY (Canada)."
+    compatibility: "QuickBooks, Xero, Sage, Excel — supports both MM/DD/YYYY (US) and DD/MM/YYYY (Canada).",
+    nativeExport: {
+      intro: "TD Bank online banking lets you export transactions as a CSV file for recent account activity.",
+      steps: [
+          "Sign in to tdbank.com (US) or td.com (Canada) and select your account",
+          "Click Download Transactions",
+          "Select CSV as the file format",
+          "Choose your date range",
+          "Click Download"
+      ].filter(Boolean),
+      limitation: "TD's native CSV export covers recent activity. For older TD PDF statements or statements sent by clients as PDFs, DocNeat handles both US and Canadian TD formats correctly."
+    },
   },
 
   "pnc-bank": {
@@ -231,7 +304,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "KeyBank", slug: "keybank-statement-to-csv" },
       { name: "Regions Bank", slug: "regions-bank-statement-to-csv" }
     ],
-    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings."
+    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings.",
+    nativeExport: {
+      intro: "PNC Bank Virtual Wallet and standard accounts support CSV download of transaction history.",
+      steps: [
+          "Sign in to pnc.com and select your account",
+          "Click Download Transactions above your transaction list",
+          "Select CSV as the format",
+          "Set your date range",
+          "Click Download"
+      ].filter(Boolean),
+      limitation: "PNC's native export is limited to recent history. For older PDF statements or PNC statements received as PDFs from clients, DocNeat converts them accurately, skipping the spending summary sections that confuse generic converters."
+    },
   },
 
   "us-bank": {
@@ -262,7 +346,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "KeyBank", slug: "keybank-statement-to-csv" },
       { name: "M&T Bank", slug: "m&t-bank-statement-to-csv" }
     ],
-    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings."
+    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings.",
+    nativeExport: {
+      intro: "US Bank online banking supports direct CSV download of your transaction history.",
+      steps: [
+          "Sign in to usbank.com and select your account",
+          "Click Statements & Documents or the Download icon near your transactions",
+          "Select CSV as the export format",
+          "Choose your date range",
+          "Click Download"
+      ].filter(Boolean),
+      limitation: "US Bank's native export covers online history only. For older PDF statements or PDF files sent by clients, DocNeat converts US Bank PDFs to CSV with the correct column structure for QuickBooks and Xero."
+    },
   },
 
   "ally-bank": {
@@ -290,7 +385,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "Mercury", slug: "mercury-statement-to-csv" },
       { name: "Discover", slug: "discover-statement-to-csv" }
     ],
-    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings."
+    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings.",
+    nativeExport: {
+      intro: "Ally Bank online banking lets you download transactions as a CSV file.",
+      steps: [
+          "Log in to ally.com and select your account",
+          "Click Statements and Documents",
+          "Select the Download Transactions option",
+          "Choose CSV format",
+          "Select your date range and click Download"
+      ].filter(Boolean),
+      limitation: "Ally's native CSV export covers recent activity. For older Ally PDF statements or Money Market account PDFs, DocNeat converts them including savings bucket names in transaction descriptions."
+    },
   },
 
   "rbc": {
@@ -318,7 +424,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "Scotiabank", slug: "scotiabank-statement-to-csv" },
       { name: "CIBC", slug: "cibc-statement-to-csv" }
     ],
-    compatibility: "QuickBooks, Xero, Sage, Excel — date format DD/MM/YYYY matches Canadian regional settings."
+    compatibility: "QuickBooks, Xero, Sage, Excel — date format DD/MM/YYYY matches Canadian regional settings.",
+    nativeExport: {
+      intro: "RBC Royal Bank online banking allows you to download transactions as a CSV file.",
+      steps: [
+          "Sign in to rbcroyalbank.com and select your account",
+          "Click Download Transactions",
+          "Select CSV (Comma Separated Values) as the format",
+          "Set your date range",
+          "Click Download"
+      ].filter(Boolean),
+      limitation: "RBC's native export covers recent activity. For archived PDF statements or client statements sent as PDFs, DocNeat converts RBC PDFs to CSV including transit number and institution number extraction."
+    },
   },
 
   "bmo": {
@@ -346,7 +463,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "Scotiabank", slug: "scotiabank-statement-to-csv" },
       { name: "CIBC", slug: "cibc-statement-to-csv" }
     ],
-    compatibility: "QuickBooks, Xero, Sage, Excel — date format DD/MM/YYYY matches Canadian regional settings."
+    compatibility: "QuickBooks, Xero, Sage, Excel — date format DD/MM/YYYY matches Canadian regional settings.",
+    nativeExport: {
+      intro: "BMO online banking supports direct CSV export of your transaction history.",
+      steps: [
+          "Sign in to bmo.com and select your account",
+          "Click Download Transactions",
+          "Select CSV as the file format",
+          "Choose your date range",
+          "Click Download"
+      ].filter(Boolean),
+      limitation: "BMO's native CSV export is limited to recent transactions. For older PDF statements or BMO PDFs received from clients, DocNeat handles both Canadian BMO and US BMO Harris formats."
+    },
   },
 
   "scotiabank": {
@@ -374,7 +502,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "BMO", slug: "bmo-statement-to-csv" },
       { name: "CIBC", slug: "cibc-statement-to-csv" }
     ],
-    compatibility: "QuickBooks, Xero, Sage, Excel — date format DD/MM/YYYY matches Canadian regional settings."
+    compatibility: "QuickBooks, Xero, Sage, Excel — date format DD/MM/YYYY matches Canadian regional settings.",
+    nativeExport: {
+      intro: "Scotiabank online banking lets you download your transaction history as a CSV file.",
+      steps: [
+          "Sign in to scotiabank.com and select your account",
+          "Click Download Transactions",
+          "Select CSV as the format",
+          "Set your date range",
+          "Click Download"
+      ].filter(Boolean),
+      limitation: "Scotiabank's native export covers online history. For older PDF statements or Scotiabank statements from international branches sent as PDFs, DocNeat normalises date formats automatically."
+    },
   },
 
   "cibc": {
@@ -402,7 +541,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "BMO", slug: "bmo-statement-to-csv" },
       { name: "Scotiabank", slug: "scotiabank-statement-to-csv" }
     ],
-    compatibility: "QuickBooks, Xero, Sage, Excel — date format DD/MM/YYYY matches Canadian regional settings."
+    compatibility: "QuickBooks, Xero, Sage, Excel — date format DD/MM/YYYY matches Canadian regional settings.",
+    nativeExport: {
+      intro: "CIBC online banking supports CSV download of your account transaction history.",
+      steps: [
+          "Sign in to cibc.com and select your account",
+          "Click Download Transactions above your transaction list",
+          "Select CSV as the file format",
+          "Choose your date range",
+          "Click Download"
+      ].filter(Boolean),
+      limitation: "CIBC's native export is limited to recent history. For older PDF statements or CIBC PDFs sent by clients, DocNeat converts them to CSV with the correct split withdrawal/deposit column structure."
+    },
   },
 
   "mercury": {
@@ -431,7 +581,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "Chase", slug: "chase-statement-to-csv" },
       { name: "Silicon Valley Bank", slug: "silicon-valley-bank-statement-to-csv" }
     ],
-    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings."
+    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings.",
+    nativeExport: {
+      intro: "Mercury makes it easy to export transactions as a CSV file directly from your dashboard.",
+      steps: [
+          "Log in to mercury.com",
+          "Go to Accounts and select your account",
+          "Click Export Transactions",
+          "Select CSV format",
+          "Choose your date range and click Export"
+      ].filter(Boolean),
+      limitation: "Mercury's native CSV export is excellent for most use cases. For older Mercury PDF statements needed for investor reporting or tax purposes, DocNeat converts them with virtual card labels and category metadata preserved."
+    },
   },
 
   "chime": {
@@ -459,7 +620,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "Mercury", slug: "mercury-statement-to-csv" },
       { name: "Discover", slug: "discover-statement-to-csv" }
     ],
-    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings."
+    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings.",
+    nativeExport: {
+      intro: "Chime allows you to download your monthly statements as PDF files from the app.",
+      steps: [
+          "Open the Chime app",
+          "Go to Settings",
+          "Tap Documents",
+          "Select Statements and choose the month",
+          "Download the PDF — then upload to DocNeat to convert to CSV"
+      ].filter(Boolean),
+      limitation: "Chime does not offer a native CSV export — only PDF statements are available. DocNeat converts your Chime PDF statements to clean CSV files ready for Excel or accounting software."
+    },
   },
 
   "hsbc": {
@@ -490,7 +662,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "Standard Chartered", slug: "standard-chartered-statement-to-csv" },
       { name: "Deutsche Bank", slug: "deutsche-bank-statement-to-csv" }
     ],
-    compatibility: "QuickBooks Online, Xero, Sage 50, Excel — date format DD/MM/YYYY matches UK regional settings."
+    compatibility: "QuickBooks Online, Xero, Sage 50, Excel — date format DD/MM/YYYY matches UK regional settings.",
+    nativeExport: {
+      intro: "HSBC online banking allows you to export transactions as a CSV file across all its global markets.",
+      steps: [
+          "Sign in to your HSBC online banking and select your account",
+          "Click Download or Export Transactions",
+          "Select CSV or Excel as the format",
+          "Choose your date range",
+          "Click Download or Export"
+      ].filter(Boolean),
+      limitation: "HSBC's native export covers recent online banking history. For older HSBC PDF statements, statements from international branches, or client PDFs, DocNeat detects the HSBC regional format automatically and converts accurately."
+    },
   },
 
   "barclays": {
@@ -522,7 +705,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "Monzo", slug: "monzo-statement-to-csv" },
       { name: "Starling Bank", slug: "starling-bank-statement-to-csv" }
     ],
-    compatibility: "QuickBooks Online, Xero, Sage 50, Excel — date format DD/MM/YYYY matches UK regional settings."
+    compatibility: "QuickBooks Online, Xero, Sage 50, Excel — date format DD/MM/YYYY matches UK regional settings.",
+    nativeExport: {
+      intro: "Barclays online banking lets you download your transactions as a CSV file — but the option is slightly hidden.",
+      steps: [
+          "Sign in to barclays.co.uk and go to your account",
+          "Click on Statements in the left menu",
+          "Select the statement period you want",
+          "Click the Download icon and choose CSV format",
+          "Alternatively, go to Manage account → Download transactions and select CSV"
+      ].filter(Boolean),
+      limitation: "Barclays native CSV export only covers the past 12 months and doesn't include all statement data fields. For older Barclays statements, multi-year archives, or PDF statements sent by clients, DocNeat converts Barclays PDFs to CSV with the full Money Out / Money In column structure preserved."
+    },
   },
 
   "natwest": {
@@ -553,7 +747,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "Monzo", slug: "monzo-statement-to-csv" },
       { name: "Starling Bank", slug: "starling-bank-statement-to-csv" }
     ],
-    compatibility: "QuickBooks Online, Xero, Sage 50, Excel — date format DD/MM/YYYY matches UK regional settings."
+    compatibility: "QuickBooks Online, Xero, Sage 50, Excel — date format DD/MM/YYYY matches UK regional settings.",
+    nativeExport: {
+      intro: "NatWest online banking and the NatWest app both allow you to download transactions as a CSV file.",
+      steps: [
+          "Sign in to natwest.com or the NatWest app and select your account",
+          "Click Statements or Transaction history",
+          "Look for the Download or Export option",
+          "Select CSV format",
+          "Choose your date range and click Download"
+      ].filter(Boolean),
+      limitation: "NatWest's native CSV export covers recent history only. For older NatWest PDF statements or PDF statements received from business clients, DocNeat preserves NatWest's payment type column (POS, DD, TFR) which the native export sometimes omits."
+    },
   },
 
   "lloyds-bank": {
@@ -584,7 +789,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "Monzo", slug: "monzo-statement-to-csv" },
       { name: "Starling Bank", slug: "starling-bank-statement-to-csv" }
     ],
-    compatibility: "QuickBooks Online, Xero, Sage 50, Excel — date format DD/MM/YYYY matches UK regional settings."
+    compatibility: "QuickBooks Online, Xero, Sage 50, Excel — date format DD/MM/YYYY matches UK regional settings.",
+    nativeExport: {
+      intro: "Lloyds Bank online banking supports CSV download of your transaction history.",
+      steps: [
+          "Sign in to lloydsbank.com and select your account",
+          "Click Statements in the account menu",
+          "Select the Export or Download option",
+          "Choose CSV as the format",
+          "Select your date range and click Download"
+      ].filter(Boolean),
+      limitation: "Lloyds native export covers recent transactions. For older Lloyds PDF statements, business account statements, or client PDFs, DocNeat converts them with the correct separate Debit and Credit column structure for Xero and Sage."
+    },
   },
 
   "santander": {
@@ -613,7 +829,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "Lloyds Bank", slug: "lloyds-bank-statement-to-csv" },
       { name: "Halifax", slug: "halifax-statement-to-csv" }
     ],
-    compatibility: "QuickBooks Online, Xero, Sage 50, Excel — date format DD/MM/YYYY for UK, DD/MM/YYYY for Spain and Brazil."
+    compatibility: "QuickBooks Online, Xero, Sage 50, Excel — date format DD/MM/YYYY for UK, DD/MM/YYYY for Spain and Brazil.",
+    nativeExport: {
+      intro: "Santander UK online banking allows you to download your transactions as a CSV file.",
+      steps: [
+          "Sign in to santander.co.uk and select your account",
+          "Go to Account statements or Transaction history",
+          "Click Download or Export",
+          "Select CSV format",
+          "Choose your date range and click Download"
+      ].filter(Boolean),
+      limitation: "Santander's native export is limited to recent history. For older PDF statements, Santander statements from Spain or Brazil, or client PDFs, DocNeat handles all Santander regional formats."
+    },
   },
 
   "monzo": {
@@ -643,7 +870,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "NatWest", slug: "natwest-statement-to-csv" },
       { name: "Lloyds Bank", slug: "lloyds-bank-statement-to-csv" }
     ],
-    compatibility: "QuickBooks Online, Xero, Sage 50, Excel — date format DD/MM/YYYY matches UK regional settings."
+    compatibility: "QuickBooks Online, Xero, Sage 50, Excel — date format DD/MM/YYYY matches UK regional settings.",
+    nativeExport: {
+      intro: "Monzo allows you to export your transactions as a CSV file directly from the app.",
+      steps: [
+          "Open the Monzo app and go to Account",
+          "Scroll down to Statements",
+          "Select the period you want",
+          "Tap Export or Download as CSV",
+          "The CSV file will be saved to your device or shared via your phone's share sheet"
+      ].filter(Boolean),
+      limitation: "Monzo's native CSV export works well for personal use. For older statements only available as PDFs, or for Monzo Business statements that need import into Xero or QuickBooks, DocNeat converts the PDF version with full category column support."
+    },
   },
 
   "revolut": {
@@ -671,7 +909,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "Barclays", slug: "barclays-statement-to-csv" },
       { name: "HSBC", slug: "hsbc-statement-to-csv" }
     ],
-    compatibility: "QuickBooks Online, Xero, Sage 50, Excel — multi-currency output preserves original currency codes."
+    compatibility: "QuickBooks Online, Xero, Sage 50, Excel — multi-currency output preserves original currency codes.",
+    nativeExport: {
+      intro: "Revolut makes it easy to export your transactions as a CSV file directly from the app or web dashboard.",
+      steps: [
+          "Open the Revolut app or log in at revolut.com",
+          "Go to Accounts and select your account",
+          "Tap or click Statements",
+          "Select CSV as the format",
+          "Choose your date range and tap Export"
+      ].filter(Boolean),
+      limitation: "Revolut's native CSV export is excellent for most use cases. For multi-currency statements that need specific formatting for accounting software, or for Revolut Business statements, DocNeat ensures the currency codes and category columns are preserved correctly."
+    },
   },
 
   "starling-bank": {
@@ -701,7 +950,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "NatWest", slug: "natwest-statement-to-csv" },
       { name: "Lloyds Bank", slug: "lloyds-bank-statement-to-csv" }
     ],
-    compatibility: "QuickBooks Online, Xero, FreeAgent, Sage 50, Excel — date format DD/MM/YYYY matches UK regional settings."
+    compatibility: "QuickBooks Online, Xero, FreeAgent, Sage 50, Excel — date format DD/MM/YYYY matches UK regional settings.",
+    nativeExport: {
+      intro: "Starling Bank makes CSV export very straightforward from both the app and the web app.",
+      steps: [
+          "Open the Starling app or log in at starlingbank.com",
+          "Go to Account and tap Statements",
+          "Select the period you want",
+          "Tap Download as CSV",
+          "The file will be saved to your device"
+      ].filter(Boolean),
+      limitation: "Starling's native CSV export is one of the best in UK banking. For Starling Business accounts needing specific import formats for Xero or FreeAgent, or for older PDF statements, DocNeat preserves the reference column that Starling Business includes."
+    },
   },
 
   "halifax": {
@@ -731,7 +991,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "Santander", slug: "santander-statement-to-csv" },
       { name: "Monzo", slug: "monzo-statement-to-csv" }
     ],
-    compatibility: "QuickBooks Online, Xero, Sage 50, Excel — date format DD/MM/YYYY matches UK regional settings."
+    compatibility: "QuickBooks Online, Xero, Sage 50, Excel — date format DD/MM/YYYY matches UK regional settings.",
+    nativeExport: {
+      intro: "Halifax online banking lets you download your transactions as a CSV file.",
+      steps: [
+          "Sign in to halifax.co.uk and select your account",
+          "Go to Statements or Transaction history",
+          "Click the Download or Export option",
+          "Select CSV as the format",
+          "Choose your date range and click Download"
+      ].filter(Boolean),
+      limitation: "Halifax native CSV export covers recent transactions. For older Halifax PDF statements, ISA account statements, or client PDFs, DocNeat converts them with the correct separate Debit and Credit columns."
+    },
   },
 
   "deutsche-bank": {
@@ -759,7 +1030,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "Santander", slug: "santander-statement-to-csv" },
       { name: "Barclays", slug: "barclays-statement-to-csv" }
     ],
-    compatibility: "QuickBooks, Xero, Sage, Excel — European number formatting normalised to standard CSV output."
+    compatibility: "QuickBooks, Xero, Sage, Excel — European number formatting normalised to standard CSV output.",
+    nativeExport: {
+      intro: "Deutsche Bank online banking supports transaction export in various formats including CSV.",
+      steps: [
+          "Sign in to your Deutsche Bank online banking portal",
+          "Select your account and go to Account movements or Transactions",
+          "Click Export or Download",
+          "Select CSV as the format",
+          "Choose your date range and click Download"
+      ].filter(Boolean),
+      limitation: "Deutsche Bank's native export uses European number formatting (comma decimals). For Deutsche Bank PDF statements from any country, DocNeat normalises European number formatting to standard CSV output compatible with QuickBooks and Excel."
+    },
   },
 
   "societe-generale": {
@@ -787,7 +1069,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "Santander", slug: "santander-statement-to-csv" },
       { name: "Barclays", slug: "barclays-statement-to-csv" }
     ],
-    compatibility: "QuickBooks, Xero, Sage, Excel — European number formatting normalised to standard CSV output."
+    compatibility: "QuickBooks, Xero, Sage, Excel — European number formatting normalised to standard CSV output.",
+    nativeExport: {
+      intro: "Societe Generale online banking allows you to export transactions, though the steps vary by country.",
+      steps: [
+          "Sign in to your Societe Generale online banking portal",
+          "Select your account",
+          "Go to Account movements or Relevé de compte",
+          "Click Télécharger or Export",
+          "Select CSV format and choose your date range"
+      ].filter(Boolean),
+      limitation: "Societe Generale's native export uses French number formatting. For PDF statements from any Societe Generale branch, DocNeat converts them to standard CSV format compatible with English-language accounting software."
+    },
   },
 
   "standard-chartered": {
@@ -816,7 +1109,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "HDFC Bank", slug: "hdfc-bank-statement-to-csv" },
       { name: "ICICI Bank", slug: "icici-bank-statement-to-csv" }
     ],
-    compatibility: "QuickBooks, Xero, Sage, Excel — date formats normalised per regional settings."
+    compatibility: "QuickBooks, Xero, Sage, Excel — date formats normalised per regional settings.",
+    nativeExport: {
+      intro: "Standard Chartered online banking allows you to download transactions across its global markets.",
+      steps: [
+          "Sign in to your Standard Chartered online banking portal",
+          "Select your account and go to Transactions or Statements",
+          "Click Download or Export",
+          "Select CSV or Excel format",
+          "Choose your date range and click Download"
+      ].filter(Boolean),
+      limitation: "Standard Chartered's native export varies by country. For PDF statements from any Standard Chartered market, DocNeat detects the regional format automatically and normalises dates and currencies to a consistent CSV output."
+    },
   },
 
   "axis-bank": {
@@ -846,7 +1150,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "Yes Bank", slug: "yes-bank-statement-to-csv" },
       { name: "Canara Bank", slug: "canara-bank-statement-to-csv" }
     ],
-    compatibility: "Tally, QuickBooks, Zoho Books, Excel — date format DD/MM/YYYY matches Indian regional settings."
+    compatibility: "Tally, QuickBooks, Zoho Books, Excel — date format DD/MM/YYYY matches Indian regional settings.",
+    nativeExport: {
+      intro: "Axis Bank Net Banking allows you to download your account statement in Excel format, which opens as a spreadsheet.",
+      steps: [
+          "Log in to axisbank.com and go to Accounts",
+          "Select Account Statement",
+          "Choose your account and date range",
+          "Click Download and select XLS or Excel format",
+          "The file downloads to your device"
+      ].filter(Boolean),
+      limitation: "Axis Bank's native export works for recent transactions but doesn't always include all fields needed for ITR filing or GST reconciliation. For PDF statements — especially password-protected ones from the bank — DocNeat extracts the full data including UPI transaction IDs and IFSC codes."
+    },
   },
 
   "hdfc-bank": {
@@ -876,7 +1191,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "Yes Bank", slug: "yes-bank-statement-to-csv" },
       { name: "Canara Bank", slug: "canara-bank-statement-to-csv" }
     ],
-    compatibility: "Tally, QuickBooks, Zoho Books, Excel — date format DD/MM/YYYY matches Indian regional settings."
+    compatibility: "Tally, QuickBooks, Zoho Books, Excel — date format DD/MM/YYYY matches Indian regional settings.",
+    nativeExport: {
+      intro: "HDFC Bank Net Banking and the HDFC Bank mobile app allow you to download your account statement in Excel or PDF format.",
+      steps: [
+          "Log in to hdfcbank.com or the HDFC Bank app",
+          "Go to Accounts, then Account Statement",
+          "Select your account and choose the date range",
+          "Click Download and select XLS format for a native spreadsheet",
+          "Note: PDF statements from HDFC are password protected with your date of birth (DDMMYYYY)"
+      ].filter(Boolean),
+      limitation: "HDFC Bank's XLS export is useful but may not include all narration details needed for ITR filing, GST reconciliation, or loan applications. For HDFC PDF statements — particularly password-protected ones — DocNeat extracts the full narration including UPI reference numbers and NEFT codes after you remove the password."
+    },
   },
 
   "sbi": {
@@ -906,7 +1232,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "KVB", slug: "kvb-statement-to-csv" },
       { name: "TMB", slug: "tmb-statement-to-csv" }
     ],
-    compatibility: "Tally, QuickBooks, Zoho Books, Excel — date format DD/MM/YYYY matches Indian regional settings."
+    compatibility: "Tally, QuickBooks, Zoho Books, Excel — date format DD/MM/YYYY matches Indian regional settings.",
+    nativeExport: {
+      intro: "State Bank of India offers statement download via Net Banking and the YONO app in both PDF and Excel formats.",
+      steps: [
+          "Log in to onlinesbi.sbi or the YONO app",
+          "Go to e-Statement under My Accounts",
+          "Select your account and the date range",
+          "Choose Excel format for a native spreadsheet download",
+          "The file downloads to your device"
+      ].filter(Boolean),
+      limitation: "SBI's native Excel export is suitable for recent transactions. For SBI PDF statements needed for ITR filing, loan applications, or visa processing, DocNeat extracts the complete data including CIF numbers and YONO reference numbers."
+    },
   },
 
   "icici-bank": {
@@ -935,7 +1272,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "Kotak Mahindra", slug: "kotak-mahindra-statement-to-csv" },
       { name: "Yes Bank", slug: "yes-bank-statement-to-csv" }
     ],
-    compatibility: "Tally, QuickBooks, Zoho Books, Excel — date format DD/MM/YYYY matches Indian regional settings."
+    compatibility: "Tally, QuickBooks, Zoho Books, Excel — date format DD/MM/YYYY matches Indian regional settings.",
+    nativeExport: {
+      intro: "ICICI Bank Net Banking and iMobile Pay allow you to download account statements in Excel or PDF format.",
+      steps: [
+          "Log in to icicibank.com or iMobile Pay",
+          "Go to Accounts, then Account Statement",
+          "Select your account and date range",
+          "Click Download and choose Excel format",
+          "The file downloads to your device"
+      ].filter(Boolean),
+      limitation: "ICICI Bank's native Excel export may not preserve the Mode column (UPI, NEFT, IMPS) which is essential for categorising transactions in Tally or Zoho Books. For ICICI PDF statements needed for ITR or GST reconciliation, DocNeat preserves the Mode column as a separate field."
+    },
   },
 
   "canara-bank": {
@@ -964,7 +1312,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "KVB", slug: "kvb-statement-to-csv" },
       { name: "TMB", slug: "tmb-statement-to-csv" }
     ],
-    compatibility: "Tally, QuickBooks, Zoho Books, Excel — date format DD/MM/YYYY matches Indian regional settings."
+    compatibility: "Tally, QuickBooks, Zoho Books, Excel — date format DD/MM/YYYY matches Indian regional settings.",
+    nativeExport: {
+      intro: "Canara Bank Net Banking allows you to download your account statement in PDF or Excel format.",
+      steps: [
+          "Log in to canarabank.in Net Banking",
+          "Go to Accounts and select Account Statement",
+          "Choose your account and date range",
+          "Click Download and select Excel format",
+          "The file downloads to your device"
+      ].filter(Boolean),
+      limitation: "Canara Bank's native export covers recent history. For PDF statements needed for GST reconciliation, loan applications, or ITR filing, DocNeat converts Canara Bank PDFs including both standard and passbook-style formats."
+    },
   },
 
   "tmb": {
@@ -993,7 +1352,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "ICICI Bank", slug: "icici-bank-statement-to-csv" },
       { name: "HDFC Bank", slug: "hdfc-bank-statement-to-csv" }
     ],
-    compatibility: "Tally, Zoho Books, QuickBooks, Excel — date format DD/MM/YYYY matches Indian regional settings."
+    compatibility: "Tally, Zoho Books, QuickBooks, Excel — date format DD/MM/YYYY matches Indian regional settings.",
+    nativeExport: {
+      intro: "Tamilnad Mercantile Bank Net Banking allows you to download your account statement in PDF format.",
+      steps: [
+          "Log in to tmbank.in Net Banking",
+          "Go to Accounts and select Account Statement",
+          "Choose your account and date range",
+          "Click Download to get the PDF statement",
+          "Upload the PDF to DocNeat to convert to CSV"
+      ].filter(Boolean),
+      limitation: "TMB primarily provides PDF statements rather than native CSV or Excel export. DocNeat converts TMB PDF statements to CSV including the Instrument No column, making the output ready for Tally and Zoho Books import."
+    },
   },
 
   "kvb": {
@@ -1022,7 +1392,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "ICICI Bank", slug: "icici-bank-statement-to-csv" },
       { name: "HDFC Bank", slug: "hdfc-bank-statement-to-csv" }
     ],
-    compatibility: "Tally, Zoho Books, QuickBooks, Excel — date format DD/MM/YYYY matches Indian regional settings."
+    compatibility: "Tally, Zoho Books, QuickBooks, Excel — date format DD/MM/YYYY matches Indian regional settings.",
+    nativeExport: {
+      intro: "Karur Vysya Bank Net Banking allows you to download your account statement in PDF format.",
+      steps: [
+          "Log in to kvb.co.in Net Banking",
+          "Go to Accounts and select Account Statement",
+          "Choose your account and date range",
+          "Click Download to get the PDF statement",
+          "Upload the PDF to DocNeat to convert to CSV"
+      ].filter(Boolean),
+      limitation: "KVB primarily provides PDF statements. DocNeat converts KVB PDFs to CSV including the cheque number column and full narration, ready for Tally and other Indian accounting platforms."
+    },
   },
 
   "kotak-mahindra": {
@@ -1051,7 +1432,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "Yes Bank", slug: "yes-bank-statement-to-csv" },
       { name: "SBI", slug: "sbi-statement-to-csv" }
     ],
-    compatibility: "Tally, QuickBooks, Zoho Books, Excel — date format DD/MM/YYYY matches Indian regional settings."
+    compatibility: "Tally, QuickBooks, Zoho Books, Excel — date format DD/MM/YYYY matches Indian regional settings.",
+    nativeExport: {
+      intro: "Kotak Mahindra Bank Net Banking and the Kotak app allow you to download your account statement in PDF or Excel format.",
+      steps: [
+          "Log in to kotak.com or the Kotak app",
+          "Go to Accounts and select Account Statement",
+          "Choose your account and date range",
+          "Select Excel format for a native spreadsheet",
+          "Click Download"
+      ].filter(Boolean),
+      limitation: "Kotak's native Excel export may not include all reference fields needed for financial analysis. For Kotak PDF statements or Kotak 811 digital account statements, DocNeat extracts the complete data including UPI transaction IDs."
+    },
   },
 
   "yes-bank": {
@@ -1080,7 +1472,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "Kotak Mahindra", slug: "kotak-mahindra-statement-to-csv" },
       { name: "SBI", slug: "sbi-statement-to-csv" }
     ],
-    compatibility: "Tally, QuickBooks, Zoho Books, Excel — date format DD/MM/YYYY matches Indian regional settings."
+    compatibility: "Tally, QuickBooks, Zoho Books, Excel — date format DD/MM/YYYY matches Indian regional settings.",
+    nativeExport: {
+      intro: "Yes Bank Net Banking allows you to download your account statement in PDF or Excel format.",
+      steps: [
+          "Log in to yesbank.in Net Banking",
+          "Go to Accounts and select Account Statement",
+          "Choose your account and date range",
+          "Select Excel format for a native spreadsheet",
+          "Click Download"
+      ].filter(Boolean),
+      limitation: "Yes Bank's native Excel export covers recent history. For Yes Bank PDF statements needed for credit assessments or CA audit purposes, DocNeat converts them with all original narration fields preserved."
+    },
   },
 
   "nab": {
@@ -1107,7 +1510,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "ANZ Bank", slug: "anz-bank-statement-to-csv" },
       { name: "Westpac", slug: "westpac-statement-to-csv" }
     ],
-    compatibility: "Xero, MYOB, QuickBooks, Excel — date format DD/MM/YYYY matches Australian regional settings."
+    compatibility: "Xero, MYOB, QuickBooks, Excel — date format DD/MM/YYYY matches Australian regional settings.",
+    nativeExport: {
+      intro: "NAB Internet Banking lets you export transactions as a CSV file directly.",
+      steps: [
+          "Sign in to nab.com.au and select your account",
+          "Click Export Transactions above your transaction list",
+          "Select CSV as the format",
+          "Choose your date range",
+          "Click Export"
+      ].filter(Boolean),
+      limitation: "NAB's native CSV export covers recent online banking history. For older NAB PDF statements or business account PDFs, DocNeat converts them with BSB number extraction and BPAY reference preservation for direct Xero and MYOB import."
+    },
   },
 
   "anz-bank": {
@@ -1134,7 +1548,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "NAB", slug: "nab-statement-to-csv" },
       { name: "Westpac", slug: "westpac-statement-to-csv" }
     ],
-    compatibility: "Xero, MYOB, QuickBooks, Excel — date format DD/MM/YYYY matches Australian and NZ regional settings."
+    compatibility: "Xero, MYOB, QuickBooks, Excel — date format DD/MM/YYYY matches Australian and NZ regional settings.",
+    nativeExport: {
+      intro: "ANZ Internet Banking and the ANZ app both support direct CSV export of your transactions.",
+      steps: [
+          "Sign in to anz.com.au (AU) or anz.co.nz (NZ) and select your account",
+          "Click Export or Download Transactions",
+          "Select CSV as the file format",
+          "Choose your date range",
+          "Click Export or Download"
+      ].filter(Boolean),
+      limitation: "ANZ's native CSV export covers recent history. For older ANZ PDF statements or PDFs from ANZ New Zealand, DocNeat handles both AU and NZ account number formats with BSB extraction for MYOB and Xero import."
+    },
   },
 
   "commonwealth-bank": {
@@ -1161,7 +1586,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "NAB", slug: "nab-statement-to-csv" },
       { name: "Westpac", slug: "westpac-statement-to-csv" }
     ],
-    compatibility: "Xero, MYOB, QuickBooks, Excel — date format DD/MM/YYYY matches Australian regional settings."
+    compatibility: "Xero, MYOB, QuickBooks, Excel — date format DD/MM/YYYY matches Australian regional settings.",
+    nativeExport: {
+      intro: "CommBank NetBank and the CommBank app both let you export transactions as a CSV file.",
+      steps: [
+          "Sign in to commbank.com.au or the CommBank app",
+          "Select your account",
+          "Click Export or Download Transactions",
+          "Select CSV as the format",
+          "Choose your date range and click Export"
+      ].filter(Boolean),
+      limitation: "CommBank's native CSV export covers recent activity. For older CommBank PDF statements or business account PDFs, DocNeat converts them with BSB number extraction and merchant category code preservation for direct Xero and MYOB import."
+    },
   },
 
   "westpac": {
@@ -1188,7 +1624,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "ANZ Bank", slug: "anz-bank-statement-to-csv" },
       { name: "NAB", slug: "nab-statement-to-csv" }
     ],
-    compatibility: "Xero, MYOB, QuickBooks, Excel — date format DD/MM/YYYY matches Australian and NZ regional settings."
+    compatibility: "Xero, MYOB, QuickBooks, Excel — date format DD/MM/YYYY matches Australian and NZ regional settings.",
+    nativeExport: {
+      intro: "Westpac Online Banking allows you to export transactions as a CSV file.",
+      steps: [
+          "Sign in to westpac.com.au (AU) or westpac.co.nz (NZ) and select your account",
+          "Click Export Transactions",
+          "Select CSV as the file format",
+          "Choose your date range",
+          "Click Export"
+      ].filter(Boolean),
+      limitation: "Westpac's native export covers recent history. For older Westpac PDF statements or NZ Westpac PDFs, DocNeat preserves the separate Debit and Credit columns that Westpac uses, making MYOB and Xero imports straightforward."
+    },
   },
 
   "dbs-bank": {
@@ -1215,7 +1662,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "HSBC", slug: "hsbc-statement-to-csv" },
       { name: "ANZ Bank", slug: "anz-bank-statement-to-csv" }
     ],
-    compatibility: "Xero, QuickBooks, Excel — date format DD/MM/YYYY normalised from Singapore format."
+    compatibility: "Xero, QuickBooks, Excel — date format DD/MM/YYYY normalised from Singapore format.",
+    nativeExport: {
+      intro: "DBS iBanking and the DBS digibank app allow you to download your transactions as a CSV or Excel file.",
+      steps: [
+          "Sign in to ibanking.dbs.com or the DBS digibank app",
+          "Select your account",
+          "Go to Statements or Transaction History",
+          "Click Download or Export",
+          "Select CSV format and choose your date range"
+      ].filter(Boolean),
+      limitation: "DBS's native export covers recent history. For older DBS PDF statements or statements from DBS branches in India, Taiwan, or other Asian markets, DocNeat normalises date formats and preserves PayNow reference numbers."
+    },
   },
 
   "fifth-third": {
@@ -1244,7 +1702,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "Regions Bank", slug: "regions-bank-statement-to-csv" },
       { name: "US Bank", slug: "us-bank-statement-to-csv" }
     ],
-    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings."
+    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings.",
+    nativeExport: {
+      intro: "Fifth Third Bank online banking supports CSV download of your transaction history.",
+      steps: [
+          "Sign in to 53.com and select your account",
+          "Click Download Transactions",
+          "Select CSV as the format",
+          "Choose your date range",
+          "Click Download"
+      ].filter(Boolean),
+      limitation: "Fifth Third's native export covers recent history. For older PDF statements or business account PDFs, DocNeat converts Fifth Third statements accurately, skipping the daily balance summary that confuses generic converters."
+    },
   },
 
   "suntrust": {
@@ -1273,7 +1742,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "KeyBank", slug: "keybank-statement-to-csv" },
       { name: "M&T Bank", slug: "m&t-bank-statement-to-csv" }
     ],
-    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings."
+    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings.",
+    nativeExport: {
+      intro: "Truist (formerly SunTrust) online banking allows you to download transactions as a CSV file.",
+      steps: [
+          "Sign in to truist.com and select your account",
+          "Click Download Transactions above your transaction list",
+          "Select CSV as the format",
+          "Choose your date range",
+          "Click Download"
+      ].filter(Boolean),
+      limitation: "Truist/SunTrust native export covers recent history. For legacy SunTrust PDF statements from before the Truist merger, or for business account PDFs, DocNeat handles both SunTrust and Truist-branded statement formats."
+    },
   },
 
   "silicon-valley-bank": {
@@ -1301,7 +1781,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "Chase", slug: "chase-statement-to-csv" },
       { name: "Ally Bank", slug: "ally-bank-statement-to-csv" }
     ],
-    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings."
+    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings.",
+    nativeExport: {
+      intro: "Legacy Silicon Valley Bank statements are only available as PDF downloads via the FDIC portal or First Citizens Bank.",
+      steps: [
+          "Contact First Citizens Bank (which acquired SVB deposits) to access your historical statements",
+          "Alternatively, access statements via the FDIC receivership portal if applicable",
+          "Download your statement as a PDF",
+          "Upload to DocNeat to convert to CSV",
+          ""
+      ].filter(Boolean),
+      limitation: "SVB statements are legacy documents with no native CSV export option. DocNeat converts all historical SVB PDF statements to CSV, producing clean audit-ready output for tax and legal purposes."
+    },
   },
 
   "first-republic": {
@@ -1329,7 +1820,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "Mercury", slug: "mercury-statement-to-csv" },
       { name: "Wells Fargo", slug: "wells-fargo-statement-to-csv" }
     ],
-    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings."
+    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings.",
+    nativeExport: {
+      intro: "Legacy First Republic Bank statements are available via JPMorgan Chase, which acquired First Republic's deposits in May 2023.",
+      steps: [
+          "Log in to chase.com — your First Republic account will have been migrated to Chase",
+          "For pre-acquisition statements, contact JPMorgan Chase to request historical First Republic PDFs",
+          "Download the PDF statement",
+          "Upload to DocNeat to convert to CSV",
+          ""
+      ].filter(Boolean),
+      limitation: "Pre-acquisition First Republic statements are only available as PDFs with no native CSV export. DocNeat converts historical First Republic PDFs to CSV for audit, tax, and legal purposes."
+    },
   },
 
   "regions-bank": {
@@ -1358,7 +1860,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "KeyBank", slug: "keybank-statement-to-csv" },
       { name: "M&T Bank", slug: "m&t-bank-statement-to-csv" }
     ],
-    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings."
+    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings.",
+    nativeExport: {
+      intro: "Regions Bank online banking supports CSV download of your transaction history.",
+      steps: [
+          "Sign in to regions.com and select your account",
+          "Click Download Transactions",
+          "Select CSV as the file format",
+          "Choose your date range",
+          "Click Download"
+      ].filter(Boolean),
+      limitation: "Regions Bank's native export covers recent history. For older Regions PDF statements or business account PDFs, DocNeat converts them accurately, skipping the fee summary sections that confuse generic converters."
+    },
   },
 
   "m&t-bank": {
@@ -1387,7 +1900,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "Fifth Third", slug: "fifth-third-statement-to-csv" },
       { name: "Regions Bank", slug: "regions-bank-statement-to-csv" }
     ],
-    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings."
+    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings.",
+    nativeExport: {
+      intro: "M&T Bank online banking allows you to download transactions as a CSV file.",
+      steps: [
+          "Sign in to mtb.com and select your account",
+          "Click Download Transactions",
+          "Select CSV as the format",
+          "Choose your date range",
+          "Click Download"
+      ].filter(Boolean),
+      limitation: "M&T Bank's native export covers recent history. For older M&T PDF statements or business account PDFs, DocNeat converts them accurately, skipping the account analysis sections that confuse generic converters."
+    },
   },
 
   "huntington": {
@@ -1416,7 +1940,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "US Bank", slug: "us-bank-statement-to-csv" },
       { name: "Regions Bank", slug: "regions-bank-statement-to-csv" }
     ],
-    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings."
+    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings.",
+    nativeExport: {
+      intro: "Huntington Bank online banking supports CSV download of your account transactions.",
+      steps: [
+          "Sign in to huntington.com and select your account",
+          "Click Download Transactions",
+          "Select CSV as the format",
+          "Choose your date range",
+          "Click Download"
+      ].filter(Boolean),
+      limitation: "Huntington's native export covers recent history. For older Huntington PDF statements or business account PDFs, DocNeat converts them accurately, skipping the 24-Hour Grace sections that confuse generic converters."
+    },
   },
 
   "keybank": {
@@ -1445,7 +1980,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "PNC Bank", slug: "pnc-bank-statement-to-csv" },
       { name: "M&T Bank", slug: "m&t-bank-statement-to-csv" }
     ],
-    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings."
+    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings.",
+    nativeExport: {
+      intro: "KeyBank online banking allows you to download your transactions as a CSV file.",
+      steps: [
+          "Sign in to key.com and select your account",
+          "Click Download Transactions",
+          "Select CSV as the format",
+          "Choose your date range",
+          "Click Download"
+      ].filter(Boolean),
+      limitation: "KeyBank's native export covers recent history. For older KeyBank PDF statements or business account PDFs, DocNeat converts them accurately, skipping account activity summaries that confuse generic converters."
+    },
   },
 
   "discover": {
@@ -1474,7 +2020,18 @@ export const bankDataMap: Record<string, BankData> = {
       { name: "Ally Bank", slug: "ally-bank-statement-to-csv" },
       { name: "Chime", slug: "chime-statement-to-csv" }
     ],
-    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings."
+    compatibility: "QuickBooks, Xero, Sage, Excel — date format MM/DD/YYYY matches US regional settings.",
+    nativeExport: {
+      intro: "Discover allows you to download your transaction history as a CSV file from online banking.",
+      steps: [
+          "Sign in to discover.com and select your account",
+          "Click Download near your transaction list",
+          "Select CSV as the format",
+          "Choose your date range",
+          "Click Download"
+      ].filter(Boolean),
+      limitation: "Discover's native CSV export covers recent activity. For older Discover PDF statements or credit card statements received as PDFs, DocNeat converts them accurately, excluding the Cashback Bonus summary that confuses generic converters."
+    },
   }
 
 };

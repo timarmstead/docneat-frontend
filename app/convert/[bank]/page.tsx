@@ -20,27 +20,71 @@ export async function generateStaticParams() {
   }));
 }
 
+function getRegionMessaging(region: string, bankDisplayName: string) {
+  if (region.includes('India')) {
+    return {
+      title: `Convert ${bankDisplayName} PDF Statement to CSV | For ITR Filing & GST Reconciliation — DocNeat.com`,
+      description: `Convert your ${bankDisplayName} PDF statement to CSV instantly. Trusted by Indian accountants and CAs for ITR filing, GST reconciliation, and loan applications. Secure, accurate, no manual entry.`,
+    };
+  }
+  if (region.includes('Australia') || region.includes('NZ')) {
+    return {
+      title: `Convert ${bankDisplayName} PDF Statement to CSV | DocNeat.com`,
+      description: `Extract transaction data from your ${bankDisplayName} PDF statements. CSV output formatted for direct import into Xero and MYOB. Secure, fast, and accurate.`,
+    };
+  }
+  if (region.includes('UK') || region.includes('Europe')) {
+    return {
+      title: `Convert ${bankDisplayName} PDF Statement to CSV | DocNeat.com`,
+      description: `Extract transaction data from your ${bankDisplayName} PDF statements. Perfectly formatted for Sage, Xero, FreshBooks, and Excel. Secure, fast, and accurate.`,
+    };
+  }
+  if (region.includes('Canada')) {
+    return {
+      title: `Convert ${bankDisplayName} PDF Statement to CSV | DocNeat.com`,
+      description: `Extract transaction data from your ${bankDisplayName} PDF statements with verified accuracy. Perfectly formatted for QuickBooks, Xero, and Excel. View Plans & Pricing.`,
+    };
+  }
+  if (region.includes('Singapore') || region.includes('Asia')) {
+    return {
+      title: `Convert ${bankDisplayName} PDF Statement to CSV | DocNeat.com`,
+      description: `Extract transaction data from your ${bankDisplayName} PDF statements. CSV output formatted for Xero, QuickBooks, and Excel. Secure, fast, and accurate.`,
+    };
+  }
+  // Default US
+  return {
+    title: `Convert ${bankDisplayName} PDF Statement to CSV | DocNeat.com`,
+    description: `Extract transaction data from your ${bankDisplayName} PDF statements with verified accuracy. Perfectly formatted for QuickBooks, Xero, and Excel. View Plans & Pricing.`,
+  };
+}
+
 export async function generateMetadata({ params }: { params: { bank: string } }): Promise<Metadata> {
   const bankParam = params?.bank || "";
-  
+
   const nameParts = bankParam
     .split('-')
     .filter(word => !['convert', 'statement', 'to', 'csv', 'pdf', 'excel', 'xlsx', 'converter'].includes(word.toLowerCase()));
 
-  const bankDisplayName = nameParts.length > 0 
+  const bankDisplayName = nameParts.length > 0
     ? nameParts.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
     : "Bank";
 
+  const bankKey = nameParts.join('-').toLowerCase();
+  const bankData = bankDataMap[bankKey] || null;
+  const region = bankData?.region || 'US';
+
+  const { title, description } = getRegionMessaging(region, bankDisplayName);
+
   return {
-    title: `Convert ${bankDisplayName} PDF Statement to CSV | DocNeat.com`,
-    description: `Extract transaction data from your ${bankDisplayName} PDF statements with verified accuracy. Perfectly formatted for QuickBooks, Xero, and Excel. View Plans & Pricing.`,
+    title,
+    description,
     alternates: {
       canonical: `https://www.docneat.com/convert/${bankParam}`,
     },
     openGraph: {
       siteName: 'DocNeat.com - Bank Statement Converter',
       title: `Convert ${bankDisplayName} PDF to CSV | DocNeat.com`,
-      description: `Extract transaction data from your ${bankDisplayName} PDF statements.`,
+      description,
       url: `https://www.docneat.com/convert/${bankParam}`,
       type: 'website',
     },
@@ -67,12 +111,7 @@ function buildSchemaJsonLd(bankParam: string, bankDisplayName: string) {
     "name": `How to convert ${bankDisplayName} PDF statement to CSV`,
     "description": `Step-by-step guide to converting your ${bankDisplayName} PDF bank statement into a CSV file using DocNeat.`,
     "totalTime": "PT2M",
-    "tool": [
-      {
-        "@type": "HowToTool",
-        "name": "DocNeat Bank Statement Converter"
-      }
-    ],
+    "tool": [{ "@type": "HowToTool", "name": "DocNeat Bank Statement Converter" }],
     "step": [
       {
         "@type": "HowToStep",
@@ -127,10 +166,7 @@ function buildSchemaJsonLd(bankParam: string, bankDisplayName: string) {
     "mainEntity": faqItems.map(faq => ({
       "@type": "Question",
       "name": faq.question,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": faq.answer
-      }
+      "acceptedAnswer": { "@type": "Answer", "text": faq.answer }
     }))
   };
 
@@ -142,11 +178,7 @@ function buildSchemaJsonLd(bankParam: string, bankDisplayName: string) {
     "operatingSystem": "Web",
     "url": "https://www.docneat.com",
     "description": `Convert ${bankDisplayName} PDF bank statements to CSV. AI-powered extraction with verified accuracy for QuickBooks, Xero, Sage, and Excel.`,
-    "offers": {
-      "@type": "Offer",
-      "price": "30",
-      "priceCurrency": "USD"
-    }
+    "offers": { "@type": "Offer", "price": "30", "priceCurrency": "USD" }
   };
 
   return [howToSchema, faqSchema, softwareSchema];

@@ -34,6 +34,9 @@ export async function generateMetadata({ params }: { params: { bank: string } })
   return {
     title: `Convert ${bankDisplayName} PDF Statement to CSV | DocNeat.com`,
     description: `Extract transaction data from your ${bankDisplayName} PDF statements with verified accuracy. Perfectly formatted for QuickBooks, Xero, and Excel. View Plans & Pricing.`,
+    alternates: {
+      canonical: `https://www.docneat.com/convert/${bankParam}`,
+    },
     openGraph: {
       siteName: 'DocNeat.com - Bank Statement Converter',
       title: `Convert ${bankDisplayName} PDF to CSV | DocNeat.com`,

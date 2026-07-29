@@ -22,7 +22,7 @@ export default function BlogPostPage() {
 
       <div className="relative w-full h-[300px] md:h-[500px] mb-16">
         <Image
-          src="/images/blog/bank-statement-to-excel.png"
+          src="/images/blog/Bank_Statement_Security.png"
           alt="Secure bank statement conversion with zero data storage"
           fill
           className="rounded-2xl shadow-2xl object-cover border border-slate-800"

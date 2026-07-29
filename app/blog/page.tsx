@@ -26,7 +26,7 @@ const posts = [
     title: "Security vs. Convenience: Why Zero-Storage is the New Standard for Bank Statement Converters",
     excerpt: "Most free PDF to CSV converters store your bank statements on their servers indefinitely. Here is what that means for your financial data and what to look for instead.",
     href: "/blog/security-vs-convenience",
-    image: "/images/blog/bank-statement-to-excel.png",
+    image: "/images/blog/Bank_Statement_Security.png",
     category: "Security"
   }
 ];

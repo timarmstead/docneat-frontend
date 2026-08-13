@@ -3,11 +3,25 @@
 
 import { useState } from 'react';
 
+// GA4 event helper
+const trackEvent = (eventName: string, params?: Record<string, any>) => {
+  if (typeof window !== 'undefined' && (window as any).gtag) {
+    (window as any).gtag('event', eventName, params);
+  }
+};
+
 export default function Pricing() {
   const [loading, setLoading] = useState<string | null>(null);
 
-  const handleCheckout = async (priceId: string, id: string) => {
+  const handleCheckout = async (priceId: string, id: string, planName: string, planPrice: number) => {
     setLoading(id);
+
+    // Track checkout initiation
+    trackEvent('checkout_initiated', {
+      plan_name: planName,
+      plan_price: planPrice,
+      currency: 'USD',
+    });
     
     try {
       const response = await fetch('/api/checkout', {
@@ -61,7 +75,7 @@ export default function Pricing() {
               <li className="flex items-start text-sm">✓ <span className="ml-2">Email support</span></li>
             </ul>
             <button 
-              onClick={() => handleCheckout('price_1Tnd0LGWw5FE61zB1vFKR0TK', 'starter')}
+              onClick={() => handleCheckout('price_1Tnd0LGWw5FE61zB1vFKR0TK', 'starter', 'Starter', 30)}
               disabled={!!loading}
               className="w-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 font-bold py-3 rounded-xl transition disabled:opacity-50 text-sm"
             >
@@ -84,7 +98,7 @@ export default function Pricing() {
               <li className="flex items-start text-sm">✓ <span className="ml-2">Priority support</span></li>
             </ul>
             <button 
-              onClick={() => handleCheckout('price_1Tnd18GWw5FE61zBX1BGIvpm', 'pro')}
+              onClick={() => handleCheckout('price_1Tnd18GWw5FE61zBX1BGIvpm', 'pro', 'Professional', 60)}
               disabled={!!loading}
               className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 rounded-xl transition disabled:opacity-50 shadow-lg active:scale-95"
             >
@@ -104,7 +118,7 @@ export default function Pricing() {
               <li className="flex items-start text-sm">✓ <span className="ml-2">Dedicated Account Manager</span></li>
             </ul>
             <button 
-              onClick={() => handleCheckout('price_1T3EgWGWw5FE61zBCy208ve3', 'business')}
+              onClick={() => handleCheckout('price_1T3EgWGWw5FE61zBCy208ve3', 'business', 'Business', 99)}
               disabled={!!loading}
               className="w-full bg-white hover:bg-slate-100 text-slate-900 font-bold py-3 rounded-xl transition disabled:opacity-50 text-sm active:scale-95"
             >

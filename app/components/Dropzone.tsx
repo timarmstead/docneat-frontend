@@ -8,6 +8,13 @@ import { subtractCredit } from '../actions/credits';
 
 const BACKEND_URL = 'https://docneat-backend.onrender.com';
 
+// GA4 event helper
+const trackEvent = (eventName: string, params?: Record<string, any>) => {
+  if (typeof window !== 'undefined' && (window as any).gtag) {
+    (window as any).gtag('event', eventName, params);
+  }
+};
+
 interface FileJob {
   file: File;
   jobId?: string;
@@ -63,6 +70,10 @@ export default function Dropzone() {
 
       if (res.status === 422 || result.status === 'ERROR') {
         updateJob(index, { status: 'error', error: result.message || 'Invalid bank statement format.' });
+        trackEvent('conversion_failed', {
+          error_message: result.message || 'Invalid bank statement format.',
+          user_type: isSignedIn ? 'signed_in' : 'guest',
+        });
         return;
       }
 
@@ -80,6 +91,10 @@ export default function Dropzone() {
       }
     } catch (e) {
       updateJob(index, { status: 'error', error: 'Connection lost. Please try again.' });
+      trackEvent('conversion_failed', {
+        error_message: 'Connection lost',
+        user_type: isSignedIn ? 'signed_in' : 'guest',
+      });
     }
   };
 
@@ -101,9 +116,17 @@ export default function Dropzone() {
         pollStatus(data.job_id, data.file_key, index);
       } else {
         updateJob(index, { status: 'error', error: 'Upload failed.' });
+        trackEvent('conversion_failed', {
+          error_message: 'Upload failed',
+          user_type: isSignedIn ? 'signed_in' : 'guest',
+        });
       }
     } catch (e) {
       updateJob(index, { status: 'error', error: 'Upload failed.' });
+      trackEvent('conversion_failed', {
+        error_message: 'Upload failed',
+        user_type: isSignedIn ? 'signed_in' : 'guest',
+      });
     }
   };
 
@@ -142,6 +165,14 @@ export default function Dropzone() {
     const nextCredits = Math.max(0, credits - totalPages);
     setCredits(nextCredits);
 
+    // Track successful conversion
+    trackEvent('conversion_completed', {
+      files_converted: completedJobs.length,
+      total_pages: totalPages,
+      user_type: isSignedIn ? 'signed_in' : 'guest',
+      credits_remaining: nextCredits,
+    });
+
     if (!isSignedIn) {
       localStorage.setItem('docneat_guest_credits', nextCredits.toString());
     } else {
@@ -151,9 +182,20 @@ export default function Dropzone() {
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     if (credits <= 0) {
+      trackEvent('upgrade_clicked', {
+        trigger: 'no_credits',
+        user_type: isSignedIn ? 'signed_in' : 'guest',
+      });
       router.push('/pricing');
       return;
     }
+
+    // Track file drop
+    trackEvent('conversion_started', {
+      file_count: acceptedFiles.length,
+      user_type: isSignedIn ? 'signed_in' : 'guest',
+      credits_available: credits,
+    });
 
     setError(null);
     setAllDone(false);
@@ -225,7 +267,14 @@ export default function Dropzone() {
                     </button>
                   ) : (
                     <button
-                      onClick={(e) => { e.stopPropagation(); router.push('/pricing'); }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        trackEvent('upgrade_clicked', {
+                          trigger: 'trial_complete',
+                          user_type: isSignedIn ? 'signed_in' : 'guest',
+                        });
+                        router.push('/pricing');
+                      }}
                       className="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg transition-all active:scale-95"
                     >
                       Upgrade Now
@@ -286,7 +335,14 @@ export default function Dropzone() {
                 </p>
                 {credits <= 0 && (
                   <button
-                    onClick={(e) => { e.stopPropagation(); router.push('/pricing'); }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      trackEvent('upgrade_clicked', {
+                        trigger: 'no_credits_banner',
+                        user_type: isSignedIn ? 'signed_in' : 'guest',
+                      });
+                      router.push('/pricing');
+                    }}
                     className="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg transition-all active:scale-95"
                   >
                     Upgrade Now
